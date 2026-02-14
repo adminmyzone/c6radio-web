@@ -14,9 +14,10 @@
  * Plus besoin de créer un composant par page.
  */
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useParams, Navigate } from 'react-router-dom';
 import { fetchPageBySlug } from '../services/wordpress.js';
+import { useGlobalAudio } from '../contexts/GlobalAudioContext.jsx';
 import logger from '../lib/logger.js';
 import './DynamicPage.css';
 
@@ -29,6 +30,12 @@ function DynamicPage() {
   const [page, setPage] = useState(null);       // Contenu de la page
   const [loading, setLoading] = useState(true); // État de chargement
   const [error, setError] = useState(null);     // Erreur éventuelle
+
+  // GlobalAudioContext pour gérer la règle "un seul audio à la fois"
+  const { registerPlayer, unregisterWordPressMedia } = useGlobalAudio();
+
+  // Référence pour tracker les éléments média de cette page
+  const mediaElementsRef = useRef([]);
 
   // Charger la page depuis WordPress quand le slug change
   useEffect(() => {
@@ -58,10 +65,97 @@ function DynamicPage() {
     loadPage();
   }, [slug]); // Recharger si le slug change
 
+  // Gérer les médias WordPress (vidéos + audio) après le rendu
+  useEffect(() => {
+    if (!page) return;
+
+    // ÉTAPE 1 : Trouver tous les éléments vidéo et audio dans le contenu
+    const videos = document.querySelectorAll('.page-content video');
+    const audios = document.querySelectorAll('.page-content audio');
+    const allMedia = [...videos, ...audios];
+
+    if (allMedia.length === 0) {
+      logger.log('[DynamicPage] No media elements found on page');
+      return;
+    }
+
+    logger.log(`[DynamicPage] Found ${videos.length} videos and ${audios.length} audio elements`);
+
+    // Stocker les références
+    mediaElementsRef.current = allMedia;
+
+    // ÉTAPE 2 : Lazy loading pour les vidéos (performance)
+    // Les vidéos ne se chargent que quand elles deviennent visibles
+    const videoObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          const video = entry.target;
+
+          if (entry.isIntersecting) {
+            // Vidéo visible → Charger si pas déjà fait
+            if (!video.dataset.loaded) {
+              logger.log('[DynamicPage] Video entering viewport, loading...');
+              video.load(); // Force le chargement
+              video.dataset.loaded = 'true';
+            }
+          }
+        });
+      },
+      {
+        rootMargin: '50px', // Charger 50px avant que la vidéo soit visible
+        threshold: 0.1,
+      }
+    );
+
+    // Observer toutes les vidéos
+    videos.forEach(video => {
+      // Optimiser les performances : ne pas précharger automatiquement
+      video.preload = 'metadata'; // Charge seulement les métadonnées (durée, dimensions)
+      videoObserver.observe(video);
+    });
+
+    // ÉTAPE 3 : Écouter l'événement 'play' sur tous les médias
+    const handlePlay = (event) => {
+      const mediaElement = event.target;
+      const isVideo = mediaElement.tagName === 'VIDEO';
+      const playerType = isVideo ? 'wordpress-video' : 'wordpress-audio';
+
+      logger.log(`[DynamicPage] ${playerType} started playing`);
+
+      // Enregistrer dans GlobalAudioContext
+      // Cela va automatiquement mettre en pause le live/podcast si actif
+      registerPlayer(playerType, { mediaElement });
+    };
+
+    // Attacher les listeners
+    allMedia.forEach(media => {
+      media.addEventListener('play', handlePlay);
+    });
+
+    // ÉTAPE 4 : Cleanup - Important pour éviter fuites mémoire !
+    return () => {
+      // Désactiver l'observer
+      videos.forEach(video => {
+        videoObserver.unobserve(video);
+      });
+      videoObserver.disconnect();
+
+      // Retirer les event listeners
+      allMedia.forEach(media => {
+        media.removeEventListener('play', handlePlay);
+        // Désenregistrer du GlobalAudioContext
+        unregisterWordPressMedia(media);
+      });
+
+      // Vider la référence
+      mediaElementsRef.current = [];
+    };
+  }, [page, registerPlayer, unregisterWordPressMedia]);
+
   // Affichage pendant le chargement
   if (loading) {
     return (
-      <div className="dynamic-page">
+      <div className="page-container dynamic-page">
         <div className="page-loading">
           <div className="loading-spinner"></div>
           <p>Chargement...</p>
@@ -78,8 +172,8 @@ function DynamicPage() {
 
   // Afficher le contenu de la page
   return (
-    <div className="dynamic-page">
-      <div className="page-container">
+    <div className="page-container dynamic-page">
+      <main className="page-container">
         {/* Titre de la page */}
         <h1 className="page-title">{page.title}</h1>
 
@@ -99,7 +193,7 @@ function DynamicPage() {
             <p>Dernière mise à jour : {new Date(page.modified).toLocaleDateString('fr-FR')}</p>
           </div>
         )}
-      </div>
+      </main>
     </div>
   );
 }
@@ -114,10 +208,14 @@ export default DynamicPage;
  * Hook React Router qui récupère les paramètres de l'URL.
  * Exemple: route "/:slug" → useParams() retourne { slug: "about" }
  * 
+ * IntersectionObserver :
+ * API native du navigateur qui détecte quand un élément devient visible.
+ * Parfait pour le lazy loading : charger les vidéos seulement quand visibles.
+ *
  * dangerouslySetInnerHTML :
  * Permet d'injecter du HTML depuis une string.
  * Nom "dangerous" car risque d'injection XSS si le HTML n'est pas sécurisé.
- * Ici, c'est safe car WordPress assainit automatiquement le HTML.
+ * Ici, c'est safe, car WordPress assainit automatiquement le HTML.
  * 
  * Navigate :
  * Composant React Router pour rediriger vers une autre page.
@@ -127,6 +225,10 @@ export default DynamicPage;
  * Change le titre de l'onglet du navigateur.
  * Important pour SEO et expérience utilisateur !
  * 
+ * video.preload = 'metadata' :
+ * Optimisation performance - charge seulement les métadonnées (durée, taille)
+ * au lieu de tout le fichier vidéo. Le chargement complet se fait au play.
+ *
  * SÉCURITÉ :
  * WordPress utilise wp_kses() pour assainir le HTML côté serveur.
  * Le HTML reçu via .rendered est déjà sécurisé.

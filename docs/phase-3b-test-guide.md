@@ -201,17 +201,17 @@ console.log(page);
 
 ## ✅ Checklist Globale Phase 3B
 
-- [ ] Menu chargé depuis WordPress (Header)
-- [ ] Links dynamiques fonctionnels
-- [ ] Page WordPress /about s'affiche
-- [ ] Page WordPress /contact s'affiche
-- [ ] Page 404 pour URLs invalides
-- [ ] Fallback si WordPress down
-- [ ] Menu mobile hamburger fonctionne
-- [ ] Styles WordPress appliqués (images, listes)
-- [ ] Console sans erreurs critiques
-- [ ] Titre onglet change selon page
-- [ ] PlayerBar reste visible sur toutes pages
+- [ x ] Menu chargé depuis WordPress (Header)
+- [ x ] Links dynamiques fonctionnels
+- [ x ] Page WordPress /about s'affiche
+- [ x ] Page WordPress /contact s'affiche
+- [ x ] Page 404 pour URLs invalides
+- [ x ] Fallback si WordPress down
+- [ x ] Menu mobile hamburger fonctionne
+- [ x ] Styles WordPress appliqués (images, listes)
+- [ x ] Console sans erreurs critiques
+- [ x ] Titre onglet change selon page
+- [ x ] PlayerBar reste visible sur toutes pages
 
 ---
 
@@ -260,8 +260,8 @@ console.log(page);
 ### URLs à Vérifier
 
 **WordPress API :**
-- Production : `https://radio.c6media.fr/wp-json/wp/v2`
-- Pages : `https://radio.c6media.fr/wp-json/wp/v2/pages`
+- Production : `https://exp937.fr/wp/wp-json/wp/v2`
+- Pages : `https://exp937.fr/wp/wp-json/wp/v2/pages`
 
 **Site React :**
 - Dev : `http://localhost:5173`

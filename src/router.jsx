@@ -25,6 +25,8 @@ import App from './App';
 import Home from './pages/Home';
 import DynamicPage from './pages/DynamicPage';
 import NotFound from './pages/NotFound';
+import About from "./pages/About.jsx";
+import Contact from "./pages/Contact.jsx";
 
 /**
  * Configuration du router
@@ -45,6 +47,14 @@ export const router = createBrowserRouter([
       {
         path: '404',        // Route pour page non trouvée
         element: <NotFound />,
+      },
+      {
+        path: 'about',      // Route statique pour "About"
+        element: <About />,
+      },
+      {
+        path: 'contact',    // Route statique pour "Contact"
+        element: <Contact />,
       },
       {
         path: ':slug',      // Route CATCH-ALL : capture toutes les URLs restantes

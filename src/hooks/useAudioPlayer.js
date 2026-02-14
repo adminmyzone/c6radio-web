@@ -4,6 +4,7 @@
 
 import { useState, useEffect } from 'react';
 import * as audioPlayer from '../services/audioPlayer';
+import { useGlobalAudio } from '../contexts/GlobalAudioContext';
 
 /**
  * Hook personnalisé pour utiliser le player audio
@@ -18,6 +19,9 @@ export function useAudioPlayer() {
   const [source, setSource] = useState(audioPlayer.getSource());
   const [podcastUrl, setPodcastUrl] = useState(audioPlayer.getPodcastUrl());
 
+  // Utiliser le GlobalAudioContext
+  const { registerPlayer, resetActivePlayer } = useGlobalAudio();
+
   // useEffect : s'exécute au montage du composant
   useEffect(() => {
     // S'abonner aux changements du service audio
@@ -26,12 +30,32 @@ export function useAudioPlayer() {
       setState(audioState.state);
       setSource(audioState.source);
       setPodcastUrl(audioState.podcastUrl);
+
+      // Enregistrer dans GlobalAudio quand la lecture démarre
+      if (audioState.state === 'playing') {
+        const playerType = audioState.source; // 'live' ou 'podcast'
+        registerPlayer(playerType, {
+          pauseCallback: () => {
+            // Callback pour mettre en pause depuis l'extérieur
+            if (audioState.source === 'live') {
+              audioPlayer.stopLiveStream();
+            } else if (audioState.source === 'podcast') {
+              audioPlayer.pausePodcast();
+            }
+          }
+        });
+      }
+
+      // Reset quand complètement arrêté
+      if (audioState.state === 'stopped') {
+        resetActivePlayer();
+      }
     });
 
     // Cleanup : se désabonner quand le composant est détruit
     // IMPORTANT pour éviter les fuites mémoire
     return unsubscribe;
-  }, []); // [] = s'exécute une seule fois au montage
+  }, [registerPlayer, resetActivePlayer]); // Dépendances du context
 
   // Retourne un objet avec tout ce dont l'UI a besoin
   return {

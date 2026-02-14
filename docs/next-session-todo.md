@@ -1,14 +1,302 @@
 # 📋 TODO Prochaine Session - C6Radio WebApp
 
-> **Dernière session :** 14 février 2026  
-> **Phase actuelle :** Phase 3 complétée à 100% ✅  
+> **Dernière session :** 15 février 2026  
+> **Phase actuelle :** Phase 3 complétée à 100% ✅ + GlobalAudioContext implémenté ✅  
 > **Prochaine session :** À définir
+
+---
+
+## 🎉 MISE À JOUR - Session 15 Février 2026
+
+### ✅ COMPLÉTÉ : GlobalAudioContext Implémenté !
+
+**Problèmes résolus :**
+1. ✅ **Gestion audio globale** - Règle "un seul audio à la fois" maintenant respectée
+2. ✅ **Lazy loading vidéos** - Performance améliorée avec IntersectionObserver
+3. ✅ **Animation loading** - Shimmer effect pour vidéos en chargement
+
+**Fichiers créés :**
+- ✅ `src/contexts/GlobalAudioContext.jsx` - Context centralisé
+
+**Fichiers modifiés :**
+- ✅ `src/main.jsx` - Wrapper GlobalAudioProvider
+- ✅ `src/hooks/useAudioPlayer.js` - Intégration context
+- ✅ `src/pages/DynamicPage.jsx` - Gestion médias WordPress + lazy loading
+- ✅ `src/pages/DynamicPage.css` - Styles loading vidéos
+
+**Documentation :**
+- ✅ `docs/session-15-fev-global-audio.md` - Récapitulatif complet
+
+**Fonctionnement :**
+```
+Live joue → User lance vidéo WordPress → Live se pause automatiquement ✅
+Vidéo joue → User clique Play live → Vidéo se pause automatiquement ✅
+Podcast joue → User lance audio page → Podcast se pause automatiquement ✅
+```
 
 ---
 
 ## 🎯 Priorités Session Prochaine
 
-### 🔴 PRIORITÉ 1 : Problèmes Médias WordPress
+### 🟢 PRIORITÉ 1 : Tests & Validation
+
+**À tester avant de continuer :**
+
+#### Test 1 : Règle "Un Seul Audio"
+- [ ] Live → Vidéo page → Live se pause automatiquement
+- [ ] Vidéo page → Play live → Vidéo se pause automatiquement
+- [ ] Audio page → Play live → Audio se pause automatiquement
+- [ ] Plusieurs vidéos même page → Une seule joue à la fois
+
+#### Test 2 : Lazy Loading Vidéos
+- [ ] Page avec vidéo hors écran → Vidéo ne charge pas immédiatement
+- [ ] Scroll vers vidéo → Vidéo commence à charger (observer DevTools Network)
+- [ ] Animation shimmer visible pendant chargement
+- [ ] Animation disparaît quand vidéo chargée
+
+#### Test 3 : Navigation & Cleanup
+- [ ] Navigation rapide entre pages → Pas d'erreur console
+- [ ] Live joue + navigation → Live continue (normal)
+- [ ] Vidéo joue + navigation → Vidéo s'arrête proprement
+
+**Commandes debug :**
+```javascript
+// Dans console navigateur (F12)
+// Vérifier les logs GlobalAudio :
+// Filter par "[GlobalAudio]"
+
+// Vérifier les vidéos trouvées :
+document.querySelectorAll('.page-content video')
+
+// Vérifier dataset loading :
+document.querySelector('video').dataset.loaded
+```
+
+---
+
+### 🟢 PRIORITÉ 2 : Phase 4 - Podcasts WordPress
+
+**Si tests OK, commencer Phase 4 !**
+
+#### Objectif
+Intégrer les podcasts depuis WordPress comme source audio supplémentaire.
+
+#### Tâches principales
+
+**4.1 API WordPress Podcasts**
+- [ ] Créer custom post type "podcast" dans WordPress (ou utiliser existant)
+- [ ] Endpoint API : `/wp-json/wp/v2/podcasts`
+- [ ] Champs nécessaires :
+  - Titre épisode
+  - Description
+  - URL audio MP3
+  - Image couverture
+  - Durée
+  - Date publication
+  - Catégorie (optionnel)
+
+**4.2 Service WordPress Podcasts**
+- [ ] Créer `src/services/podcastService.js`
+- [ ] Fonction `fetchPodcasts()` - Liste épisodes
+- [ ] Fonction `fetchPodcastById(id)` - Détail épisode
+- [ ] Gestion erreurs + cache
+
+**4.3 Pages Podcasts**
+- [ ] `src/pages/Podcasts.jsx` - Liste tous les épisodes
+- [ ] `src/pages/PodcastEpisode.jsx` - Détail + player
+- [ ] Routes dans `router.jsx` :
+  - `/podcasts` → Liste
+  - `/podcasts/:id` → Détail
+
+**4.4 Composant Player Podcast**
+- [ ] Réutiliser `useAudioPlayer` (déjà compatible podcasts !)
+- [ ] UI contrôles : Play/Pause, progress bar, durée
+- [ ] Intégration Media Session API (déjà fait)
+- [ ] GlobalAudioContext déjà géré ✅
+
+**4.5 Features Avancées (Optionnel)**
+- [ ] Playlist auto-play prochain épisode
+- [ ] Bouton téléchargement épisode
+- [ ] Favoris (localStorage)
+- [ ] Recherche/filtres
+
+**Durée estimée :** 3-4 jours (avec tests)
+
+---
+
+## 📊 État Actuel Projet
+
+### ✅ Complété
+
+**Phase 1 : Audio Core (100%)**
+- ✅ Lecteur live streaming
+- ✅ Reconnexion automatique
+- ✅ Media Session API
+- ✅ Error boundary
+- ✅ Logger structuré
+
+**Phase 3A : Pages & Navigation (100%)**
+- ✅ React Router v7
+- ✅ Pages statiques
+- ✅ Header + Footer
+- ✅ Menu hamburger mobile
+- ✅ SEO basique
+
+**Phase 3B : WordPress Dynamique (100%)**
+- ✅ Client API WordPress
+- ✅ Pages dynamiques
+- ✅ Filtre ACF éditorial
+- ✅ Décodage HTML entities
+- ✅ Support médias responsive
+- ✅ **GlobalAudioContext** ✅
+- ✅ **Lazy loading vidéos** ✅
+- ✅ **Règle "un seul audio"** ✅
+
+### 🔜 À Faire
+
+**Phase 4 : Podcasts WordPress (0%)**
+- 🔜 API WordPress podcasts
+- 🔜 Service podcasts
+- 🔜 Pages liste + détail
+- 🔜 Player podcast (réutilise useAudioPlayer)
+
+**Phase 5 : PWA & Service Worker (0%)**
+- 🔜 Service Worker
+- 🔜 Cache stratégies
+- 🔜 Mode offline
+- 🔜 Install prompt
+
+---
+
+## 📚 Ressources & Références
+
+### Documentation Projet
+
+**Session actuelle :**
+- `docs/session-15-fev-global-audio.md` - Récapitulatif complet session 15 février
+- `docs/next-session-todo.md` - Ce fichier
+
+**Phase 3 :**
+- `docs/phase-3-recap.md` - Récapitulatif complet Phase 3
+- `docs/phase-3-pages-navigation.md` - Plan détaillé
+- `docs/phase-3b-test-guide.md` - Guide tests
+- `docs/SESSION-NOTES.md` - Notes sessions précédentes
+
+**Architecture Audio :**
+- `docs/audio-architecture.md` - Architecture lecteur audio
+- `src/hooks/useAudioPlayer.js` - Hook principal
+- `src/services/audioPlayer.js` - Service audio
+- `src/contexts/GlobalAudioContext.jsx` - Context audio global ✨ NOUVEAU
+
+### Ressources Externes
+
+**Context API React :**
+- https://react.dev/reference/react/createContext
+- https://react.dev/learn/passing-data-deeply-with-context
+
+**IntersectionObserver :**
+- https://developer.mozilla.org/fr/docs/Web/API/Intersection_Observer_API
+
+**WordPress REST API Podcasts :**
+- https://developer.wordpress.org/rest-api/reference/posts/
+- Custom Post Types : https://developer.wordpress.org/plugins/post-types/
+
+---
+
+## ✅ Checklist Démarrage Prochaine Session
+
+**Validation travail session 15 février :**
+- [ ] Lire `docs/session-15-fev-global-audio.md`
+- [ ] Lancer app : `npm run dev`
+- [ ] Tester scénario live → vidéo
+- [ ] Tester scénario vidéo → live
+- [ ] Vérifier console : pas d'erreurs
+- [ ] Vérifier DevTools Network : lazy loading vidéos OK
+
+**Si tests OK, commencer Phase 4 :**
+- [ ] Lire `docs/implementation-plan.md` section Phase 4
+- [ ] Vérifier API WordPress : `/wp-json/wp/v2/podcasts` existe ?
+- [ ] Créer branch Git : `feature/phase-4-podcasts` (optionnel)
+- [ ] Créer fichier : `src/services/podcastService.js`
+
+---
+
+## 💡 Notes Techniques
+
+### Architecture GlobalAudioContext
+
+```
+┌─────────────────────────────────────────┐
+│       GlobalAudioProvider               │
+│  (Context dans main.jsx)                │
+└────────┬────────────────────────────────┘
+         │
+         ├─> useAudioPlayer (live/podcast)
+         │   └─> Appelle registerPlayer() au play
+         │
+         ├─> DynamicPage (vidéos/audio WordPress)
+         │   └─> Appelle registerPlayer() au play
+         │
+         └─> Logique centrale :
+             - Un seul activePlayer à la fois
+             - Pause automatique des autres
+             - Cleanup sur navigation
+```
+
+### Patterns React Utilisés
+
+**1. Context API** - État global partagé
+**2. useCallback** - Mémorisation fonctions
+**3. useRef** - Références persistantes sans re-render
+**4. IntersectionObserver** - Lazy loading performant
+**5. Cleanup useEffect** - Gestion mémoire
+
+---
+
+## 🎯 Objectif Session Suivante
+
+**Minimum Viable (1-2h) :**
+- ✅ Tester GlobalAudioContext
+- ✅ Valider tous les scénarios
+- ✅ Corriger bugs éventuels
+
+**Idéal (4-5h) :**
+- ✅ Tests complets validés
+- ✅ Commencer Phase 4 Podcasts
+- ✅ API podcasts créée
+- ✅ Service podcastService.js
+- ✅ Page liste podcasts (basique)
+
+**Si temps restant :**
+- 🚀 Player podcast fonctionnel
+- 🚀 Page détail épisode
+
+---
+
+## 🎉 Conclusion Session 15 Février
+
+**Bilan très positif ! 🚀**
+
+**Réalisations :**
+- ✅ GlobalAudioContext implémenté
+- ✅ Règle "un seul audio" respectée
+- ✅ Lazy loading vidéos performant
+- ✅ Code propre et documenté
+- ✅ Architecture scalable
+
+**Apprentissages :**
+- Context API React avancé
+- IntersectionObserver
+- Patterns optimisation (useCallback, useRef)
+- Gestion mémoire (cleanup)
+
+**Prêt pour Phase 4 Podcasts !** 🎙️📻
+
+---
+
+**Dernière mise à jour :** 15 février 2026  
+**Prochain RDV :** À définir  
+**Fichier maintenu par :** GitHub Copilot + DOFRECORDS
 
 ⚠️ **Problèmes identifiés lors des tests Phase 3 :**
 

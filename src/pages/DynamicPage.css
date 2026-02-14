@@ -113,6 +113,27 @@
   margin: 1.5rem 0;
   display: block; /* Éviter les espaces blancs */
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  /* Lazy loading : fond gris pendant chargement */
+  background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: videoLoading 1.5s ease-in-out infinite;
+  min-height: 200px; /* Hauteur minimum pour éviter le saut de layout */
+}
+
+/* Animation shimmer pour le chargement */
+@keyframes videoLoading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Quand la vidéo est chargée, retirer l'animation */
+.page-content video[data-loaded="true"] {
+  animation: none;
+  background: transparent;
 }
 
 /* Audio WordPress */

@@ -9,7 +9,7 @@ import './NotFound.css';
 
 function NotFound() {
   return (
-    <div className="not-found-page">
+    <div className="page-container not-found-page">
       <div className="not-found-container">
         <div className="error-code">404</div>
         <h1>Page non trouvée</h1>

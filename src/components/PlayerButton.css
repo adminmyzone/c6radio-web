@@ -1,0 +1,49 @@
+/* ============================================
+   STYLES PLAYER BUTTON - CSS PUR
+   Composant simple de démonstration
+   ============================================ */
+
+.player-button-demo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #111827; /* gray-900 */
+  color: white;
+}
+
+.player-button-demo h1 {
+  font-size: 2.25rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+}
+
+.player-button-demo button {
+  padding: 1rem 2rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.player-button-demo .btn-play {
+  background-color: #22c55e; /* green-600 */
+  color: white;
+}
+
+.player-button-demo .btn-play:hover {
+  background-color: #16a34a; /* green-700 */
+}
+
+.player-button-demo .btn-stop {
+  background-color: #dc2626; /* red-600 */
+  color: white;
+}
+
+.player-button-demo .btn-stop:hover {
+  background-color: #b91c1c; /* red-700 */
+}

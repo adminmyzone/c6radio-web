@@ -1,0 +1,140 @@
+/* ============================================
+   STYLES PLAYERBAR - CSS PUR
+   Plus simple et prévisible que Tailwind
+   ============================================ */
+
+/* Container principal - sticky footer */
+.player-bar {
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background-color: rgba(17, 24, 39, 0.95); /* gray-900 semi-transparent */
+  backdrop-filter: blur(12px);
+  border-top: 1px solid rgba(55, 65, 81, 0.5); /* gray-700 */
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Conteneur interne centré */
+.player-bar-container {
+  max-width: 80rem; /* 1280px */
+  margin: 0 auto;
+  padding: 0.75rem 1rem;
+}
+
+/* Layout flex */
+.player-bar-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+/* Section gauche : Now Playing */
+.player-bar-info {
+  flex: 1;
+  min-width: 0;
+  color: rgba(156, 163, 175, 1); /* gray-400 */
+}
+
+.player-bar-podcast {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.player-bar-podcast-text {
+  font-weight: 500;
+  color: white;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Section droite : Contrôles */
+.player-bar-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* ============================================
+   BOUTONS - Palette classique radio
+   ============================================ */
+
+/* Base commune pour tous les boutons */
+.player-btn {
+  border: none;
+  cursor: pointer;
+  border-radius: 9999px; /* rounded-full */
+  transition: all 0.2s ease;
+  color: white;
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Boutons ronds (icônes uniquement) */
+.player-btn-round {
+  padding: 0.75rem;
+  width: 44px;
+  height: 44px;
+}
+
+/* Bouton avec texte (Play Live) */
+.player-btn-text {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+/* Icône SVG dans les boutons */
+.player-btn svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* ============================================
+   COULEURS DES BOUTONS
+   ============================================ */
+
+/* Bouton Play / Resume - VERT */
+.player-btn-play {
+  background-color: #16a34a; /* green-600 */
+}
+
+.player-btn-play:hover {
+  background-color: #15803d; /* green-700 */
+}
+
+/* Bouton Pause - JAUNE */
+.player-btn-pause {
+  background-color: #eab308; /* yellow-500 */
+}
+
+.player-btn-pause:hover {
+  background-color: #ca8a04; /* yellow-600 */
+}
+
+/* Bouton Stop - ROUGE */
+.player-btn-stop {
+  background-color: #dc2626; /* red-600 */
+}
+
+.player-btn-stop:hover {
+  background-color: #b91c1c; /* red-700 */
+}
+
+/* État actif (clic) */
+.player-btn:active {
+  transform: scale(0.95);
+}
+
+/* État focus pour accessibilité */
+.player-btn:focus {
+  outline: 2px solid white;
+  outline-offset: 2px;
+}

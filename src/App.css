@@ -1,0 +1,12 @@
+/**
+ * Styles globaux de l'application - App.css
+ * 
+ * Ce fichier contient les styles du container principal.
+ */
+
+/* Container principal de l'application */
+.app-container {
+  min-height: 100vh; /* Hauteur minimum = 100% de la hauteur de l'écran */
+  padding-top: 80px; /* Espace en haut pour le Header fixe (évite qu'il cache le contenu) */
+  padding-bottom: 100px; /* Espace en bas pour ne pas être caché par le PlayerBar */
+}

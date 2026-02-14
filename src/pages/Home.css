@@ -1,0 +1,80 @@
+/* 
+ * Styles de la page Home
+ * CSS simple pour débutants - chaque propriété est commentée
+ */
+
+/* Container principal de la page - prend toute la hauteur sauf le player */
+.page-container {
+  min-height: calc(100vh - 80px); /* 100vh = hauteur écran, -80px = hauteur player */
+  padding-bottom: 100px; /* Espace pour le player en bas */
+}
+
+/* Contenu principal de la page */
+.main-content {
+  max-width: 1200px; /* Largeur maximale pour lisibilité */
+  margin: 0 auto; /* Centrer le contenu */
+  padding: 2rem; /* Espacement intérieur (2rem = ~32px) */
+}
+
+/* Section héro (bandeau principal) */
+.hero {
+  text-align: center; /* Centrer le texte */
+  padding: 4rem 2rem; /* Espacement intérieur haut/bas et gauche/droite */
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); /* Dégradé violet */
+  border-radius: 12px; /* Coins arrondis */
+  color: white; /* Texte blanc */
+  margin-bottom: 3rem; /* Espace en dessous */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Ombre légère */
+}
+
+.hero h1 {
+  font-size: 3rem; /* Taille grande pour le titre */
+  margin-bottom: 1rem;
+  font-weight: 700; /* Gras */
+}
+
+.hero .tagline {
+  font-size: 1.25rem; /* Taille moyenne pour le sous-titre */
+  opacity: 0.95; /* Légèrement transparent */
+  font-weight: 300; /* Police fine */
+}
+
+/* Sections de contenu */
+.content-section {
+  margin-bottom: 3rem; /* Espace entre chaque section */
+}
+
+.content-section h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #333; /* Gris foncé */
+}
+
+.content-section p {
+  font-size: 1.125rem; /* Taille de texte confortable */
+  line-height: 1.8; /* Espacement entre les lignes pour lisibilité */
+  color: #555; /* Gris moyen */
+}
+
+/* RESPONSIVE - Adaptation mobile */
+@media (max-width: 768px) {
+  .hero h1 {
+    font-size: 2rem; /* Titre plus petit sur mobile */
+  }
+
+  .hero .tagline {
+    font-size: 1rem;
+  }
+
+  .main-content {
+    padding: 1rem; /* Moins d'espace sur mobile */
+  }
+
+  .content-section h2 {
+    font-size: 1.5rem;
+  }
+
+  .content-section p {
+    font-size: 1rem;
+  }
+}

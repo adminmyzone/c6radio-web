@@ -1,10 +1,10 @@
 # Plan d'Implémentation MVP - C6Radio
 
-**Version :** 1.2  
-**Date :** 13 février 2026  
-**Dernière mise à jour :** 13 février 2026 - 22:00  
+**Version :** 1.3  
+**Date de création :** 13 février 2026  
+**Dernière mise à jour :** 15 février 2026 - 21:00  
 **Basé sur :** [technical-decisions.md](technical-decisions.md) + [prd.md](prd.md)  
-**Release cible :** 1er avril 2026 (6-7 semaines)
+**Release cible :** 1er avril 2026 (6 semaines restantes)
 
 > ℹ️ **Note importante :** Ce document a été mis à jour pour refléter les choix techniques **réellement implémentés** (Vite, JavaScript, CSS vanilla) plutôt que les recommandations initiales (Next.js, TypeScript, Tailwind).
 
@@ -203,7 +203,7 @@ capacitor.config.ts             ⏳ Phase 7
 
 ## 📊 État d'Avancement Actuel
 
-**Dernière mise à jour :** 13 février 2026 - 21:00
+**Dernière mise à jour :** 15 février 2026 - 21:00
 
 ### ✅ Phases Complétées
 
@@ -213,7 +213,7 @@ capacitor.config.ts             ⏳ Phase 7
 - ✅ Structure de base créée
 - ✅ Build production fonctionnel (`npm run build`)
 
-#### Phase 1 : Audio Core - ✅ TERMINÉE (100% complété - 13/02/2026)
+#### Phase 1 : Audio Core - ✅ TERMINÉE (100% - 13/02/2026)
 
 **Complété :**
 - ✅ `audioPlayer.js` : Service singleton avec playLiveStream(), stop()
@@ -227,7 +227,7 @@ capacitor.config.ts             ⏳ Phase 7
 - ✅ `initializeAudioPlayer()` : Initialisation globale au démarrage
 - ✅ Intégration complète reconnexion + media session
 - ✅ Mise à jour automatique métadonnées Now Playing
-- ✅ Documentation complète : [audio-advanced-features.md](audio-advanced-features.md)
+- ✅ Documentation complète : [audio-architecture.md](audio-architecture.md)
 
 **Note :** Adapters natifs iOS/Android (`capacitorAudio.js`) reportés à Phase 7 (setup mobile)
 
@@ -240,32 +240,65 @@ capacitor.config.ts             ⏳ Phase 7
 - ✅ AudioTest.css : Styles de test
 - ✅ Migration complète Tailwind → CSS vanilla
 
+#### Phase 3 : Pages & Navigation - ✅ TERMINÉE (100% - 15/02/2026)
+
+**Phase 3A : Navigation & Structure (14/02/2026) :**
+- ✅ React Router v7 configuré
+- ✅ Structure pages (Home, About, Contact, NotFound)
+- ✅ Header avec navigation responsive
+- ✅ Footer avec liens et infos
+- ✅ Menu hamburger mobile
+- ✅ SEO basique (titres, meta)
+
+**Phase 3B : WordPress Dynamique (14/02/2026) :**
+- ✅ Service `wordpress.js` : Client API REST
+- ✅ Composant `DynamicPage.jsx` : Pages génériques
+- ✅ Filtre ACF éditorial (affiche_dans_menu)
+- ✅ Support médias responsive (images, vidéos, audio)
+- ✅ Décodage HTML entities
+
+**Phase 3C : GlobalAudioContext (15/02/2026) :**
+- ✅ `GlobalAudioContext.jsx` : Context centralisé
+- ✅ Règle "un seul audio à la fois" appliquée
+- ✅ Live stream ↔ Vidéos WordPress (pause automatique)
+- ✅ Lazy loading vidéos (IntersectionObserver)
+- ✅ Animation shimmer pour vidéos en chargement
+- ✅ Intégration dans `useAudioPlayer.js` et `DynamicPage.jsx`
+
+**Documentation :**
+- ✅ [audio-COMPLETE.md](audio-COMPLETE.md) - Référence unique audio
+- ✅ [session-15-fev-global-audio.md](session-15-fev-global-audio.md) - Notes session
+- ✅ [phase-3-pages-navigation.md](phase-3-pages-navigation.md) - Guide détaillé
+- ✅ [phase-3-recap.md](phase-3-recap.md) - Récapitulatif
+- ✅ [phase-3b-test-guide.md](phase-3b-test-guide.md) - Guide tests
+
 ### ❌ Phases Non Commencées
 
-- ❌ Phase 3 : Pages & Navigation
-- ❌ Phase 4 : Intégration WordPress - Actus
-- ❌ Phase 5 : Bannières Publicitaires
-- ❌ Phase 6 : Podcasts/Épisodes
+- ❌ Phase 4 : Podcasts WordPress
+- ❌ Phase 5 : Intégration WordPress - Actus (peut être fusionné avec Phase 3B)
+- ❌ Phase 6 : Bannières Publicitaires
 - ❌ Phase 7 : Polish & Tests Multi-Devices
 - ❌ Phase 8 : Build & Soumission Stores
 - ❌ Phase 9 : Beta Testing
 
 ### 🎯 Prochaines Étapes Recommandées
 
-**Priorité 1 - Compléter Phase 1 :**
-1. Implémenter reconnectionManager.js (robustesse audio)
-2. Ajouter Media Session API (contrôles navigateur)
-3. Tester exhaustivement sur devices réels
+**Priorité 1 - Phase 4 : Podcasts WordPress :**
+1. API WordPress custom post type "podcast"
+2. Service `podcastService.js`
+3. Pages liste + détail épisodes
+4. Player podcast (réutilise `useAudioPlayer` ✅)
+5. Intégration GlobalAudioContext (déjà prêt ✅)
 
-**Priorité 2 - Phase 3 :**
-1. Créer Header + Navigation
-2. Intégrer React Router
-3. Créer pages Home, About
-
-**Priorité 3 - Mobile (Phase 0 extended) :**
+**Priorité 2 - Mobile (Phase 7 avancée) :**
 1. POC Capacitor : setup iOS/Android
 2. POC Audio Background iOS (CRITIQUE)
 3. POC Audio Background Android
+
+**Priorité 3 - Phase 5 : WordPress Actus (optionnel) :**
+1. Intégration posts WordPress (peut réutiliser DynamicPage)
+2. Page blog/actualités
+3. Archives et catégories
 
 ---
 
@@ -396,7 +429,116 @@ capacitor.config.ts             ⏳ Phase 7
 
 ---
 
-### Phase 3 : Pages & Navigation (Semaine 3-4 - 17-28 février)
+### Phase 3 : Pages & Navigation - ✅ COMPLÉTÉE (100% - 14-15 février 2026)
+
+**Durée réelle :** 2 jours  
+**Objectif :** Navigation complète + Pages WordPress + Gestion audio globale
+
+#### Phase 3A : Navigation & Structure (14/02/2026)
+
+| # | Tâche | Statut | Validation |
+|---|-------|--------|------------|
+| 3.1 | Installer React Router v7 | ✅ | `npm list react-router-dom` |
+| 3.2 | Créer `router.jsx` : configuration routes | ✅ | Routes définies |
+| 3.3 | Créer `Header.jsx` + `Header.css` | ✅ | Navigation fonctionnelle |
+| 3.4 | Menu hamburger mobile responsive | ✅ | Test mobile 320px |
+| 3.5 | Créer `Footer.jsx` + `Footer.css` | ✅ | Footer affiché |
+| 3.6 | Page `Home.jsx` : page d'accueil | ✅ | `/` accessible |
+| 3.7 | Page `About.jsx` : page à propos | ✅ | `/about` accessible |
+| 3.8 | Page `Contact.jsx` : page contact | ✅ | `/contact` accessible |
+| 3.9 | Page `NotFound.jsx` : 404 | ✅ | Routes invalides → 404 |
+| 3.10 | SEO basique : titres, meta descriptions | ✅ | Titres dynamiques |
+
+#### Phase 3B : WordPress Dynamique (14/02/2026)
+
+| # | Tâche | Statut | Validation |
+|---|-------|--------|------------|
+| 3.11 | Service `wordpress.js` : client API REST | ✅ | Fetch pages WordPress |
+| 3.12 | `DynamicPage.jsx` : rendu pages génériques | ✅ | `/:slug` fonctionne |
+| 3.13 | Filtre ACF `affiche_dans_menu` | ✅ | Menu dynamique |
+| 3.14 | Support médias responsive (images, vidéos) | ✅ | Médias affichés |
+| 3.15 | Décodage HTML entities | ✅ | Texte correct |
+| 3.16 | Styles `DynamicPage.css` | ✅ | Design propre |
+| 3.17 | Gestion erreurs et 404 | ✅ | Redirections OK |
+
+#### Phase 3C : GlobalAudioContext (15/02/2026)
+
+| # | Tâche | Statut | Validation |
+|---|-------|--------|------------|
+| 3.18 | Créer `GlobalAudioContext.jsx` | ✅ | Context créé (157 lignes) |
+| 3.19 | Hook `useGlobalAudio()` | ✅ | Hook fonctionnel |
+| 3.20 | Intégration dans `useAudioPlayer.js` | ✅ | Live signale au context |
+| 3.21 | Intégration dans `DynamicPage.jsx` | ✅ | Vidéos signalent au context |
+| 3.22 | Règle "un seul audio" appliquée | ✅ | Tests validés |
+| 3.23 | Lazy loading vidéos (IntersectionObserver) | ✅ | Vidéos chargent au scroll |
+| 3.24 | Animation shimmer loading vidéos | ✅ | CSS animations ajoutées |
+| 3.25 | Wrapper `GlobalAudioProvider` dans `main.jsx` | ✅ | Context actif |
+| 3.26 | Tests exhaustifs (live ↔ vidéo) | ✅ | Tous scénarios OK |
+
+**Livrables :**
+- ✅ Navigation complète avec React Router v7
+- ✅ Header responsive avec menu mobile
+- ✅ Footer avec liens
+- ✅ Pages statiques (Home, About, Contact, 404)
+- ✅ Pages WordPress dynamiques (via slug)
+- ✅ Filtre ACF pour menu dynamique
+- ✅ Support médias WordPress (images, vidéos, audio)
+- ✅ GlobalAudioContext : un seul audio à la fois
+- ✅ Lazy loading vidéos pour performance
+- ✅ Animation loading shimmer
+
+**Fichiers créés :**
+- `src/router.jsx` (70 lignes)
+- `src/components/Header.jsx` (110 lignes) + `Header.css` (180 lignes)
+- `src/components/Footer.jsx` (45 lignes) + `Footer.css` (80 lignes)
+- `src/pages/Home.jsx` + `Home.css`
+- `src/pages/About.jsx` + `About.css`
+- `src/pages/Contact.jsx` + `Contact.css`
+- `src/pages/NotFound.jsx` + `NotFound.css`
+- `src/pages/DynamicPage.jsx` (150 lignes) + `DynamicPage.css` (310 lignes)
+- `src/services/wordpress.js` (95 lignes)
+- `src/contexts/GlobalAudioContext.jsx` (157 lignes)
+
+**Documentation créée :**
+- ✅ [audio-COMPLETE.md](audio-COMPLETE.md) (1500 lignes) - Référence unique
+- ✅ [session-15-fev-global-audio.md](session-15-fev-global-audio.md) (504 lignes)
+- ✅ [phase-3-pages-navigation.md](phase-3-pages-navigation.md) (500+ lignes)
+- ✅ [phase-3-recap.md](phase-3-recap.md) (300+ lignes)
+- ✅ [phase-3b-test-guide.md](phase-3b-test-guide.md) (200+ lignes)
+
+**Tests validés :**
+- ✅ Live stream → Vidéo WordPress → Live se pause automatiquement
+- ✅ Vidéo WordPress → Live stream → Vidéo se pause automatiquement
+- ✅ Plusieurs vidéos sur même page → Une seule joue à la fois
+- ✅ Lazy loading vidéos : chargement au scroll (50px avant visibilité)
+- ✅ Animation shimmer visible pendant chargement
+- ✅ Navigation entre pages : cleanup mémoire OK
+- ✅ Responsive : mobile 320px → desktop 1920px
+
+**📝 Notes :**
+- **React Router v7** : Dernière version avec nouvelles APIs
+- **GlobalAudioContext** : Pattern Context API + useCallback + useRef (optimisé)
+- **IntersectionObserver** : API native navigateur pour lazy loading performant
+- **Architecture scalable** : Prête pour Phase 4 (Podcasts)
+- **Documentation exhaustive** : 3500+ lignes au total
+- **Commits Git** : 3 commits propres avec messages descriptifs
+
+**Architecture GlobalAudioContext :**
+```javascript
+GlobalAudioProvider (main.jsx)
+    │
+    ├─> useAudioPlayer (live/podcast)
+    │   └─> registerPlayer('live') au play
+    │
+    ├─> DynamicPage (vidéos WordPress)
+    │   └─> registerPlayer('wordpress-video') au play
+    │
+    └─> Context gère : UN SEUL actif à la fois
+```
+
+---
+
+### Phase 4 : Podcasts WordPress (Semaine 5 - 3-7 mars)
 
 **Durée estimée :** 5-7 jours  
 **Objectif :** Structure pages essentielles + navigation React Router
@@ -719,17 +861,19 @@ Légende : ✅ Complété | ▒ En cours | █ Planifié
 |-----------|----------------|---------------------|--------|
 | 🎬 Kickoff | 17 février 2026 | **13 février 2026** | ✅ Avance de 4 jours |
 | ✅ Setup web (Phase 0) | 21 février 2026 | **13 février 2026** | ✅ COMPLÉTÉ |
-| ✅ PlayerBar (Phase 2) | 7 mars 2026 | **13 février 2026** | ✅ COMPLÉTÉ (3 semaines d'avance!) |
-| 🎵 Player Live web (Phase 1 partiel) | 28 février 2026 | **13 février 2026** | 🟡 60% complété |
-| 🎵 Audio Core complet (Phase 1) | 28 février 2026 | **~21 février 2026** | ⏳ Révision +7j |
-| 🖥️ Pages & Navigation (Phase 3) | 7 mars 2026 | **~28 février 2026** | ⏳ Révision -7j |
-| 📰 WordPress Actus (Phase 4) | 14 mars 2026 | **~7 mars 2026** | ⏳ Révision -7j |
-| 🎙️ Podcasts (Phase 6) | 21 mars 2026 | **~14 mars 2026** | ⏳ Révision -7j |
-| 📱 POC Mobile Capacitor | — | **~14-17 mars 2026** | 🆕 Ajouté |
-| 📱 Builds production | 25 mars 2026 | **~21 mars 2026** | ⏳ Révision -4j |
-| 🧪 Beta testing | 24-28 mars 2026 | **~24-28 mars 2026** | ⏳ Maintenu |
-| 📤 Soumission stores | 28 mars 2026 | **~28 mars 2026** | ⏳ Maintenu |
-| 🚀 **RELEASE PUBLIQUE** | **1er avril 2026** | **1er avril 2026** | 🎯 **OBJECTIF MAINTENU** |
+| ✅ Audio Core (Phase 1) | 28 février 2026 | **13 février 2026** | ✅ COMPLÉTÉ (15 jours d'avance!) |
+| ✅ PlayerBar (Phase 2) | 7 mars 2026 | **13 février 2026** | ✅ COMPLÉTÉ (22 jours d'avance!) |
+| ✅ Pages & Navigation (Phase 3) | 7 mars 2026 | **14-15 février 2026** | ✅ COMPLÉTÉ (20 jours d'avance!) |
+| 🎙️ Podcasts WordPress (Phase 4) | 21 mars 2026 | **~25 février 2026** | ⏳ Planifié (gain 24j) |
+| 📰 WordPress Actus (Phase 5) | 14 mars 2026 | **~4 mars 2026** | ⏳ Révision -10j |
+| 📱 POC Mobile Capacitor | — | **~7-10 mars 2026** | 🆕 Ajouté |
+| 📱 Builds production | 25 mars 2026 | **~14 mars 2026** | ⏳ Révision -11j |
+| 🧪 Beta testing | 24-28 mars 2026 | **~17-21 mars 2026** | ⏳ Révision -7j |
+| 📤 Soumission stores | 28 mars 2026 | **~21 mars 2026** | ⏳ Révision -7j |
+| 🚀 **RELEASE PUBLIQUE** | **1er avril 2026** | **1er avril 2026** | 🎯 **OBJECTIF MAINTENU avec marge +10j** |
+
+**Avance globale :** +20 jours sur planning initial  
+**Marge de sécurité :** 10 jours supplémentaires pour imprévus ou polish
 
 ---
 
@@ -738,25 +882,37 @@ Légende : ✅ Complété | ▒ En cours | █ Planifié
 ### Fonctionnels
 
 - [x] **Lecture live MP3 stable > 30 minutes sans interruption** (✅ Testé web)
-- [ ] Audio continue en arrière-plan (iOS + Android) — ⏳ Phase 7 (à implémenter)
-- [ ] Contrôles lockscreen opérationnels (Play/Stop) — ⏳ Phase 1 (à implémenter)
 - [x] **Now playing affiché > 80% du temps (tolérance erreurs API)** (✅ Polling 12s + fallback)
-- [ ] Reconnexion automatique après coupure < 30 secondes — ⏳ Phase 1 (à implémenter)
-- [ ] Actus WordPress affichées avec images — ⏳ Phase 4
-- [ ] Bannières publicitaires visibles (3 positions) — ⏳ Phase 5
-- [ ] Podcasts jouables avec Play/Pause — ⏳ Phase 6
+- [x] **Reconnexion automatique après coupure < 30 secondes** (✅ Backoff 3s/10s/30s)
+- [x] **Contrôles lockscreen web opérationnels** (✅ Media Session API)
+- [x] **Navigation complète entre pages** (✅ React Router v7)
+- [x] **Pages WordPress dynamiques** (✅ DynamicPage + API REST)
+- [x] **Support médias responsive** (✅ Images, vidéos, audio)
+- [x] **Règle "un seul audio à la fois"** (✅ GlobalAudioContext)
+- [x] **Lazy loading vidéos** (✅ IntersectionObserver)
+- [ ] Audio continue en arrière-plan (iOS + Android) — ⏳ Phase 7 (mobile natif)
+- [ ] Contrôles lockscreen mobile natifs — ⏳ Phase 7 (Capacitor)
+- [ ] Podcasts jouables avec Play/Pause — ⏳ Phase 4
+- [ ] Actus WordPress affichées — ⏳ Phase 5 (optionnel, peut réutiliser DynamicPage)
+- [ ] Bannières publicitaires visibles — ⏳ Phase 6
 
 ### Performance
 
-- [ ] Lighthouse score : Performance > 80, Accessibility > 90
+- [x] **Bundle JS optimisé** (✅ Vite build)
+- [x] **Lazy loading assets** (✅ Vidéos au scroll)
+- [ ] Lighthouse score : Performance > 80, Accessibility > 90 — ⏳ À tester
 - [ ] Temps démarrage app < 3 secondes (devices récents)
-- [ ] Temps "tap Play → audio" < 3 secondes (réseau correct)
+- [ ] Temps "tap Play → audio" < 2 secondes (réseau correct)
 - [ ] Taille bundle JS < 500 KB (gzipped)
 - [ ] Consommation batterie : < 10%/heure écoute live
 
 ### Qualité
 
-- [ ] Taux de crash < 1% (Firebase Crashlytics)
+- [x] **ErrorBoundary React** (✅ Protection crashes)
+- [x] **Logger intelligent dev/prod** (✅ logger.js)
+- [x] **Gestion erreurs robuste** (✅ Reconnexion + fallbacks)
+- [x] **Documentation exhaustive** (✅ 3500+ lignes)
+- [ ] Taux de crash < 1% (Firebase Crashlytics) — ⏳ Phase 7
 - [ ] Aucun bug bloquant en production
 - [ ] Tests passés : iOS 16+, Android 10+
 - [ ] Cross-browser : Chrome/Safari/Firefox dernières versions

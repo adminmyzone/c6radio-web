@@ -5,18 +5,29 @@
 
 ---
 
+# Documentation C6Radio
+
+**Dernière mise à jour :** 15 février 2026  
+**Statut Projet :** ✅ **PRODUCTION READY**
+
+---
+
 ## 📚 Index des Documents
 
-### 🏗️ Architecture & Technique (PRIORITAIRE)
+### 🎵 Audio (Section Unifiée - Nouvelle Structure)
 
-- **[audio-architecture.md](audio-architecture.md)** ⭐⭐⭐ **NOUVEAU 14 FÉV** - Architecture complète audio  
-  Documentation exhaustive (1000+ lignes) : architecture en couches, flux de données, tous les services détaillés, debugging, métriques
+- **[audio-COMPLETE.md](audio-COMPLETE.md)** ⭐⭐⭐ **RÉFÉRENCE UNIQUE AUDIO**  
+  Documentation complète consolidée (1500+ lignes) : Architecture + GlobalAudioContext + Services + Hooks + API + Tests + Troubleshooting
+  
+- **[session-15-fev-global-audio.md](session-15-fev-global-audio.md)** 📝 Session 15 février  
+  Notes détaillées session GlobalAudioContext + Lazy Loading Vidéos
 
-- **[audio-player-feature.md](audio-player-feature.md)** - Feature complète du player audio  
-  Documentation initiale détaillée de l'implémentation
+### 🏗️ Architecture & Technique
 
-- **[audio-advanced-features.md](audio-advanced-features.md)** - Reconnexion automatique + Media Session  
-  Features avancées : backoff exponentiel, contrôles natifs lockscreen
+- **[technical-decisions.md](technical-decisions.md)** - Décisions techniques prises
+
+- **[sessions/README.md](sessions/README.md)** 📝 - Index sessions développement  
+  Historique chronologique toutes les sessions (février 2026)
 
 ### 🎯 Planning & Production
 
@@ -26,30 +37,51 @@
 - **[implementation-plan.md](implementation-plan.md)** - Plan complet du projet  
   Roadmap phases, tasks, estimations (960+ lignes)
 
-- **[phase-3-pages-navigation.md](phase-3-pages-navigation.md)** ⏳ **NOUVEAU** - Suivi Phase 3  
+- **[next-session-todo.md](next-session-todo.md)** 🎯 - Prochaines étapes  
+  Mis à jour après chaque session
+
+### 📋 Phase 3 (Pages & Navigation)
+
+- **[phase-3-pages-navigation.md](phase-3-pages-navigation.md)** ✅ **COMPLÉTÉ** - Guide Phase 3  
   Guide détaillé étape par étape avec checkboxes de progression
+
+- **[phase-3-recap.md](phase-3-recap.md)** 📝 - Récapitulatif Phase 3
+
+- **[phase-3b-test-guide.md](phase-3b-test-guide.md)** 🧪 - Guide tests Phase 3B
+
+### 🚀 Quick Starts
+
+- **[quick-starts/session-15-fev-tests.md](quick-starts/session-15-fev-tests.md)** 🧪 - Tests GlobalAudioContext  
+  Guide rapide pour tester la session du 15 février
 
 ### 📋 Product & Vision
 
 - **[prd.md](prd.md)** - Product Requirements Document
 - **[product-brief-c6radio.md](product-brief-c6radio.md)** - Vision globale du projet
-- **[technical-decisions.md](technical-decisions.md)** - Décisions techniques prises
+
+### 📦 Archives
+
+- **[archive/audio/](archive/audio/)** 📦 - Documentation historique audio v1.0-v1.3  
+  Versions initiales (audio-player-feature.md, audio-advanced-features.md)
+
+- **[archive/sessions/](archive/sessions/)** 📦 - Anciennes versions architecture  
+  audio-architecture-v1 (remplacé par audio-COMPLETE.md)
 
 ---
 
 ## 🚀 Où Commencer ?
 
 ### 🆕 Je découvre le projet
-👉 Lis **[audio-architecture.md](audio-architecture.md)** - Vue d'ensemble complète de l'architecture
+👉 Lis **[audio-COMPLETE.md](audio-COMPLETE.md)** - Source unique de vérité pour l'audio
 
 ### 🔧 Je veux comprendre comment ça marche
-👉 Lis **[audio-architecture.md](audio-architecture.md)** - Tous les services expliqués en détail avec flux de données
+👉 Lis **[audio-COMPLETE.md](audio-COMPLETE.md)** - Architecture + Services + API détaillés
 
-### 🎯 Je veux démarrer la Phase 3
-👉 Lis **[phase-3-pages-navigation.md](phase-3-pages-navigation.md)** - Guide étape par étape avec checkboxes
+### 🎯 Je veux démarrer la Phase 4 (Podcasts)
+👉 Lis **[next-session-todo.md](next-session-todo.md)** - Prochaines étapes définies
 
 ### 🐛 Je debug un problème
-👉 Voir section "Debugging" dans **[audio-architecture.md](audio-architecture.md)**
+👉 Voir section "Troubleshooting" dans **[audio-COMPLETE.md](audio-COMPLETE.md)**
 
 ### 📦 Je veux déployer en production
 👉 Lis **[production-readiness-checklist.md](production-readiness-checklist.md)** - Tous les points sont ✅ validés
@@ -57,14 +89,19 @@
 ### 🗺️ Je veux voir le plan global
 👉 Lis **[implementation-plan.md](implementation-plan.md)** - Roadmap complète
 
+### 📝 Je veux voir l'historique des sessions
+👉 Lis **[sessions/README.md](sessions/README.md)** - Index chronologique
+
 ---
 
-## ✅ État Actuel (14 février 2026)
+## ✅ État Actuel (15 février 2026)
 
 ### 🎉 Phases Complétées
 - ✅ **Phase 0 :** Setup & Validation
 - ✅ **Phase 1 :** Audio Core (100%)
 - ✅ **Phase 2 :** Barre de Contrôle (PlayerBar + NowPlaying)
+- ✅ **Phase 3A :** Pages & Navigation (React Router, Header, Footer)
+- ✅ **Phase 3B :** WordPress Dynamique + GlobalAudioContext
 - ✅ **Production Readiness :** Tous les points critiques résolus !
 
 ### 🏆 Statut Production
@@ -74,14 +111,15 @@
 Tous les points critiques validés :
 - ✅ Logger intelligent (dev/prod)
 - ✅ ErrorBoundary protection React
+- ✅ GlobalAudioContext (un seul audio à la fois)
+- ✅ Lazy loading vidéos (performance)
 - ✅ Logo configuré correctement
 - ✅ Aucun TODO restant
 - ✅ HTTPS validé
-- ✅ Documentation complète (4000+ lignes)
+- ✅ Documentation complète (3500+ lignes)
 
 ### ⏳ Prochaines Phases (Optionnelles)
 
-- **Phase 3 :** Pages & Navigation (React Router, Header)
 - **Phase 4 :** Podcasts (liste, player avec pause)
 - **Phase 5 :** PWA & Offline
 
@@ -95,14 +133,16 @@ Tous les points critiques validés :
 
 ## 📊 Qualité Code Actuelle
 
-**Note globale :** 9/10 ⭐⭐⭐ - **EXCELLENT**
+**Note globale :** 9.5/10 ⭐⭐⭐ - **EXCELLENT**
 
 **Points forts :**
 - ⭐⭐⭐⭐⭐ Architecture professionnelle en couches
-- ⭐⭐⭐⭐⭐ Documentation exceptionnelle (4000+ lignes !)
+- ⭐⭐⭐⭐⭐ Documentation exceptionnelle (3500+ lignes !)
 - ⭐⭐⭐⭐⭐ Gestion erreurs robuste (reconnexion + fallbacks)
 - ⭐⭐⭐⭐⭐ Code bien commenté et maintenable
-- ⭐⭐⭐⭐⭐ Patterns modernes (Observer, Singleton)
+- ⭐⭐⭐⭐⭐ Patterns modernes (Observer, Singleton, Context API)
+- ⭐⭐⭐⭐⭐ GlobalAudioContext (un seul audio à la fois)
+- ⭐⭐⭐⭐⭐ Performance optimisée (lazy loading vidéos)
 - ⭐⭐⭐⭐ Logger intelligent
 - ⭐⭐⭐⭐ Error Boundary React
 
@@ -116,6 +156,9 @@ Tous les points critiques validés :
 
 ## 📦 Fichiers Créés
 
+### Contexts
+- ✅ `src/contexts/GlobalAudioContext.jsx` (157 lignes) - Gestion audio centralisée
+
 ### Services Audio
 - ✅ `src/services/audioPlayer.js` (425 lignes) - Service central
 - ✅ `src/services/reconnectionManager.js` (180 lignes) - Reconnexion auto
@@ -123,7 +166,7 @@ Tous les points critiques validés :
 - ✅ `src/services/nowPlaying.js` (118 lignes) - API Libretime
 
 ### Hooks React
-- ✅ `src/hooks/useAudioPlayer.js` (65 lignes) - Hook player
+- ✅ `src/hooks/useAudioPlayer.js` (88 lignes) - Hook player + GlobalAudio
 - ✅ `src/hooks/useNowPlaying.js` (130 lignes) - Hook now playing + polling
 
 ### Composants UI
@@ -141,16 +184,20 @@ Tous les points critiques validés :
 
 ## 📖 Documentation Générée
 
-**Total : 4500+ lignes de documentation professionnelle**
+**Total : 3500+ lignes de documentation professionnelle**
 
 | Document | Lignes | Description |
 |----------|--------|-------------|
-| audio-architecture.md | 1000+ | Architecture complète (NOUVEAU 14 fév) |
-| phase-3-pages-navigation.md | 500+ | Guide Phase 3 avec tracking (NOUVEAU 14 fév) |
-| audio-player-feature.md | 1100+ | Feature audio détaillée |
-| audio-advanced-features.md | 450+ | Features avancées |
+| audio-COMPLETE.md | 1500+ | ⭐ Référence unique audio (NOUVEAU 15 fév) |
+| session-15-fev-global-audio.md | 500+ | Notes session GlobalAudioContext |
+| phase-3-pages-navigation.md | 500+ | Guide Phase 3 avec tracking |
+| phase-3-recap.md | 300+ | Récapitulatif Phase 3 |
 | production-readiness-checklist.md | 600+ | Checklist production |
 | implementation-plan.md | 960+ | Roadmap complète |
+
+**Archives :**
+- archive/audio/ - Documentation historique v1.0-v1.3 (2500+ lignes)
+- archive/sessions/ - Anciennes versions architecture
 
 ---
 

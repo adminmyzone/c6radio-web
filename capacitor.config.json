@@ -3,7 +3,7 @@
   "appName": "C6Radio",
   "webDir": "dist",
   "server": {
-    "url": "https://c6radio.fr",
+    "url": "https://beta.c6radio.fr",
     "cleartext": true
   },
   "ios": {

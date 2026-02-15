@@ -30,21 +30,73 @@
 - **[session-15-fev-global-audio.md](session-15-fev-global-audio.md)** 📝 Session 15 février  
   Notes détaillées session GlobalAudioContext + Lazy Loading Vidéos
 
-### 📱 Phase 7 - Mobile & TestFlight (NOUVEAU !)
+### 📱 Phase 7 - Mobile & TestFlight (EN COURS)
 
-**⭐ Configuration terminée (50%) - Tests restants**
+**⚠️ Status : NOUVEAU DÉPART - Configuration depuis zéro**  
+**🎯 Action : Suivre le guide complet étape par étape**
+
+#### 🚀 COMMENCE ICI (Nouveau départ propre)
+
+- **[phase-7-START-HERE.md](phase-7-START-HERE.md)** ⚡ 2 min  
+  **POINT D'ENTRÉE** : Résumé ultra-rapide, par où commencer
+
+- **[phase-7-DE-ZERO-A-TESTFLIGHT.md](phase-7-DE-ZERO-A-TESTFLIGHT.md)** 📖 45-60 min  
+  **GUIDE PRINCIPAL** : Configuration complète A à Z (11 étapes détaillées)
+
+- **[phase-7-CHECKLIST-RAPIDE.md](phase-7-CHECKLIST-RAPIDE.md)** ✅ Validation  
+  **CHECKLIST** : Cases à cocher pour valider chaque étape
+
+- **[phase-7-INDEX-COMPLET.md](phase-7-INDEX-COMPLET.md)** 📋 Navigation  
+  **INDEX** : Vue d'ensemble de tous les guides, scénarios d'utilisation
+
+#### 📚 Guides complémentaires
+
+- **[phase-7-SYNTHESE-COMPLETE.md](phase-7-SYNTHESE-COMPLETE.md)** 📋 Vue complète  
+  Vue d'ensemble du workflow et du système
+
+- **[phase-7-GUIDE-ETAPE-PAR-ETAPE.md](phase-7-GUIDE-ETAPE-PAR-ETAPE.md)** 📱 Détaillé  
+  Guide pratique avec screenshots simulés
+
+- **[phase-7-AIDE-MEMOIRE-RAPIDE.md](phase-7-AIDE-MEMOIRE-RAPIDE.md)** 🚨 Dépannage  
+  Checklist, diagnostic par erreur, commandes utiles
+
+- **[phase-7-DIAGNOSTIC-COMPLET.md](phase-7-DIAGNOSTIC-COMPLET.md)** 🔍 Diagnostic  
+  Analyse exhaustive du problème, points d'attention, workflow
+
+- **[phase-7-GUIDE-VISUEL.md](phase-7-GUIDE-VISUEL.md)** 🎨 Schémas  
+  Diagrammes, flux de travail, tableaux récapitulatifs
+
+#### 📖 Guides précédents (workflow déjà créé)
 
 - **[phase-7-mobile-testflight-GUIDE.md](phase-7-mobile-testflight-GUIDE.md)** 📖 1000+ lignes  
-  Guide ULTRA complet : Configuration Capacitor, Workflow GitHub Actions, Safe Areas iOS, Troubleshooting
+  Guide ULTRA complet : Configuration Capacitor, Workflow GitHub Actions, Safe Areas iOS
 
-- **[phase-7-secrets-github-QUICK.md](phase-7-secrets-github-QUICK.md)** 🔐 Guide rapide  
-  Configuration des 8 secrets GitHub en 30-60 minutes
+- **[phase-7-secrets-github-QUICK.md](phase-7-secrets-github-QUICK.md)** 🔐 Secrets  
+  Configuration des 7 secrets GitHub
 
-- **[phase-7-mobile-testflight-RESUME.md](phase-7-mobile-testflight-RESUME.md)** 📝 Résumé technique  
+- **[phase-7-mobile-testflight-RESUME.md](phase-7-mobile-testflight-RESUME.md)** 📝 Résumé  
   Architecture, métriques, checklist validation
 
-- **[phase-7-VISUAL-RECAP.md](phase-7-VISUAL-RECAP.md)** 🎨 Récapitulatif visuel  
+- **[phase-7-VISUAL-RECAP.md](phase-7-VISUAL-RECAP.md)** 🎨 Recap visuel  
   Diagrammes et schémas explicatifs Phase 7
+
+#### 🛠️ Guides de correction (historique)
+
+- **[phase-7-FIX-code-signing-error.md](phase-7-FIX-code-signing-error.md)** 🔧 Fix signature
+- **[phase-7-FIX2-conflit-signature.md](phase-7-FIX2-conflit-signature.md)** 🔧 Fix conflit
+- **[phase-7-FIX4-export-profile.md](phase-7-FIX4-export-profile.md)** 🔧 Fix export
+- **[phase-7-FIX5-cloud-permission.md](phase-7-FIX5-cloud-permission.md)** 🔧 Fix cloud
+- **[phase-7-CONVERT-CER-TO-P12-SANS-MAC.md](phase-7-CONVERT-CER-TO-P12-SANS-MAC.md)** 🔐 Certificat
+
+**📊 Résumé Phase 7 :**
+- ✅ Workflow GitHub Actions créé (204 lignes)
+- ✅ Documentation exhaustive (7 guides, 5200+ lignes)
+- ✅ Bundle ID configuré : `fr.c6debug.app`
+- ⏳ Profil de provisionnement à créer ⚠️ **BLOQUANT**
+- ⏳ Premier build TestFlight
+- ⏳ Tests sur iPhone 13 mini
+
+**📈 Rapport de session détaillé** : [RAPPORT-SESSION-15-FEV-PHASE7.md](RAPPORT-SESSION-15-FEV-PHASE7.md)
 
 ### 🎙️ Phase 5 - Podcasts WordPress
 

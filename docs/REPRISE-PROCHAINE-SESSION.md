@@ -2,7 +2,7 @@
 
 **Date de cette session :** 15 février 2026  
 **Prochaine session :** À déterminer  
-**Statut projet :** 🟢 **En excellente voie** (65% MVP complété)
+**Statut projet :** 🆕 **Configuration iOS depuis ZÉRO** (Phase 7 - Nouveau départ propre)
 
 ---
 
@@ -127,61 +127,204 @@ Phase 5 Podcasts ✅ TERMINÉE
 
 **Priorité :** 🔴 **CRITIQUE**
 
-**Ce qui a été fait (aujourd'hui) :**
-- ✅ Capacitor installé et configuré
-- ✅ Projet iOS généré
-- ✅ Safe areas iOS configurées
-- ✅ Workflow GitHub Actions créé
-- ✅ Documentation complète (2000+ lignes)
+**NOUVEAU DÉPART PROPRE (15 février 2026 - Après-midi) :**
 
-**Ce qu'il RESTE à faire :**
+✅ **Tout a été nettoyé et redémarré depuis zéro**
+- Tous les éléments Apple Developer supprimés
+- Tous les secrets GitHub supprimés
+- Documentation complète créée
+- Guides ultra-détaillés disponibles
 
-**Étape 1 : Configurer les secrets GitHub (⏱️ 1 heure - VOTRE TÂCHE)**
-```
-Secrets à créer (8 au total) :
-├── APPLE_TEAM_ID
-├── IOS_P12_BASE64 (certificat)
-├── IOS_P12_PASSWORD
-├── IOS_MOBILEPROVISION_BASE64 (profil)
-├── PROVISIONING_PROFILE_NAME
-├── ASC_API_KEY_ID (clé API)
-├── ASC_API_ISSUER_ID
-└── ASC_API_PRIVATE_KEY_BASE64
+🎯 **NOUVELLE APPROCHE SIMPLIFIÉE :**
 
-📖 Guide détaillé : docs/phase-7-secrets-github-QUICK.md
-```
+**Documentation créée (3 nouveaux guides COMPLETS) :**
 
-**Étape 2 : Premier build TestFlight (⏱️ 15 min + 10-15 min workflow)**
-```
-1. GitHub → Actions → Run workflow
-2. Attendre ~10-15 minutes
-3. Vérifier succès ✅
-4. App disponible dans TestFlight (5-30 min après)
-```
+1. **📖 phase-7-DE-ZERO-A-TESTFLIGHT.md** (GUIDE PRINCIPAL)
+   - Configuration complète étape par étape
+   - Explications pour débutants
+   - Commandes Linux à copier/coller
+   - Durée : 45-60 minutes
+   - ⭐ **COMMENCE PAR CELUI-CI !**
 
-**Étape 3 : Tests sur iPhone 13 mini (⏱️ 1-2 heures)**
-```
-1. Installer TestFlight sur iPhone
-2. Installer C6Radio depuis TestFlight
-3. Tester toutes les fonctionnalités
-4. Identifier bugs (surtout audio background)
+2. **✅ phase-7-CHECKLIST-RAPIDE.md**
+   - Checklists de vérification
+   - Format "case à cocher"
+   - Validation de chaque étape
+   - Dépannage rapide
+
+3. **📋 phase-7-INDEX-COMPLET.md**
+   - Vue d'ensemble de tous les guides
+   - Scénarios d'utilisation
+   - Navigation entre les docs
+   - Liens vers toutes les ressources
+
+**🔧 Outil créé : Script helper interactif**
+
+```bash
+./setup-ios-helper.sh
 ```
 
-**Étape 4 : Phase 7a - Audio background (⏱️ 2-3 jours)**
-```
-Probable : Audio s'arrête quand écran verrouillé
-Solution : Installer plugins Capacitor spécifiques
-         + Configuration Info.plist iOS
+Ce script te guide dans toutes les commandes Linux :
+- Génération clé privée et CSR
+- Conversion .cer vers .p12
+- Encodage en base64
+- Vérification Bundle ID
+- Listing des fichiers créés
+
+**📂 Documentation existante (réutilisable) :**
+- `phase-7-AIDE-MEMOIRE-RAPIDE.md` (dépannage)
+- `phase-7-SYNTHESE-COMPLETE.md` (vue d'ensemble)
+- `phase-7-DIAGNOSTIC-COMPLET.md` (analyse détaillée)
+- `phase-7-GUIDE-ETAPE-PAR-ETAPE.md` (screenshots simulés)
+- `phase-7-GUIDE-VISUEL.md` (schémas)
+
+**CE QU'IL FAUT FAIRE MAINTENANT (⏱️ 45-60 minutes) :**
+
+**Étape 0 : Lire la doc de démarrage**
+```bash
+# Lis d'abord ceci (5 min)
+docs/phase-7-START-HERE.md
+
+# Puis le guide complet (lecture 10 min)
+docs/phase-7-DE-ZERO-A-TESTFLIGHT.md
 ```
 
-**Livrables Phase 7 (mise à jour) :**
+**Étape 1 : Utiliser le script helper (optionnel mais recommandé)**
+```bash
+cd /home/dofrecords/WebstormProjects/c6radio-web
+./setup-ios-helper.sh
+```
+Le script te guide pour :
+- Créer le dossier de travail
+- Générer la clé privée et CSR
+- Convertir les certificats
+- Encoder en base64
+
+**Étape 2 : Créer les éléments sur Apple Developer Portal (⏱️ 20 min)**
+1. **App ID** : `fr.c6debug.app`
+2. **Certificat** : Apple Distribution
+3. **Profil** : App Store Connect (lié à App ID + Certificat)
+
+📖 Guide détaillé : `docs/phase-7-DE-ZERO-A-TESTFLIGHT.md` (ÉTAPES 1, 2, 3)
+
+**Étape 3 : Créer l'app sur App Store Connect (⏱️ 5 min)**
+1. **App** : C6Radio Debug
+2. **Bundle ID** : fr.c6debug.app
+3. **Clé API** : Rôle "App Manager"
+
+📖 Guide détaillé : `docs/phase-7-DE-ZERO-A-TESTFLIGHT.md` (ÉTAPES 4, 5)
+
+**Étape 4 : Configurer les 7 secrets GitHub (⏱️ 10 min)**
+
+Sur GitHub → Settings → Secrets and variables → Actions
+
+| # | Secret | Source |
+|---|--------|--------|
+| 1 | `IOS_P12_BASE64` | Certificat encodé |
+| 2 | `IOS_P12_PASSWORD` | Mot de passe choisi |
+| 3 | `IOS_MOBILEPROVISION_BASE64` | Profil encodé |
+| 4 | `APPLE_TEAM_ID` | Team ID (10 car.) |
+| 5 | `ASC_API_KEY_ID` | Key ID de la clé API |
+| 6 | `ASC_API_ISSUER_ID` | Issuer ID (UUID) |
+| 7 | `ASC_API_PRIVATE_KEY_BASE64` | Clé API encodée |
+
+📖 Guide détaillé : `docs/phase-7-DE-ZERO-A-TESTFLIGHT.md` (ÉTAPE 7)
+
+**Étape 5 : Vérifier le Bundle ID (⏱️ 2 min)**
+```bash
+# Option manuelle
+grep "appId" capacitor.config.json
+grep "PRODUCT_BUNDLE_IDENTIFIER" ios/App/App.xcodeproj/project.pbxproj
+
+# OU avec le script helper
+./setup-ios-helper.sh
+# → Choisis option 7
+```
+
+Doit être `fr.c6debug.app` partout.
+
+**Étape 6 : Lancer le premier build (⏱️ 10-15 min)**
+```bash
+# Fais un petit changement
+echo "// Test workflow iOS TestFlight" >> src/App.jsx
+
+# Commit et push
+git add .
+git commit -m "test: premier déploiement TestFlight depuis zéro"
+git push origin main
+
+# Surveille sur GitHub Actions
+# https://github.com/TON_USERNAME/c6radio-web/actions
+```
+
+**Étape 7 : Vérifier sur TestFlight (⏱️ 15-30 min après le build)**
+```
+App Store Connect → My Apps → C6Radio Debug → TestFlight
+Status : Processing → Ready to Test ✅
+```
+
+**Étape 8 : Tester sur iPhone (⏱️ 30 min)**
+1. Ajoute-toi comme testeur interne
+2. Installe TestFlight sur iPhone
+3. Accepte l'invitation
+4. Installe et teste l'app
+
+📖 Guide détaillé : `docs/phase-7-DE-ZERO-A-TESTFLIGHT.md` (ÉTAPES 9, 10, 11)
+
+**📚 EN CAS D'ERREUR :**
+
+1. **Consulte** : `docs/phase-7-AIDE-MEMOIRE-RAPIDE.md`
+2. **Utilise** : `docs/phase-7-CHECKLIST-RAPIDE.md`
+3. **Lis** : Les logs sur GitHub Actions
+
+**📊 CHECKLIST DE VALIDATION :**
+
+Avant de considérer terminé :
+- [ ] App ID créé
+- [ ] Certificat créé
+- [ ] Profil créé (type "App Store Connect")
+- [ ] App créée sur App Store Connect
+- [ ] Clé API créée (rôle "App Manager")
+- [ ] 7 secrets GitHub configurés
+- [ ] Bundle ID identique partout
+- [ ] Workflow passe au vert ✅
+- [ ] Build visible sur TestFlight
+- [ ] App testée sur iPhone
+
+📖 Checklist complète : `docs/phase-7-CHECKLIST-RAPIDE.md`
+
+**📚 DOCUMENTATION CRÉÉE (8 GUIDES COMPLETS) :**
+
+| Guide | Fichier | Usage |
+|-------|---------|-------|
+| 🚀 **Démarrage rapide** | `phase-7-START-HERE.md` | **COMMENCE ICI** |
+| 📖 **Guide complet** | `phase-7-DE-ZERO-A-TESTFLIGHT.md` | Configuration A à Z |
+| ✅ **Checklist** | `phase-7-CHECKLIST-RAPIDE.md` | Validation étape par étape |
+| 📋 **Index complet** | `phase-7-INDEX-COMPLET.md` | Navigation dans la doc |
+| 🚨 **Aide-mémoire** | `phase-7-AIDE-MEMOIRE-RAPIDE.md` | Dépannage rapide |
+| 🔍 **Diagnostic** | `phase-7-DIAGNOSTIC-COMPLET.md` | Comprendre le problème |
+| 📱 **Étape par étape** | `phase-7-GUIDE-ETAPE-PAR-ETAPE.md` | Instructions détaillées |
+| 🎨 **Guide visuel** | `phase-7-GUIDE-VISUEL.md` | Schémas et diagrammes |
+
+**🔧 OUTIL CRÉÉ :**
+- Script helper : `./setup-ios-helper.sh` (assistant interactif)
+
+**👉 COMMENCE PAR** : `docs/phase-7-START-HERE.md` (résume TOUT en 2 minutes)
+
+**Livrables Phase 7 (mise à jour - Nouveau départ) :**
 - ✅ Projet Capacitor configuré
 - ✅ Workflow GitHub Actions créé
-- ✅ Documentation complète
-- ⏳ 8 secrets GitHub configurés (VOTRE TÂCHE)
+- ✅ Documentation exhaustive (8 guides + 1 script)
+- ✅ Bundle ID configuré : fr.c6debug.app
+- ⏳ **App ID créé sur Apple Developer** ⚠️ **PROCHAINE ÉTAPE**
+- ⏳ Certificat Apple Distribution créé
+- ⏳ Profil de provisionnement créé (type App Store Connect)
+- ⏳ App créée sur App Store Connect
+- ⏳ Clé API créée (rôle App Manager)
+- ⏳ 7 secrets GitHub configurés
 - ⏳ Premier build TestFlight réussi
 - ⏳ Tests sur iPhone validés
-- ⏳ Audio background fonctionnel (Phase 7a)
+- ⏳ Audio background fonctionnel (Phase 7b si besoin)
 
 ### Option B : Phase 6 - Bannières (Optionnel)
 

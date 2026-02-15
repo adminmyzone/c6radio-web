@@ -52,6 +52,8 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+  cursor: pointer; /* Afficher le curseur pointer */
+  pointer-events: auto; /* S'assurer que les clics fonctionnent */
 }
 
 /* ===================================

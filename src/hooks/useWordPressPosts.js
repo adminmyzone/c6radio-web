@@ -17,7 +17,7 @@
  * Ça indique que la fonction utilise les features React (useState, useEffect, etc.)
  */
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { fetchPosts } from '../services/wordpress.js';
 import logger from '../lib/logger.js';
 
@@ -116,68 +116,100 @@ export function useWordPressPosts(filters = {}, enableCache = true) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Ref pour éviter les chargements multiples
+  const hasLoadedRef = useRef(false);
+  const isMountedRef = useRef(true);
+
+  // Sérialiser les filtres pour comparaison stable
+  const filtersKey = JSON.stringify(filters);
+
   /**
    * Fonction pour charger les posts
    * useCallback évite de recréer la fonction à chaque render
    */
   const loadPosts = useCallback(async () => {
+    // Parser les filtres depuis la clé JSON
+    const currentFilters = JSON.parse(filtersKey);
+
+    // Si déjà chargé, ne pas recharger
+    if (hasLoadedRef.current && !currentFilters.search && !currentFilters.categories) {
+      return;
+    }
+
     try {
-      logger.log('[useWordPressPosts] Loading posts...', filters);
+      logger.log('[useWordPressPosts] Loading posts...', currentFilters);
       setLoading(true);
       setError(null);
 
       // 1. Vérifier le cache (seulement si aucun filtre et cache activé)
-      const hasFilters = filters.categories || filters.search;
+      const hasFilters = currentFilters.categories || currentFilters.search;
       if (enableCache && !hasFilters) {
         const cached = getCachedPosts();
         if (cached) {
-          setPosts(cached);
-          setLoading(false);
+          if (isMountedRef.current) {
+            setPosts(cached);
+            setLoading(false);
+            hasLoadedRef.current = true;
+          }
           return; // Utiliser le cache, pas besoin de fetch
         }
       }
 
       // 2. Fetch depuis WordPress
-      const fetchedPosts = await fetchPosts(filters);
+      const fetchedPosts = await fetchPosts(currentFilters);
 
-      // 3. Mettre à jour l'état
-      setPosts(fetchedPosts);
+      // 3. Mettre à jour l'état seulement si le composant est encore monté
+      if (isMountedRef.current) {
+        setPosts(fetchedPosts);
+        hasLoadedRef.current = true;
 
-      // 4. Sauvegarder dans le cache (seulement si pas de filtre)
-      if (enableCache && !hasFilters) {
-        setCachedPosts(fetchedPosts);
+        // 4. Sauvegarder dans le cache (seulement si pas de filtre)
+        if (enableCache && !hasFilters) {
+          setCachedPosts(fetchedPosts);
+        }
       }
 
     } catch (err) {
       logger.error('[useWordPressPosts] Error loading posts:', err);
-      setError('Impossible de charger les actualités');
 
-      // En cas d'erreur, essayer d'utiliser le cache même expiré
-      if (enableCache) {
-        try {
-          const cached = localStorage.getItem(CACHE_KEY);
-          if (cached) {
-            const { data } = JSON.parse(cached);
-            setPosts(data);
-            logger.log('[useWordPressPosts] Using expired cache as fallback');
+      if (isMountedRef.current) {
+        setError('Impossible de charger les actualités');
+
+        // En cas d'erreur, essayer d'utiliser le cache même expiré
+        if (enableCache) {
+          try {
+            const cached = localStorage.getItem(CACHE_KEY);
+            if (cached) {
+              const { data } = JSON.parse(cached);
+              setPosts(data);
+              logger.log('[useWordPressPosts] Using expired cache as fallback');
+            }
+          } catch {
+            // Si même le cache échoue, garder tableau vide
+            setPosts([]);
           }
-        } catch {
-          // Si même le cache échoue, garder tableau vide
-          setPosts([]);
         }
       }
 
     } finally {
-      setLoading(false);
+      if (isMountedRef.current) {
+        setLoading(false);
+      }
     }
-  }, [filters, enableCache]);
+  }, [filtersKey, enableCache]);
 
   /**
    * useEffect : Charger les posts au montage du composant
    * et à chaque changement de filtres
    */
   useEffect(() => {
+    isMountedRef.current = true;
     loadPosts();
+
+    // Cleanup : marquer comme démonté
+    return () => {
+      isMountedRef.current = false;
+    };
   }, [loadPosts]);
 
   /**

@@ -27,6 +27,8 @@ import DynamicPage from './pages/DynamicPage';
 import NotFound from './pages/NotFound';
 import About from "./pages/About.jsx";
 import Contact from "./pages/Contact.jsx";
+import News from "./pages/News.jsx";
+import NewsDetail from "./pages/NewsDetail.jsx";
 
 /**
  * Configuration du router
@@ -55,6 +57,14 @@ export const router = createBrowserRouter([
       {
         path: 'contact',    // Route statique pour "Contact"
         element: <Contact />,
+      },
+      {
+        path: 'news',       // Route statique pour liste des actualités
+        element: <News />,
+      },
+      {
+        path: 'news/:slug', // Route dynamique pour détail actualité
+        element: <NewsDetail />,
       },
       {
         path: ':slug',      // Route CATCH-ALL : capture toutes les URLs restantes

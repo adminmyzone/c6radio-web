@@ -265,17 +265,31 @@ capacitor.config.ts             ⏳ Phase 7
 - ✅ Animation shimmer pour vidéos en chargement
 - ✅ Intégration dans `useAudioPlayer.js` et `DynamicPage.jsx`
 
+**Phase 4 : WordPress Actualités (15/02/2026) :**
+- ✅ Service `wordpress.js` : Fonctions fetchPosts, fetchPostBySlug, fetchCategories
+- ✅ Hook `useWordPressPosts.js` : Fetch + cache localStorage (5 min)
+- ✅ Composant `NewsCard.jsx` : Carte actualité avec lazy loading
+- ✅ Page `News.jsx` : Liste actualités avec grille responsive (1/2/3 colonnes)
+- ✅ Page `NewsDetail.jsx` : Détail article avec contenu HTML complet
+- ✅ Routes `/news` et `/news/:slug` ajoutées dans router
+- ✅ Lien "Actualités" dans Header
+- ✅ États loading/error/empty gérés
+- ✅ Cache localStorage avec expiration 5 minutes
+- ✅ Fallback gracieux si WordPress down
+
 **Documentation :**
 - ✅ [audio-COMPLETE.md](audio-COMPLETE.md) - Référence unique audio
 - ✅ [session-15-fev-global-audio.md](session-15-fev-global-audio.md) - Notes session
 - ✅ [phase-3-pages-navigation.md](phase-3-pages-navigation.md) - Guide détaillé
 - ✅ [phase-3-recap.md](phase-3-recap.md) - Récapitulatif
 - ✅ [phase-3b-test-guide.md](phase-3b-test-guide.md) - Guide tests
+- ✅ [phase-4-actualites-wordpress.md](phase-4-actualites-wordpress.md) - Plan Phase 4
+- ✅ [phase-4-actualites-recap.md](phase-4-actualites-recap.md) - Récapitulatif Phase 4
+- ✅ [phase-4-actualites-tests.md](phase-4-actualites-tests.md) - Guide tests Phase 4
 
 ### ❌ Phases Non Commencées
 
-- ❌ Phase 4 : Podcasts WordPress
-- ❌ Phase 5 : Intégration WordPress - Actus (peut être fusionné avec Phase 3B)
+- ❌ Phase 5 : Podcasts WordPress
 - ❌ Phase 6 : Bannières Publicitaires
 - ❌ Phase 7 : Polish & Tests Multi-Devices
 - ❌ Phase 8 : Build & Soumission Stores
@@ -283,21 +297,22 @@ capacitor.config.ts             ⏳ Phase 7
 
 ### 🎯 Prochaines Étapes Recommandées
 
-**Priorité 1 - Phase 4 : Podcasts WordPress :**
+**Priorité 1 - Phase 4 Suite (optionnel) : Filtres & Recherche :**
+1. Composant NewsFilters : Filtrage par catégorie
+2. Composant SearchBar : Recherche temps réel
+3. Pagination ou infinite scroll
+
+**Priorité 2 - Phase 5 : Podcasts WordPress :**
 1. API WordPress custom post type "podcast"
 2. Service `podcastService.js`
 3. Pages liste + détail épisodes
 4. Player podcast (réutilise `useAudioPlayer` ✅)
 5. Intégration GlobalAudioContext (déjà prêt ✅)
 
-**Priorité 2 - Mobile (Phase 7 avancée) :**
+**Priorité 3 - Mobile (Phase 7 avancée) :**
 1. POC Capacitor : setup iOS/Android
 2. POC Audio Background iOS (CRITIQUE)
 3. POC Audio Background Android
-
-**Priorité 3 - Phase 5 : WordPress Actus (optionnel) :**
-1. Intégration posts WordPress (peut réutiliser DynamicPage)
-2. Page blog/actualités
 3. Archives et catégories
 
 ---

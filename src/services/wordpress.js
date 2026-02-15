@@ -157,6 +157,267 @@ export async function fetchPageBySlug(slug) {
 }
 
 /**
+ * Fetch les articles (posts) WordPress
+ *
+ * EXPLICATION PHASE 4 - ACTUALITÉS :
+ * Cette fonction récupère les articles de blog/actualités depuis WordPress.
+ *
+ * DIFFÉRENCE AVEC fetchMenuPages :
+ * - fetchMenuPages() → Pages statiques (À Propos, Contact, etc.)
+ * - fetchPosts() → Articles de blog/actualités (changent régulièrement)
+ *
+ * @param {Object} options - Options de filtrage
+ * @param {number} options.per_page - Nombre d'articles par page (défaut: 10)
+ * @param {number} options.page - Numéro de page pour pagination (défaut: 1)
+ * @param {string} options.categories - IDs catégories séparés par virgule (ex: "5,12")
+ * @param {string} options.search - Terme de recherche
+ * @param {boolean} options._embed - Inclure médias et catégories (défaut: true)
+ * @returns {Promise<Array>} Liste des articles
+ */
+export async function fetchPosts(options = {}) {
+  try {
+    logger.log('[WordPress API] Fetching posts...', options);
+
+    // Paramètres par défaut
+    const {
+      per_page = 10,
+      page = 1,
+      categories = null,
+      search = null,
+      _embed = true,  // Important : inclut images et catégories
+    } = options;
+
+    // Construction des paramètres de requête
+    const params = new URLSearchParams({
+      per_page: per_page.toString(),
+      page: page.toString(),
+      orderby: 'date',        // Trier par date
+      order: 'desc',          // Plus récent d'abord
+      status: 'publish',      // Seulement articles publiés
+    });
+
+    // Ajouter filtres optionnels
+    if (categories) {
+      params.append('categories', categories);
+    }
+
+    if (search) {
+      params.append('search', search);
+    }
+
+    if (_embed) {
+      params.append('_embed', 'true');  // Inclut images et catégories dans la réponse
+    }
+
+    // Fetch avec timeout
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), API_TIMEOUT);
+
+    const response = await fetch(`${WP_ENDPOINTS.posts}?${params}`, {
+      signal: controller.signal,
+    });
+
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      throw new Error(`WordPress API error: ${response.status}`);
+    }
+
+    const posts = await response.json();
+    logger.log(`[WordPress API] Found ${posts.length} posts`);
+
+    // Transformer les données WordPress en format simple
+    const formattedPosts = posts.map(post => {
+      // Extraire l'image à la une (featured image)
+      let featuredImage = null;
+      if (post._embedded?.['wp:featuredmedia']?.[0]) {
+        const media = post._embedded['wp:featuredmedia'][0];
+        featuredImage = {
+          url: media.source_url,
+          alt: media.alt_text || decodeHTML(post.title.rendered),
+          width: media.media_details?.width || null,
+          height: media.media_details?.height || null,
+        };
+      }
+
+      // Extraire les catégories
+      let categories = [];
+      if (post._embedded?.['wp:term']?.[0]) {
+        categories = post._embedded['wp:term'][0].map(cat => ({
+          id: cat.id,
+          name: decodeHTML(cat.name),
+          slug: cat.slug,
+        }));
+      }
+
+      // Retourner objet formaté
+      return {
+        id: post.id,
+        slug: post.slug,
+        title: decodeHTML(post.title.rendered),
+        excerpt: post.excerpt.rendered || '',      // Résumé HTML
+        content: post.content.rendered || '',      // Contenu complet HTML
+        date: post.date,                           // Date ISO (ex: "2026-02-15T10:30:00")
+        modified: post.modified,                   // Date dernière modification
+        featuredImage,                             // Image à la une (objet ou null)
+        categories,                                // Tableau catégories
+        link: post.link,                           // URL WordPress originale
+      };
+    });
+
+    return formattedPosts;
+
+  } catch (error) {
+    logger.error('[WordPress API] Error fetching posts:', error);
+
+    // En cas d'erreur, retourner tableau vide
+    // Le composant React affichera un message "Aucune actualité"
+    return [];
+  }
+}
+
+/**
+ * Fetch un article WordPress par son slug
+ *
+ * EXPLICATION :
+ * Similaire à fetchPageBySlug, mais pour les articles (posts).
+ * Utilisé pour la page détail d'une actualité.
+ *
+ * @param {string} slug - Le slug de l'article (ex: "concert-ce-weekend")
+ * @returns {Promise<Object|null>} Objet article ou null si non trouvé
+ */
+export async function fetchPostBySlug(slug) {
+  try {
+    logger.log(`[WordPress API] Fetching post: ${slug}`);
+
+    // Paramètres : chercher par slug + inclure médias
+    const params = new URLSearchParams({
+      slug: slug,
+      status: 'publish',
+      _embed: 'true',  // Inclure images et catégories
+    });
+
+    // Fetch avec timeout
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), API_TIMEOUT);
+
+    const response = await fetch(`${WP_ENDPOINTS.posts}?${params}`, {
+      signal: controller.signal,
+    });
+
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      throw new Error(`WordPress API error: ${response.status}`);
+    }
+
+    const posts = await response.json();
+
+    // L'API retourne un tableau, même pour 1 résultat
+    if (posts.length === 0) {
+      logger.log(`[WordPress API] Post not found: ${slug}`);
+      return null;
+    }
+
+    const post = posts[0];
+
+    // Extraire l'image à la une
+    let featuredImage = null;
+    if (post._embedded?.['wp:featuredmedia']?.[0]) {
+      const media = post._embedded['wp:featuredmedia'][0];
+      featuredImage = {
+        url: media.source_url,
+        alt: media.alt_text || decodeHTML(post.title.rendered),
+        width: media.media_details?.width || null,
+        height: media.media_details?.height || null,
+      };
+    }
+
+    // Extraire les catégories
+    let categories = [];
+    if (post._embedded?.['wp:term']?.[0]) {
+      categories = post._embedded['wp:term'][0].map(cat => ({
+        id: cat.id,
+        name: decodeHTML(cat.name),
+        slug: cat.slug,
+      }));
+    }
+
+    logger.log(`[WordPress API] Post loaded: ${post.title.rendered}`);
+
+    // Retourner données formatées
+    return {
+      id: post.id,
+      slug: post.slug,
+      title: decodeHTML(post.title.rendered),
+      excerpt: post.excerpt.rendered || '',
+      content: post.content.rendered || '',
+      date: post.date,
+      modified: post.modified,
+      featuredImage,
+      categories,
+      link: post.link,
+    };
+
+  } catch (error) {
+    logger.error(`[WordPress API] Error fetching post ${slug}:`, error);
+    return null;
+  }
+}
+
+/**
+ * Fetch les catégories WordPress
+ *
+ * EXPLICATION :
+ * Récupère la liste des catégories pour les filtres.
+ * Utilisé dans le composant NewsFilters.
+ *
+ * @returns {Promise<Array>} Liste des catégories
+ */
+export async function fetchCategories() {
+  try {
+    logger.log('[WordPress API] Fetching categories...');
+
+    // Paramètres : toutes les catégories, ordre alphabétique
+    const params = new URLSearchParams({
+      per_page: '50',         // Max 50 catégories (largement suffisant)
+      orderby: 'name',        // Ordre alphabétique
+      order: 'asc',
+      hide_empty: 'true',     // Masquer catégories vides (sans articles)
+    });
+
+    // Fetch avec timeout
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), API_TIMEOUT);
+
+    const response = await fetch(`${WP_ENDPOINTS.categories}?${params}`, {
+      signal: controller.signal,
+    });
+
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      throw new Error(`WordPress API error: ${response.status}`);
+    }
+
+    const categories = await response.json();
+    logger.log(`[WordPress API] Found ${categories.length} categories`);
+
+    // Transformer en format simple
+    return categories.map(cat => ({
+      id: cat.id,
+      name: decodeHTML(cat.name),
+      slug: cat.slug,
+      count: cat.count,  // Nombre d'articles dans cette catégorie
+    }));
+
+  } catch (error) {
+    logger.error('[WordPress API] Error fetching categories:', error);
+    return [];
+  }
+}
+
+/**
  * NOTES TECHNIQUES :
  * ------------------
  * 
@@ -176,5 +437,12 @@ export async function fetchPageBySlug(slug) {
  * API WORDPRESS :
  * - Documentation complète : https://developer.wordpress.org/rest-api/
  * - Endpoint pages : /wp-json/wp/v2/pages
+ * - Endpoint posts : /wp-json/wp/v2/posts
+ * - Endpoint categories : /wp-json/wp/v2/categories
  * - Filtres disponibles : status, orderby, order, per_page, etc.
+ *
+ * PARAMÈTRE _embed :
+ * Par défaut, WordPress ne retourne que les IDs des médias et catégories.
+ * Avec _embed=true, WordPress inclut les données complètes dans _embedded.
+ * Évite de faire des requêtes supplémentaires pour chaque image !
  */

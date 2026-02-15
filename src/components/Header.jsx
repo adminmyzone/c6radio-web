@@ -93,6 +93,17 @@ function Header() {
               </NavLink>
             </li>
 
+            {/* Lien Actualités (toujours présent) */}
+            <li>
+              <NavLink
+                to="/news"
+                className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}
+                onClick={closeMobileMenu}
+              >
+                Actualités
+              </NavLink>
+            </li>
+
             {/* Pages WordPress dynamiques */}
             {loadingPages ? (
               // Afficher un message pendant le chargement

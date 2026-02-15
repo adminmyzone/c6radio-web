@@ -1,0 +1,203 @@
+name: iOS TestFlight Deploy
+
+# Ce workflow se déclenche automatiquement à chaque push sur la branche main
+on:
+  push:
+    branches:
+      - main
+  # Permet aussi de déclencher manuellement depuis l'interface GitHub
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: macos-latest
+
+    # Variables d'environnement pour le build
+    env:
+      BUNDLE_ID: com.c6media.c6media
+      APP_NAME: C6Radio
+
+    steps:
+      # ============================================
+      # ÉTAPE 1 : Récupération du code source
+      # ============================================
+      - name: Checkout du code
+        uses: actions/checkout@v4
+
+      # ============================================
+      # ÉTAPE 2 : Configuration Node.js
+      # ============================================
+      - name: Configuration Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      # ============================================
+      # ÉTAPE 3 : Installation des dépendances
+      # ============================================
+      - name: Installation des dépendances npm
+        run: npm ci
+
+      # ============================================
+      # ÉTAPE 4 : Build Vite (génère le dossier dist/)
+      # ============================================
+      - name: Build React + Vite
+        run: npm run build
+        env:
+          # Ces variables sont nécessaires pour que votre app puisse
+          # se connecter aux bonnes URLs en production
+          VITE_STREAM_URL: https://radio.c6media.fr:8443/main
+          VITE_NOW_PLAYING_URL: https://radio.c6media.fr/api/live-info
+          VITE_WP_API_BASE_URL: https://exp937.fr/wp/wp-json/wp/v2
+
+      # ============================================
+      # ÉTAPE 5 : Synchronisation Capacitor iOS
+      # ============================================
+      - name: Synchronisation Capacitor iOS
+        run: npx cap sync ios
+
+      # ============================================
+      # ÉTAPE 6 : Incrémentation du build number
+      # Le build number est basé sur le numéro de run GitHub
+      # Cela évite les conflits "version déjà utilisée"
+      # ============================================
+      - name: Incrémentation du build number
+        run: |
+          BUILD_NUMBER=${{ github.run_number }}
+          xcrun agvtool new-version -all $BUILD_NUMBER
+        working-directory: ios/App
+
+      # ============================================
+      # ÉTAPE 7 : Import du certificat de signature
+      # Ce certificat permet de signer l'app pour iOS
+      # ============================================
+      - name: Import du certificat de signature
+        uses: apple-actions/import-codesign-certs@v3
+        with:
+          p12-file-base64: ${{ secrets.IOS_P12_BASE64 }}
+          p12-password: ${{ secrets.IOS_P12_PASSWORD }}
+
+      # ============================================
+      # ÉTAPE 8 : Installation du profil de provisionnement
+      # Ce profil autorise l'app à être installée sur des devices
+      # ============================================
+      - name: Installation du profil de provisionnement
+        run: |
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+          echo "${IOS_MOBILEPROVISION_BASE64}" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/profile.mobileprovision
+        env:
+          IOS_MOBILEPROVISION_BASE64: ${{ secrets.IOS_MOBILEPROVISION_BASE64 }}
+
+      # ============================================
+      # ÉTAPE 9 : Création du fichier exportOptions.plist
+      # Ce fichier configure l'export de l'IPA pour TestFlight
+      # ============================================
+      - name: Création des options d'export
+        run: |
+          cat > exportOptions.plist <<EOF
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>method</key>
+            <string>app-store-connect</string>
+            <key>teamID</key>
+            <string>${APPLE_TEAM_ID}</string>
+            <key>uploadBitcode</key>
+            <false/>
+            <key>compileBitcode</key>
+            <false/>
+            <key>uploadSymbols</key>
+            <true/>
+          </dict>
+          </plist>
+          EOF
+        env:
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+
+      # ============================================
+      # ÉTAPE 10 : Préparation de la clé API App Store Connect
+      # Cette clé permet d'uploader l'app sur TestFlight automatiquement
+      # ============================================
+      - name: Préparation de la clé API App Store Connect
+        run: |
+          mkdir -p ~/.private_keys
+          echo "${ASC_API_PRIVATE_KEY_BASE64}" | base64 --decode > ~/.private_keys/AuthKey_${ASC_API_KEY_ID}.p8
+        env:
+          ASC_API_PRIVATE_KEY_BASE64: ${{ secrets.ASC_API_PRIVATE_KEY_BASE64 }}
+          ASC_API_KEY_ID: ${{ secrets.ASC_API_KEY_ID }}
+
+      # ============================================
+      # ÉTAPE 11 : Build de l'archive Xcode
+      # C'est l'équivalent de "Product > Archive" dans Xcode
+      # ============================================
+      - name: Build de l'archive Xcode
+        run: |
+          xcodebuild \
+            -project ios/App/App.xcodeproj \
+            -scheme App \
+            -configuration Release \
+            -sdk iphoneos \
+            -archivePath build/App.xcarchive \
+            DEVELOPMENT_TEAM=${APPLE_TEAM_ID} \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath ~/.private_keys/AuthKey_${ASC_API_KEY_ID}.p8 \
+            -authenticationKeyID ${ASC_API_KEY_ID} \
+            -authenticationKeyIssuerID ${ASC_API_ISSUER_ID} \
+            archive
+        env:
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          ASC_API_KEY_ID: ${{ secrets.ASC_API_KEY_ID }}
+          ASC_API_ISSUER_ID: ${{ secrets.ASC_API_ISSUER_ID }}
+
+      # ============================================
+      # ÉTAPE 12 : Export de l'IPA
+      # L'IPA est le fichier installable sur iOS
+      # ============================================
+      - name: Export de l'IPA
+        run: |
+          xcodebuild -exportArchive \
+            -archivePath build/App.xcarchive \
+            -exportOptionsPlist exportOptions.plist \
+            -exportPath build
+
+      # ============================================
+      # ÉTAPE 13 : Upload vers TestFlight
+      # Cette étape envoie l'app sur TestFlight
+      # Retry automatique en cas d'erreur serveur Apple
+      # ============================================
+      - name: Upload vers TestFlight
+        run: |
+          # Retry logic pour les erreurs 500 d'Apple (ça arrive souvent !)
+          max_attempts=3
+          attempt=1
+          until xcrun altool --upload-app \
+            --type ios \
+            --file build/App.ipa \
+            --apiKey ${ASC_API_KEY_ID} \
+            --apiIssuer ${ASC_API_ISSUER_ID}
+          do
+            if [ $attempt -eq $max_attempts ]; then
+              echo "❌ Upload échoué après $max_attempts tentatives"
+              exit 1
+            fi
+            echo "⚠️ Tentative $attempt échouée, nouvelle tentative dans 60s..."
+            sleep 60
+            attempt=$((attempt + 1))
+          done
+          echo "✅ Upload réussi sur TestFlight !"
+        env:
+          ASC_API_KEY_ID: ${{ secrets.ASC_API_KEY_ID }}
+          ASC_API_ISSUER_ID: ${{ secrets.ASC_API_ISSUER_ID }}
+
+      # ============================================
+      # ÉTAPE 14 : Notification de succès
+      # ============================================
+      - name: Succès
+        if: success()
+        run: |
+          echo "🎉 Build iOS réussi !"
+          echo "📱 L'app sera disponible sur TestFlight dans 5-30 minutes"
+          echo "🔢 Build number: ${{ github.run_number }}"
+

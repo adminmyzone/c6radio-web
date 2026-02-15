@@ -1,26 +1,72 @@
 # Documentation C6Radio
 
-**Dernière mise à jour :** 14 février 2026  
-**Statut Projet :** ✅ **PRODUCTION READY**
+**Dernière mise à jour :** 15 février 2026  
+**Statut Projet :** 🟢 **70% MVP Complété** → Release 1er avril 2026
 
 ---
 
-# Documentation C6Radio
+## 🚀 DÉMARRAGE RAPIDE
 
-**Dernière mise à jour :** 15 février 2026  
-**Statut Projet :** ✅ **PRODUCTION READY**
+**Nouveau sur le projet ? Commencez ici :**
+
+1. **[DEMARRAGE-RAPIDE.md](DEMARRAGE-RAPIDE.md)** ⚡ 5 minutes  
+   Guide ultra-rapide pour reprendre le projet
+   
+2. **[REPRISE-PROCHAINE-SESSION.md](REPRISE-PROCHAINE-SESSION.md)** 📍 10 minutes  
+   État actuel du projet + Prochaines actions
+
+3. **[implementation-plan.md](implementation-plan.md)** 📋 30 minutes  
+   Plan complet avec roadmap phases
 
 ---
 
 ## 📚 Index des Documents
 
-### 🎵 Audio (Section Unifiée - Nouvelle Structure)
+### 🎵 Audio (Section Unifiée)
 
 - **[audio-COMPLETE.md](audio-COMPLETE.md)** ⭐⭐⭐ **RÉFÉRENCE UNIQUE AUDIO**  
   Documentation complète consolidée (1500+ lignes) : Architecture + GlobalAudioContext + Services + Hooks + API + Tests + Troubleshooting
   
 - **[session-15-fev-global-audio.md](session-15-fev-global-audio.md)** 📝 Session 15 février  
   Notes détaillées session GlobalAudioContext + Lazy Loading Vidéos
+
+### 📱 Phase 7 - Mobile & TestFlight (NOUVEAU !)
+
+**⭐ Configuration terminée (50%) - Tests restants**
+
+- **[phase-7-mobile-testflight-GUIDE.md](phase-7-mobile-testflight-GUIDE.md)** 📖 1000+ lignes  
+  Guide ULTRA complet : Configuration Capacitor, Workflow GitHub Actions, Safe Areas iOS, Troubleshooting
+
+- **[phase-7-secrets-github-QUICK.md](phase-7-secrets-github-QUICK.md)** 🔐 Guide rapide  
+  Configuration des 8 secrets GitHub en 30-60 minutes
+
+- **[phase-7-mobile-testflight-RESUME.md](phase-7-mobile-testflight-RESUME.md)** 📝 Résumé technique  
+  Architecture, métriques, checklist validation
+
+- **[phase-7-VISUAL-RECAP.md](phase-7-VISUAL-RECAP.md)** 🎨 Récapitulatif visuel  
+  Diagrammes et schémas explicatifs Phase 7
+
+### 🎙️ Phase 5 - Podcasts WordPress
+
+**✅ 100% Complétée**
+
+- **[phase-5-podcasts-COMPLETE.md](phase-5-podcasts-COMPLETE.md)** 📖 900+ lignes  
+  Guide complet : Architecture, Implementation, Tests, API
+
+- **[phase-5-podcasts-RESUME.md](phase-5-podcasts-RESUME.md)** 📝 Résumé débutant  
+  Version simplifiée avec explications pédagogiques
+
+- **[phase-5-podcasts-GUIDE-VISUEL.md](phase-5-podcasts-GUIDE-VISUEL.md)** 🎨 Diagrammes  
+  Schémas visuels de l'architecture
+
+- **[phase-5-podcasts-tests.md](phase-5-podcasts-tests.md)** 🧪 Guide tests  
+  10 scénarios de test détaillés
+
+- **[phase-5-FIX-audio-url-resolution.md](phase-5-FIX-audio-url-resolution.md)** 🐛 Fix #1  
+  Résolution fichier MP3 introuvable (404)
+
+- **[phase-5-FIX-player-state-reset.md](phase-5-FIX-player-state-reset.md)** 🐛 Fix #2  
+  Reset état podcast lors navigation
 
 ### 🏗️ Architecture & Technique
 
@@ -31,18 +77,22 @@
 
 ### 🎯 Planning & Production
 
-- **[production-readiness-checklist.md](production-readiness-checklist.md)** ✅ **VALIDÉ** - Checklist déploiement  
-  Tous les points critiques sont maintenant résolus !
+- **[production-readiness-checklist.md](production-readiness-checklist.md)** ✅ - Checklist déploiement  
 
-- **[implementation-plan.md](implementation-plan.md)** - Plan complet du projet  
+- **[implementation-plan.md](implementation-plan.md)** 📋 - Plan complet du projet  
   Roadmap phases, tasks, estimations (960+ lignes)
+
+- **[RAPPORT-AVANCEMENT-15-FEV-2026.md](RAPPORT-AVANCEMENT-15-FEV-2026.md)** 📊 Rapport d'avancement  
+  Analyse détaillée progression projet
 
 - **[next-session-todo.md](next-session-todo.md)** 🎯 - Prochaines étapes  
   Mis à jour après chaque session
 
 ### 📋 Phase 3 (Pages & Navigation)
 
-- **[phase-3-pages-navigation.md](phase-3-pages-navigation.md)** ✅ **COMPLÉTÉ** - Guide Phase 3  
+**✅ 100% Complétée**
+
+- **[phase-3-pages-navigation.md](phase-3-pages-navigation.md)** ✅ - Guide Phase 3  
   Guide détaillé étape par étape avec checkboxes de progression
 
 - **[phase-3-recap.md](phase-3-recap.md)** 📝 - Récapitulatif Phase 3

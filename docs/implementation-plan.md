@@ -265,7 +265,7 @@ capacitor.config.ts             ⏳ Phase 7
 - ✅ Animation shimmer pour vidéos en chargement
 - ✅ Intégration dans `useAudioPlayer.js` et `DynamicPage.jsx`
 
-**Phase 4 : WordPress Actualités (15/02/2026) :**
+**Phase 4 : WordPress Actualités (15/02/2026) - ✅ 100% VALIDÉE :**
 - ✅ Service `wordpress.js` : Fonctions fetchPosts, fetchPostBySlug, fetchCategories
 - ✅ Hook `useWordPressPosts.js` : Fetch + cache localStorage (5 min)
 - ✅ Composant `NewsCard.jsx` : Carte actualité avec lazy loading
@@ -276,6 +276,21 @@ capacitor.config.ts             ⏳ Phase 7
 - ✅ États loading/error/empty gérés
 - ✅ Cache localStorage avec expiration 5 minutes
 - ✅ Fallback gracieux si WordPress down
+- ✅ **Corrections bugs :** Boucle infinie + navigation (JSON.stringify, useRef, pointer-events)
+- ✅ **Tests validés :** Console propre, navigation fluide, cache performant
+
+**Phase 5 : Podcasts WordPress (15/02/2026) - ✅ 100% COMPLÉTÉE :**
+- ✅ Service `wordpress.js` : Champ ACF `c6_podcast_audio` récupéré
+- ✅ Service `audioPlayer.js` : Support métadonnées + currentTime/duration
+- ✅ Hook `useAudioPlayer.js` : Expose currentTime/duration
+- ✅ Composant `PodcastPlayer.jsx` : Lecteur audio intégré avec progression
+- ✅ Styles `PodcastPlayer.css` : Design responsive vert/rouge
+- ✅ Page `NewsDetail.jsx` : Intégration conditionnelle du lecteur
+- ✅ GlobalAudioContext : Règle "un seul audio" respectée (podcast ↔ live)
+- ✅ Media Session : Métadonnées podcast sur lockscreen
+- ✅ Build validé : ✅ Réussi sans erreur
+- ✅ **Documentation complète :** [phase-5-podcasts-COMPLETE.md](phase-5-podcasts-COMPLETE.md)
+- ✅ **Guide de test :** [phase-5-podcasts-tests.md](phase-5-podcasts-tests.md)
 
 **Documentation :**
 - ✅ [audio-COMPLETE.md](audio-COMPLETE.md) - Référence unique audio
@@ -286,10 +301,13 @@ capacitor.config.ts             ⏳ Phase 7
 - ✅ [phase-4-actualites-wordpress.md](phase-4-actualites-wordpress.md) - Plan Phase 4
 - ✅ [phase-4-actualites-recap.md](phase-4-actualites-recap.md) - Récapitulatif Phase 4
 - ✅ [phase-4-actualites-tests.md](phase-4-actualites-tests.md) - Guide tests Phase 4
+- ✅ [phase-4-corrections-bugs.md](phase-4-corrections-bugs.md) - Corrections bugs
+- ✅ [phase-4-VALIDATION-COMPLETE.md](phase-4-VALIDATION-COMPLETE.md) - Validation finale ✅
+- ✅ [phase-5-podcasts-COMPLETE.md](phase-5-podcasts-COMPLETE.md) - Documentation Phase 5 ✅
+- ✅ [phase-5-podcasts-tests.md](phase-5-podcasts-tests.md) - Guide tests Phase 5 ✅
 
 ### ❌ Phases Non Commencées
 
-- ❌ Phase 5 : Podcasts WordPress
 - ❌ Phase 6 : Bannières Publicitaires
 - ❌ Phase 7 : Polish & Tests Multi-Devices
 - ❌ Phase 8 : Build & Soumission Stores
@@ -302,18 +320,16 @@ capacitor.config.ts             ⏳ Phase 7
 2. Composant SearchBar : Recherche temps réel
 3. Pagination ou infinite scroll
 
-**Priorité 2 - Phase 5 : Podcasts WordPress :**
-1. API WordPress custom post type "podcast"
-2. Service `podcastService.js`
-3. Pages liste + détail épisodes
-4. Player podcast (réutilise `useAudioPlayer` ✅)
-5. Intégration GlobalAudioContext (déjà prêt ✅)
+**Priorité 2 - Phase 6 : Bannières Publicitaires WordPress :**
+1. Service `wordpress.js` : Fetch bannières via ACF
+2. Composants BannerAd : Header, Footer, Sidebar
+3. Rotation dynamique
+4. Tracking clics (optionnel)
 
 **Priorité 3 - Mobile (Phase 7 avancée) :**
 1. POC Capacitor : setup iOS/Android
 2. POC Audio Background iOS (CRITIQUE)
 3. POC Audio Background Android
-3. Archives et catégories
 
 ---
 

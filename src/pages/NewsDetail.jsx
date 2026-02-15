@@ -13,6 +13,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { fetchPostBySlug } from '../services/wordpress.js';
+import PodcastPlayer from '../components/PodcastPlayer.jsx';
 import logger from '../lib/logger.js';
 import './NewsDetail.css';
 
@@ -137,6 +138,16 @@ export default function NewsDetail() {
             )}
           </div>
         </header>
+
+        {/* PHASE 5 - PODCASTS : Lecteur audio si l'article a un podcast */}
+        {post.podcastAudioUrl && (
+          <PodcastPlayer
+            key={post.podcastAudioUrl}
+            audioUrl={post.podcastAudioUrl}
+            title={post.title}
+            artwork={post.featuredImage?.url || '/logo-c6radio.png'}
+          />
+        )}
 
         {/* Contenu HTML de WordPress */}
         <div

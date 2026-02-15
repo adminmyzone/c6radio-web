@@ -1,0 +1,13 @@
+{
+  "appId": "fr.c6radio.app",
+  "appName": "C6Radio",
+  "webDir": "dist",
+  "server": {
+    "url": "https://c6radio.fr",
+    "cleartext": true
+  },
+  "ios": {
+    "contentInset": "always",
+    "backgroundColor": "#ffffff"
+  }
+}

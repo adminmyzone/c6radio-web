@@ -1,0 +1,138 @@
+name: iOS Device Build (TestFlight)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  ios-testflight:
+    runs-on: macos-latest
+    env:
+      CAP_SERVER_URL: https://c6radio-app.vercel.app
+      BUNDLE_ID: fr.c6radio.app
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm i --save-dev @types/next-pwa
+
+      - name: Build Next.js (iOS Static Export)
+        run: npm run build:ios
+        env:
+          NEXT_PUBLIC_ICECAST_URL: https://radio.c6media.fr:8443/main
+          NEXT_PUBLIC_LIBRETIME_API: https://radio.c6media.fr/api/live-info
+          NEXT_PUBLIC_WORDPRESS_API: https://exp937.fr/wp/wp-json/wp/v2
+          NEXT_PUBLIC_SITE_URL: https://c6radio.fr
+
+      - name: Sync Capacitor (iOS)
+        run: npx cap sync ios
+
+      - name: Increment build number
+        run: |
+          BUILD_NUMBER=${{ github.run_number }}
+          xcrun agvtool new-version -all $BUILD_NUMBER
+        working-directory: ios/App
+
+      - name: Import code signing certificate
+        uses: apple-actions/import-codesign-certs@v3
+        with:
+          p12-file-base64: ${{ secrets.IOS_P12_BASE64 }}
+          p12-password: ${{ secrets.IOS_P12_PASSWORD }}
+
+      - name: Install provisioning profile
+        run: |
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+          echo "${IOS_MOBILEPROVISION_BASE64}" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/profile.mobileprovision
+        env:
+          IOS_MOBILEPROVISION_BASE64: ${{ secrets.IOS_MOBILEPROVISION_BASE64 }}
+
+      - name: Create export options
+        run: |
+          cat > exportOptions.plist <<EOF
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>method</key>
+            <string>app-store-connect</string>
+            <key>teamID</key>
+            <string>${APPLE_TEAM_ID}</string>
+            <key>signingStyle</key>
+            <string>manual</string>
+            <key>provisioningProfiles</key>
+            <dict>
+              <key>${BUNDLE_ID}</key>
+              <string>${PROVISIONING_PROFILE_NAME}</string>
+            </dict>
+          </dict>
+          </plist>
+          EOF
+        env:
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          PROVISIONING_PROFILE_NAME: ${{ secrets.PROVISIONING_PROFILE_NAME }}
+          BUNDLE_ID: ${{ env.BUNDLE_ID }}
+
+      - name: Prepare App Store Connect API key
+        run: |
+          mkdir -p ~/.private_keys
+          echo "${ASC_API_PRIVATE_KEY_BASE64}" | base64 --decode > ~/.private_keys/AuthKey_${ASC_API_KEY_ID}.p8
+        env:
+          ASC_API_PRIVATE_KEY_BASE64: ${{ secrets.ASC_API_PRIVATE_KEY_BASE64 }}
+          ASC_API_KEY_ID: ${{ secrets.ASC_API_KEY_ID }}
+
+      - name: Build archive
+        run: |
+          xcodebuild \
+            -project ios/App/App.xcodeproj \
+            -scheme App \
+            -configuration Release \
+            -sdk iphoneos \
+            -archivePath build/App.xcarchive \
+            CODE_SIGN_STYLE=Automatic \
+            DEVELOPMENT_TEAM=${APPLE_TEAM_ID} \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath ~/.private_keys/AuthKey_${ASC_API_KEY_ID}.p8 \
+            -authenticationKeyID ${ASC_API_KEY_ID} \
+            -authenticationKeyIssuerID ${ASC_API_ISSUER_ID} \
+            archive
+        env:
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          PROVISIONING_PROFILE_NAME: ${{ secrets.PROVISIONING_PROFILE_NAME }}
+          ASC_API_KEY_ID: ${{ secrets.ASC_API_KEY_ID }}
+          ASC_API_ISSUER_ID: ${{ secrets.ASC_API_ISSUER_ID }}
+
+      - name: Export IPA
+        run: |
+          xcodebuild -exportArchive \
+            -archivePath build/App.xcarchive \
+            -exportOptionsPlist exportOptions.plist \
+            -exportPath build
+
+      - name: Upload to TestFlight
+        run: |
+          # Retry logic pour les erreurs 500 d'Apple
+          max_attempts=3
+          attempt=1
+          until xcrun altool --upload-app \
+            --type ios \
+            --file build/App.ipa \
+            --apiKey ${ASC_API_KEY_ID} \
+            --apiIssuer ${ASC_API_ISSUER_ID}
+          do
+            if [ $attempt -eq $max_attempts ]; then
+              echo "Upload failed after $max_attempts attempts"
+              exit 1
+            fi
+            echo "Upload attempt $attempt failed, retrying in 60s..."
+            sleep 60
+            attempt=$((attempt + 1))
+          done
+        env:
+          ASC_API_KEY_ID: ${{ secrets.ASC_API_KEY_ID }}
+          ASC_API_ISSUER_ID: ${{ secrets.ASC_API_ISSUER_ID }}

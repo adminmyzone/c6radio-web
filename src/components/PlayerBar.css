@@ -14,6 +14,8 @@
   backdrop-filter: blur(12px);
   border-top: 1px solid rgba(55, 65, 81, 0.5); /* gray-700 */
   box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+  /* Support iOS safe area - Évite que le player soit caché par le home indicator */
+  padding-bottom: var(--safe-area-bottom, 0);
 }
 
 /* Conteneur interne centré */

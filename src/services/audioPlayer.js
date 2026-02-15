@@ -26,6 +26,10 @@ let currentSource = null;
 // URL du podcast en cours (si podcast actif)
 let currentPodcastUrl = null;
 
+// Informations de lecture pour podcast (durée, position)
+let currentTime = 0;
+let duration = 0;
+
 // Listeners pour notifier les composants React des changements
 let stateChangeListeners = [];
 
@@ -45,7 +49,9 @@ function notifyStateChange() {
     listener({
       state: currentState,
       source: currentSource,
-      podcastUrl: currentPodcastUrl
+      podcastUrl: currentPodcastUrl,
+      currentTime,
+      duration
     });
   });
 }
@@ -110,6 +116,37 @@ function createAudio(url) {
     }
   });
   
+  // PHASE 5 - PODCASTS : Suivre la progression pour les podcasts
+  audioElement.addEventListener('loadedmetadata', () => {
+    // Quand les métadonnées sont chargées, on connaît la durée totale
+    if (currentSource === 'podcast') {
+      duration = audioElement.duration || 0;
+      currentTime = audioElement.currentTime || 0;
+      notifyStateChange();
+    }
+  });
+
+  audioElement.addEventListener('timeupdate', () => {
+    // Mise à jour de la position actuelle (chaque ~250ms)
+    if (currentSource === 'podcast') {
+      currentTime = audioElement.currentTime || 0;
+      // On notifie seulement toutes les secondes pour éviter trop de re-renders
+      if (Math.floor(currentTime) !== Math.floor(currentTime - 0.25)) {
+        notifyStateChange();
+      }
+    }
+  });
+
+  audioElement.addEventListener('ended', () => {
+    // Podcast terminé
+    if (currentSource === 'podcast') {
+      logger.info('Podcast terminé');
+      currentState = 'stopped';
+      currentTime = 0;
+      notifyStateChange();
+    }
+  });
+
   return audioElement;
 }
 
@@ -179,8 +216,12 @@ export function stopLiveStream() {
  * Démarre un podcast
  * Si le live joue, il sera arrêté automatiquement
  * @param {string} url - URL du fichier audio du podcast
+ * @param {Object} metadata - Métadonnées pour Media Session API
+ * @param {string} metadata.title - Titre du podcast
+ * @param {string} metadata.artist - Artiste/Émission
+ * @param {string} metadata.artwork - URL de l'image
  */
-export function playPodcast(url) {
+export function playPodcast(url, metadata = {}) {
   if (!url) {
     logger.error('URL podcast manquante');
     return;
@@ -203,8 +244,18 @@ export function playPodcast(url) {
   currentSource = 'podcast';
   currentPodcastUrl = url;
   currentState = 'loading';
+  currentTime = 0;
+  duration = 0;
   notifyStateChange();
   
+  // Mettre à jour Media Session avec les métadonnées du podcast
+  mediaSession.updateMetadata({
+    title: metadata.title || 'Podcast',
+    artist: metadata.artist || 'C6Radio',
+    album: 'Podcasts C6Radio',
+    artwork: metadata.artwork || '/logo-c6radio.png'
+  });
+
   // Lancer la lecture
   audioElement.play().catch(err => {
     logger.error('Erreur play podcast:', err);
@@ -308,6 +359,24 @@ export function getSource() {
  */
 export function getPodcastUrl() {
   return currentPodcastUrl;
+}
+
+/**
+ * Retourne la position actuelle (en secondes)
+ * Utilisé pour afficher la progression du podcast
+ * @returns {number}
+ */
+export function getCurrentTime() {
+  return currentTime;
+}
+
+/**
+ * Retourne la durée totale (en secondes)
+ * Utilisé pour afficher la durée totale du podcast
+ * @returns {number}
+ */
+export function getDuration() {
+  return duration;
 }
 
 /**

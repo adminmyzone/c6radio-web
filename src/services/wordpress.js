@@ -19,9 +19,71 @@
  * et ça se met à jour automatiquement sur le site React !
  */
 
-import { WP_ENDPOINTS, MAX_MENU_PAGES, API_TIMEOUT } from '../config/constants.js';
+import { WP_ENDPOINTS, MAX_MENU_PAGES, API_TIMEOUT, WP_API_BASE_URL } from '../config/constants.js';
 import logger from '../lib/logger.js';
 import { decodeHTML } from '../lib/utils.js';
+
+/**
+ * PHASE 5 - PODCASTS : Helper pour résoudre l'URL audio
+ *
+ * EXPLICATION :
+ * Le champ ACF peut retourner soit :
+ * - Un ID (nombre) : il faut fetch l'attachment pour avoir l'URL
+ * - Une URL (string) : on l'utilise directement
+ *
+ * @param {number|string|null} audioValue - Valeur du champ ACF
+ * @returns {Promise<string|null>} URL du fichier audio ou null
+ */
+async function resolveAudioUrl(audioValue) {
+  // Pas de valeur → pas de podcast
+  if (!audioValue) {
+    return null;
+  }
+
+  // Si c'est déjà une URL (string), la retourner
+  if (typeof audioValue === 'string') {
+    return audioValue;
+  }
+
+  // Si c'est un ID (number), fetch l'attachment
+  if (typeof audioValue === 'number') {
+    try {
+      logger.log(`[WordPress API] Fetching audio attachment ID ${audioValue}...`);
+
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), API_TIMEOUT);
+
+      const response = await fetch(`${WP_API_BASE_URL}/media/${audioValue}`, {
+        signal: controller.signal,
+      });
+
+      clearTimeout(timeoutId);
+
+      if (!response.ok) {
+        logger.error(`[WordPress API] Failed to fetch audio attachment ${audioValue}: ${response.status}`);
+        return null;
+      }
+
+      const media = await response.json();
+
+      // Retourner l'URL source
+      if (media.source_url) {
+        logger.log(`[WordPress API] Audio URL resolved: ${media.source_url}`);
+        return media.source_url;
+      }
+
+      return null;
+
+    } catch (error) {
+      logger.error(`[WordPress API] Error fetching audio attachment:`, error);
+      return null;
+    }
+  }
+
+  // Type inconnu
+  logger.warn(`[WordPress API] Unknown audio value type:`, typeof audioValue);
+  return null;
+}
 
 /**
  * Fetch toutes les pages WordPress pour le menu
@@ -227,7 +289,8 @@ export async function fetchPosts(options = {}) {
     logger.log(`[WordPress API] Found ${posts.length} posts`);
 
     // Transformer les données WordPress en format simple
-    const formattedPosts = posts.map(post => {
+    // Note : Utilisation de Promise.all pour résoudre les URLs audio en parallèle
+    const formattedPosts = await Promise.all(posts.map(async (post) => {
       // Extraire l'image à la une (featured image)
       let featuredImage = null;
       if (post._embedded?.['wp:featuredmedia']?.[0]) {
@@ -250,6 +313,9 @@ export async function fetchPosts(options = {}) {
         }));
       }
 
+      // PHASE 5 - PODCASTS : Résoudre l'URL audio (peut être un ID ou une URL)
+      const podcastAudioUrl = await resolveAudioUrl(post.acf?.c6_podcast_audio);
+
       // Retourner objet formaté
       return {
         id: post.id,
@@ -262,8 +328,9 @@ export async function fetchPosts(options = {}) {
         featuredImage,                             // Image à la une (objet ou null)
         categories,                                // Tableau catégories
         link: post.link,                           // URL WordPress originale
+        podcastAudioUrl,                           // URL MP3 podcast (null si pas de podcast)
       };
-    });
+    }));
 
     return formattedPosts;
 
@@ -343,6 +410,9 @@ export async function fetchPostBySlug(slug) {
       }));
     }
 
+    // PHASE 5 - PODCASTS : Résoudre l'URL audio (peut être un ID ou une URL)
+    const podcastAudioUrl = await resolveAudioUrl(post.acf?.c6_podcast_audio);
+
     logger.log(`[WordPress API] Post loaded: ${post.title.rendered}`);
 
     // Retourner données formatées
@@ -357,6 +427,7 @@ export async function fetchPostBySlug(slug) {
       featuredImage,
       categories,
       link: post.link,
+      podcastAudioUrl,                       // URL MP3 podcast (null si absent)
     };
 
   } catch (error) {

@@ -18,6 +18,8 @@ export function useAudioPlayer() {
   const [state, setState] = useState(audioPlayer.getState());
   const [source, setSource] = useState(audioPlayer.getSource());
   const [podcastUrl, setPodcastUrl] = useState(audioPlayer.getPodcastUrl());
+  const [currentTime, setCurrentTime] = useState(audioPlayer.getCurrentTime());
+  const [duration, setDuration] = useState(audioPlayer.getDuration());
 
   // Utiliser le GlobalAudioContext
   const { registerPlayer, resetActivePlayer } = useGlobalAudio();
@@ -30,6 +32,8 @@ export function useAudioPlayer() {
       setState(audioState.state);
       setSource(audioState.source);
       setPodcastUrl(audioState.podcastUrl);
+      setCurrentTime(audioState.currentTime);
+      setDuration(audioState.duration);
 
       // Enregistrer dans GlobalAudio quand la lecture démarre
       if (audioState.state === 'playing') {
@@ -63,7 +67,9 @@ export function useAudioPlayer() {
     state,        // 'stopped' | 'playing' | 'paused' | 'loading' | 'error'
     source,       // 'live' | 'podcast' | null
     podcastUrl,   // URL du podcast si applicable
-    
+    currentTime,  // Position actuelle en secondes (pour podcasts)
+    duration,     // Durée totale en secondes (pour podcasts)
+
     // Propriétés dérivées (calculées)
     isPlaying: state === 'playing',
     isPaused: state === 'paused',

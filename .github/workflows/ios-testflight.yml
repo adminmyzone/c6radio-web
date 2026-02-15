@@ -156,7 +156,14 @@ jobs:
           xcodebuild -exportArchive \
             -archivePath build/App.xcarchive \
             -exportOptionsPlist exportOptions.plist \
-            -exportPath build
+            -exportPath build \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath ~/.private_keys/AuthKey_${ASC_API_KEY_ID}.p8 \
+            -authenticationKeyID ${ASC_API_KEY_ID} \
+            -authenticationKeyIssuerID ${ASC_API_ISSUER_ID}
+        env:
+          ASC_API_KEY_ID: ${{ secrets.ASC_API_KEY_ID }}
+          ASC_API_ISSUER_ID: ${{ secrets.ASC_API_ISSUER_ID }}
 
       # ============================================
       # ÉTAPE 13 : Upload vers TestFlight

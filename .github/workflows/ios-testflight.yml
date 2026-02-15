@@ -105,19 +105,12 @@ jobs:
             <key>teamID</key>
             <string>${APPLE_TEAM_ID}</string>
             <key>signingStyle</key>
-            <string>manual</string>
-            <key>provisioningProfiles</key>
-            <dict>
-              <key>${BUNDLE_ID}</key>
-              <string>${PROVISIONING_PROFILE_NAME}</string>
-            </dict>
+            <string>automatic</string>
           </dict>
           </plist>
           EOF
         env:
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
-          PROVISIONING_PROFILE_NAME: ${{ secrets.PROVISIONING_PROFILE_NAME }}
-          BUNDLE_ID: ${{ env.BUNDLE_ID }}
 
       # ============================================
       # ÉTAPE 10 : Préparation de la clé API App Store Connect
@@ -143,8 +136,6 @@ jobs:
             -configuration Release \
             -sdk iphoneos \
             -archivePath build/App.xcarchive \
-            CODE_SIGN_STYLE=Automatic \
-            CODE_SIGN_IDENTITY="Apple Distribution" \
             DEVELOPMENT_TEAM=${APPLE_TEAM_ID} \
             -allowProvisioningUpdates \
             -authenticationKeyPath ~/.private_keys/AuthKey_${ASC_API_KEY_ID}.p8 \

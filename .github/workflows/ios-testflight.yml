@@ -14,7 +14,7 @@ jobs:
 
     # Variables d'environnement pour le build
     env:
-      BUNDLE_ID: fr.c6debug.app
+      BUNDLE_ID: com.c6media.c6media
       APP_NAME: C6Radio
 
     steps:

@@ -34,7 +34,7 @@ export default function PlayerBar() {
           {/* Section gauche : Now Playing (mode compact) */}
           <div className="player-bar-info">
             {isLive ? (
-              <NowPlaying shouldPoll={isPlaying} compact={true} />
+              <NowPlaying shouldPoll={isPlaying} compact={false} />
             ) : isPodcast ? (
               <div className="player-bar-podcast">
                 <span>🎙️ Podcast</span>

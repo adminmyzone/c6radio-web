@@ -11,6 +11,8 @@
  * - Loading spinner pendant chargement
  * - Message d'erreur si problème
  * - Message "aucune actualité" si vide
+ *
+ * PHASE 6 : Les bannières publicitaires sont maintenant gérées system-wide dans App.jsx
  */
 
 import { useWordPressPosts } from '../hooks/useWordPressPosts.js';
@@ -30,6 +32,7 @@ export default function News() {
           Découvrez les dernières nouvelles, événements et coulisses de la radio
         </p>
       </header>
+
 
       {/* Contenu principal */}
       <main className="news-content">

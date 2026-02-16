@@ -3,6 +3,8 @@
  * 
  * Cette page simple affiche un message de bienvenue.
  * Plus tard, nous y ajouterons du contenu dynamique depuis WordPress.
+ *
+ * PHASE 6 : Les bannières publicitaires sont maintenant gérées system-wide dans App.jsx
  */
 
 import './Home.css';
@@ -34,6 +36,7 @@ function Home() {
             artistes francophones. Une sélection unique 24h/24 et 7j/7.
           </p>
         </section>
+
       </main>
     </div>
   );

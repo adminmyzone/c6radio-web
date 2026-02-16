@@ -2,11 +2,97 @@
  * Styles globaux de l'application - App.css
  * 
  * Ce fichier contient les styles du container principal.
+ *
+ * PHASE 6 : Layout avec bannières system-wide
+ * - Bannière header : au-dessus du contenu
+ * - Bannière sidebar : sur le côté (desktop uniquement)
+ * - Bannière footer : en bas du contenu
  */
 
 /* Container principal de l'application */
 .app-container {
-  min-height: 100vh; /* Hauteur minimum = 100% de la hauteur de l'écran */
-  padding-top: 80px; /* Espace en haut pour le Header fixe (évite qu'il cache le contenu) */
-  padding-bottom: 0px; /* Espace en bas pour ne pas être caché par le PlayerBar */
+  min-height: 100vh;
+  padding-top: 0px; /* Pas de padding ici, géré par banner-header */
+  padding-bottom: 0px;
 }
+
+/* Bannières header et footer */
+.banner-container {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.banner-header-container {
+  padding-top: 100px; /* Espace pour le header fixe (80px) + marge (20px) */
+  margin-bottom: 20px;
+}
+
+.banner-footer-container {
+  margin-top: 40px;
+  margin-bottom: 20px;
+}
+
+/* Layout avec sidebar */
+.content-layout {
+  display: flex;
+  max-width: 1400px;
+  margin: 0 auto;
+  gap: 20px;
+  padding: 0 20px;
+  padding-top: 0; /* Pas besoin car banner-header gère l'espacement */
+}
+
+/* Contenu principal */
+.main-content {
+  flex: 1;
+  min-width: 0; /* Important pour éviter overflow */
+}
+
+/* Sidebar bannières (desktop uniquement) */
+.sidebar-banners {
+  width: 200px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 100px; /* Stick en dessous du header */
+  height: fit-content;
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
+}
+
+/* Responsive : Masquer sidebar sur tablette et mobile */
+@media (max-width: 1024px) {
+  .sidebar-banners {
+    display: none;
+  }
+
+  .content-layout {
+    padding: 0 15px;
+  }
+
+  .banner-container {
+    padding: 0 15px;
+  }
+}
+
+@media (max-width: 768px) {
+  .banner-header-container {
+    padding-top: 90px; /* Header plus petit sur mobile (70px) + marge (20px) */
+    margin-bottom: 15px;
+  }
+
+  .banner-footer-container {
+    margin-top: 20px;
+    margin-bottom: 15px;
+  }
+
+  .content-layout {
+    padding: 0 10px;
+  }
+
+  .banner-container {
+    padding: 0 10px;
+  }
+}
+

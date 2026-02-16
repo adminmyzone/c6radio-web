@@ -60,13 +60,14 @@
   width: 100%;
   max-height: 500px;
   overflow: hidden;
-  background: #f0f0f0;
+  object-fit: fill;
 }
 
 .news-detail-image {
   width: 100%;
-  height: auto;
-  display: block;
+  height: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
 }
 
 /* ===================================

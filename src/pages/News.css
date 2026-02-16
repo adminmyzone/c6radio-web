@@ -9,6 +9,8 @@
  * - Mobile (< 768px) : 1 colonne
  * - Tablette (768-1024px) : 2 colonnes
  * - Desktop (> 1024px) : 3 colonnes
+ *
+ * PHASE 6 : Ajout styles bannières
  */
 
 /* ===================================
@@ -28,7 +30,7 @@
 
 .news-header {
   text-align: center;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
 }
 
 .news-title {
@@ -37,6 +39,7 @@
   color: #1a1a1a;
   margin: 0 0 1rem 0;
 }
+
 
 .news-subtitle {
   font-size: 1.125rem;

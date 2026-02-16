@@ -86,6 +86,181 @@ async function resolveAudioUrl(audioValue) {
 }
 
 /**
+ * PHASE 6 - BANNIÈRES PUBLICITAIRES
+ *
+ * Fetch les bannières publicitaires depuis WordPress
+ *
+ * EXPLICATION :
+ * Les bannières sont stockées dans WordPress via ACF (Advanced Custom Fields).
+ * Chaque bannière peut contenir :
+ * - Une image
+ * - Un lien (URL de destination)
+ * - Un titre alt
+ * - Une position (header, footer, sidebar)
+ * - Un ordre/priorité
+ *
+ * UTILISATION CÔTÉ WORDPRESS :
+ * 1. Créer un Custom Post Type "banners" ou utiliser Pages/Posts avec ACF
+ * 2. Ajouter champs ACF :
+ *    - banner_image (image)
+ *    - banner_link (URL)
+ *    - banner_position (select: header/footer/sidebar)
+ *    - banner_active (true/false)
+ *
+ * @param {string} position - Position de la bannière (header, footer, sidebar, all)
+ * @returns {Promise<Array>} Liste des bannières actives
+ */
+export async function fetchBanners(position = 'all') {
+  try {
+    logger.log(`[WordPress API] Fetching banners (position: ${position})...`);
+
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), API_TIMEOUT);
+
+    // Utiliser l'endpoint posts avec catégorie "bannieres" (ID 32)
+    const url = `${WP_API_BASE_URL}/posts?categories=32&per_page=20&_embed`;
+
+    const response = await fetch(url, {
+      signal: controller.signal,
+    });
+
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      logger.error(`[WordPress API] Failed to fetch banners: ${response.status}`);
+      return [];
+    }
+
+    const posts = await response.json();
+    logger.log(`[WordPress API] Received ${posts.length} banner posts from WordPress`);
+
+    // Transformer les posts en bannières
+    const banners = [];
+
+    for (const post of posts) {
+      const acf = post.acf || {};
+
+      // Vérifier si le post a un champ banner_image
+      if (!acf.banner_image) {
+        logger.warn(`[WordPress API] Banner ${post.id} has no banner_image, skipping`);
+        continue;
+      }
+
+      // Vérifier si actif
+      const isActive = acf.banner_active !== false; // Active par défaut
+      if (!isActive) {
+        logger.log(`[WordPress API] Banner ${post.id} is inactive, skipping`);
+        continue;
+      }
+
+      // Gérer banner_position qui peut être un tableau ["header", "footer"] ou une string
+      let bannerPositions = [];
+      if (acf.banner_position) {
+        if (Array.isArray(acf.banner_position)) {
+          // C'est un tableau, garder toutes les positions
+          bannerPositions = acf.banner_position.filter(p => p); // Filtrer les valeurs vides
+        } else if (typeof acf.banner_position === 'string') {
+          // C'est une string, la transformer en tableau
+          bannerPositions = [acf.banner_position];
+        }
+      }
+
+      // Si aucune position définie, considérer "all"
+      if (bannerPositions.length === 0) {
+        bannerPositions = ['all'];
+      }
+
+      // Filtrer par position si demandé
+      // Une bannière est affichée si :
+      // - position demandée = 'all' (afficher toutes)
+      // - bannière a position 'all' (afficher partout)
+      // - position demandée est dans le tableau des positions de la bannière
+      const shouldDisplay =
+        position === 'all' ||
+        bannerPositions.includes('all') ||
+        bannerPositions.includes(position);
+
+      if (!shouldDisplay) {
+        logger.log(`[WordPress API] Banner ${post.id} position mismatch (want: ${position}, got: [${bannerPositions.join(', ')}]), skipping`);
+        continue;
+      }
+
+      logger.log(`[WordPress API] Banner ${post.id} matches position ${position} (has: [${bannerPositions.join(', ')}])`);
+
+      // Stocker les positions pour la bannière
+      const bannerPosition = bannerPositions.join(','); // Pour debug/affichage
+
+      // Résoudre l'URL de l'image
+      let imageUrl = null;
+
+      if (typeof acf.banner_image === 'string') {
+        // C'est déjà une URL
+        imageUrl = acf.banner_image;
+        logger.log(`[WordPress API] Banner ${post.id} image URL (string): ${imageUrl}`);
+      } else if (typeof acf.banner_image === 'object' && acf.banner_image.url) {
+        // C'est un objet ACF avec URL
+        imageUrl = acf.banner_image.url;
+        logger.log(`[WordPress API] Banner ${post.id} image URL (object): ${imageUrl}`);
+      } else if (typeof acf.banner_image === 'number') {
+        // C'est un ID d'attachment, il faut le résoudre
+        const imageId = acf.banner_image;
+        logger.log(`[WordPress API] Banner ${post.id} has image ID ${imageId}, fetching media...`);
+
+        try {
+          const mediaController = new AbortController();
+          const mediaTimeoutId = setTimeout(() => mediaController.abort(), API_TIMEOUT);
+
+          const mediaResponse = await fetch(`${WP_API_BASE_URL}/media/${imageId}`, {
+            signal: mediaController.signal,
+          });
+
+          clearTimeout(mediaTimeoutId);
+
+          if (mediaResponse.ok) {
+            const media = await mediaResponse.json();
+            imageUrl = media.source_url;
+            logger.log(`[WordPress API] Banner ${post.id} image resolved: ${imageUrl}`);
+          } else {
+            logger.error(`[WordPress API] Failed to fetch media ${imageId}: ${mediaResponse.status}`);
+          }
+        } catch (mediaError) {
+          logger.error(`[WordPress API] Error fetching media ${imageId}:`, mediaError);
+        }
+      }
+
+      // Si on a réussi à obtenir une URL d'image, ajouter la bannière
+      if (imageUrl) {
+        banners.push({
+          id: post.id,
+          title: decodeHTML(post.title?.rendered || 'Bannière'),
+          image: imageUrl,
+          link: acf.banner_link || null,
+          position: bannerPosition,
+          order: acf.banner_order || 0,
+        });
+        logger.log(`[WordPress API] Banner ${post.id} added successfully`);
+      } else {
+        logger.warn(`[WordPress API] Banner ${post.id} has no valid image URL, skipping`);
+      }
+    }
+
+    // Trier par ordre
+    banners.sort((a, b) => a.order - b.order);
+
+    logger.log(`[WordPress API] Found ${banners.length} active banners`);
+    return banners;
+
+  } catch (error) {
+    if (error.name === 'AbortError') {
+      logger.error('[WordPress API] Request timeout fetching banners');
+    } else {
+      logger.error('[WordPress API] Error fetching banners:', error);
+    }
+    return [];
+  }
+}
+
+/**
  * Fetch toutes les pages WordPress pour le menu
  * 
  * EXPLICATION :

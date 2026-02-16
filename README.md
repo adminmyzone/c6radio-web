@@ -1,8 +1,8 @@
 # 📻 C6Radio Web App
 
 **Application mobile et web pour C6Radio**  
-**Status** : 🆕 Phase 7 - Configuration iOS depuis zéro (Documentation complète prête !)  
-**Dernière mise à jour** : 15 février 2026
+**Status** : 🎉 Phase 6 Complétée - Bannières Publicitaires ✅  
+**Dernière mise à jour** : 16 février 2026
 
 ---
 
@@ -27,35 +27,16 @@ npx cap sync ios
 
 ---
 
-## 📱 DÉPLOIEMENT iOS TESTFLIGHT
+## 📱 DÉPLOIEMENT MOBILE
 
-**Nouveau départ propre** - Documentation complète créée !
-
-### Quick Start (5 minutes de lecture)
-```bash
-cat docs/phase-7-QUICK-START.md
-```
-
-### Guide complet (45-60 minutes de configuration)
-```bash
-cat docs/phase-7-DE-ZERO-A-TESTFLIGHT.md
-```
-
-### Script helper interactif
-```bash
-./setup-ios-helper.sh
-```
-
-**Objectif** : Déploiement automatique sur TestFlight à chaque `git push` ! 🚀
+**App fonctionnelle sur iPhone via sideload** ✅
 
 ---
 
 ## 📚 Documentation
 
-**⚡ Démarrage Phase 7** : `docs/phase-7-START-HERE.md` ← **COMMENCE ICI**  
-**📖 Guide complet iOS** : `docs/phase-7-DE-ZERO-A-TESTFLIGHT.md`  
-**✅ Checklist** : `docs/phase-7-CHECKLIST-RAPIDE.md`  
-**📋 Index** : `docs/phase-7-INDEX-COMPLET.md`
+**Phase 6 - Bannières :** `docs/phase-6-bannieres-RESUME.md` ← **NOUVEAU !**  
+**Guide complet :** `docs/phase-6-bannieres-COMPLETE.md`
 
 **Guide reprise projet** : `docs/REPRISE-PROCHAINE-SESSION.md`  
 **Index documentation** : `docs/README.md`
@@ -68,7 +49,7 @@ cat docs/phase-7-DE-ZERO-A-TESTFLIGHT.md
 - **Mobile** : Capacitor 6
 - **Audio** : GlobalAudioContext (gestion unifiée)
 - **CMS** : WordPress REST API
-- **CI/CD** : GitHub Actions → TestFlight
+- **Bannières** : Rotation automatique + Cache
 
 ---
 
@@ -80,18 +61,20 @@ cat docs/phase-7-DE-ZERO-A-TESTFLIGHT.md
 - ✅ Phase 3 : Pages & Navigation
 - ✅ Phase 4 : WordPress Actualités
 - ✅ Phase 5 : Podcasts WordPress
-- 🟡 Phase 7 : Mobile & TestFlight (85%)
+- ✅ Phase 6 : Bannières Publicitaires 🆕
+- ⏳ Phase 7 : Polish & Tests
+- ⏳ Phase 8 : Optimisations Production
 
 ---
 
 ## 🎯 Prochaines Étapes
 
-1. Créer profil de provisionnement iOS (30 min)
-2. Tester workflow GitHub Actions (15 min)
-3. Installer sur iPhone 13 mini (1 heure)
-4. Tests fonctionnels (1 heure)
+1. **Phase 7** : Polish UI/UX + Tests exhaustifs
+2. **Phase 8** : Optimisations production
+3. **Tests finaux** : Mobile iPhone + iPad
+4. **Déploiement** : Production
 
-**Voir** : `docs/phase-7-ACTION-IMMEDIATE.md`
+**Progression MVP** : 75% (6/8 phases)
 
 ---
 

@@ -48,7 +48,7 @@ export function useBanners(position = 'all', rotationInterval = 5000) {
       const now = Date.now();
 
       if (cached && (now - cached.timestamp) < CACHE_DURATION) {
-        logger.log(`[useBanners] Using cached banners for position: ${position}`);
+        logger.log(`[useBanners] Using cached banners for position: ${position}, count: ${cached.data.length}`);
         setBanners(cached.data);
         setIsLoading(false);
         return;
@@ -57,6 +57,7 @@ export function useBanners(position = 'all', rotationInterval = 5000) {
       // Fetch depuis WordPress
       logger.log(`[useBanners] Fetching banners from WordPress for position: ${position}`);
       const data = await fetchBanners(position);
+      logger.log(`[useBanners] Received ${data.length} banners for position: ${position}`);
 
       // Mettre en cache
       bannersCache.set(cacheKey, {
@@ -67,10 +68,17 @@ export function useBanners(position = 'all', rotationInterval = 5000) {
       setBanners(data);
       setIsLoading(false);
 
+      // Log final pour confirmer
+      if (data.length === 0) {
+        logger.warn(`[useBanners] No banners found for position: ${position}. Check WordPress configuration.`);
+      }
+
     } catch (err) {
       logger.error('[useBanners] Error loading banners:', err);
       setError(err.message);
       setIsLoading(false);
+      // Important : mettre un tableau vide en cas d'erreur
+      setBanners([]);
     }
   }, [position]);
 
@@ -80,6 +88,27 @@ export function useBanners(position = 'all', rotationInterval = 5000) {
   useEffect(() => {
     loadBanners();
   }, [loadBanners]);
+
+  /**
+   * Précharger les images des bannières pour éviter le flash lors de la rotation
+   */
+  useEffect(() => {
+    if (banners.length === 0) return;
+
+    logger.log(`[useBanners] Preloading ${banners.length} banner images...`);
+    
+    // Précharger chaque image
+    banners.forEach((banner, index) => {
+      const img = new Image();
+      img.src = banner.image;
+      img.onload = () => {
+        logger.log(`[useBanners] Preloaded image ${index + 1}/${banners.length}: ${banner.title}`);
+      };
+      img.onerror = () => {
+        logger.error(`[useBanners] Failed to preload image: ${banner.title}`);
+      };
+    });
+  }, [banners]);
 
   /**
    * Rotation automatique des bannières

@@ -21,8 +21,30 @@
 /**
  * URL de base de l'API WordPress
  * WordPress expose automatiquement une REST API sur /wp-json/wp/v2/
+ *
+ * DETECTION AUTOMATIQUE :
+ * - Si on est sur exp937.fr → utiliser exp937.fr/wp
+ * - Sinon → utiliser exp937.fr/wp (fallback)
  */
-export const WP_API_BASE_URL = 'https://exp937.fr/wp/wp-json/wp/v2';
+const getWordPressBaseUrl = () => {
+  // Récupérer le hostname actuel
+  const hostname = window.location.hostname;
+
+  // Si on est en local dev
+  if (hostname === 'localhost' || hostname === '127.0.0.1') {
+    return 'https://exp937.fr/wp/wp-json/wp/v2';
+  }
+
+  // Si on est sur exp937.fr (production)
+  if (hostname === 'exp937.fr' || hostname === 'www.exp937.fr') {
+    return 'https://exp937.fr/wp/wp-json/wp/v2';
+  }
+
+  // Fallback
+  return 'https://exp937.fr/wp/wp-json/wp/v2';
+};
+
+export const WP_API_BASE_URL = getWordPressBaseUrl();
 
 /**
  * Endpoints WordPress spécifiques

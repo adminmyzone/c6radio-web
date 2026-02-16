@@ -20,7 +20,7 @@
 .hero {
   text-align: center; /* Centrer le texte */
   padding: 4rem 2rem; /* Espacement intérieur haut/bas et gauche/droite */
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); /* Dégradé violet */
+  background: linear-gradient(135deg, #08cf4d 0%, #764ba2 100%); /* Dégradé violet */
   border-radius: 12px; /* Coins arrondis */
   color: white; /* Texte blanc */
   margin-bottom: 3rem; /* Espace en dessous */

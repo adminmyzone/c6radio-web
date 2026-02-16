@@ -6,8 +6,10 @@
 /**
  * Détecte si on est en mode développement ou production
  * En production (import.meta.env.PROD), les logs sont désactivés
+ *
+ * TEMPORAIRE : Activé en production pour debug bannières
  */
-const isDevelopment = import.meta.env.DEV;
+const isDevelopment = true; // Force les logs même en prod (TEMPORAIRE)
 
 /**
  * Logger intelligent qui s'adapte à l'environnement

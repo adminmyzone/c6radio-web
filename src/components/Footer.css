@@ -166,7 +166,7 @@
 /* Mobiles */
 @media (max-width: 480px) {
   .site-footer {
-    padding: 2rem 1rem 1rem;
+    display: none;
   }
 
   .footer-content {

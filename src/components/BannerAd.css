@@ -9,10 +9,12 @@
   position: relative;
   width: 100%;
   max-width: 100%;
+  min-height: 80px; /* Hauteur minimale pour éviter bannière invisible */
   overflow: hidden;
   background: #f5f5f5;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box; /* Important : inclure padding et border dans width */
 }
 
 /* Lien wrapper */
@@ -30,15 +32,18 @@
 
 /* Image de la bannière */
 .banner-image {
-  aspect-ratio: 16 / 9;
   width: 100%;
   height: 100%;
+  max-height: auto;
   object-fit: contain;
-  transition: opacity 0.4s ease, transform 0.3s ease;
+  background: #000;
+  transition: opacity 0.6s ease-in-out; /* Transition plus longue et douce pour rotation fluide */
+  display: block;
+  opacity: 1; /* Toujours visible par défaut (images préchargées) */
 }
 
 .banner-image.loading {
-  opacity: 0;
+  opacity: 0.3; /* Légèrement transparent au lieu de complètement invisible - évite le flash blanc */
 }
 
 .banner-image.loaded {
@@ -56,6 +61,26 @@
   background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
+}
+
+/* État vide (dev seulement) */
+.banner-empty {
+  background: #fff3cd;
+  border: 2px dashed #ffc107;
+}
+
+.banner-empty-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  text-align: center;
+  color: #856404;
+}
+
+.banner-empty-message p {
+  margin: 5px 0;
 }
 
 @keyframes shimmer {
@@ -205,6 +230,11 @@
 @media (max-width: 768px) {
   .banner-ad {
     border-radius: 4px;
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    min-height: 100px; /* Hauteur minimale plus grande sur mobile */
   }
 
   .banner-control {
@@ -226,6 +256,27 @@
   /* Masquer les contrôles sur mobile pour économiser l'espace */
   .banner-controls {
     display: none;
+  }
+
+  /* S'assurer que l'image ne déborde pas */
+  .banner-image {
+    max-width: 100%;
+    width: 100%;
+    height: 100%; /* Prendre toute la hauteur du container */
+    min-height: 100px; /* Hauteur minimale augmentée */
+    max-height: 200px; /* Hauteur maximale pour éviter bannières géantes */
+    object-fit: contain;
+  }
+
+  /* Variantes de position mobile */
+  .banner-ad.banner-header {
+    margin-bottom: 10px;
+    max-height: 200px; /* Limiter la hauteur header sur mobile */
+  }
+
+  .banner-ad.banner-footer {
+    margin-top: 10px;
+    min-height: 100px; /* Forcer une hauteur minimale visible */
   }
 }
 

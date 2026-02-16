@@ -12,7 +12,7 @@
 /* Container principal de l'application */
 .app-container {
   min-height: 100vh;
-  padding-top: 0px; /* Pas de padding ici, géré par banner-header */
+  padding-top: 100px; /* Espace pour le header fixe (~80px) + marge (20px) */
   padding-bottom: 0px;
 }
 
@@ -25,7 +25,7 @@
 }
 
 .banner-header-container {
-  padding-top: 100px; /* Espace pour le header fixe (80px) + marge (20px) */
+  padding-top: 0; /* Plus besoin de padding-top, géré par app-container */
   margin-bottom: 20px;
 }
 
@@ -56,9 +56,7 @@
   flex-shrink: 0;
   position: sticky;
   top: 100px; /* Stick en dessous du header */
-  height: fit-content;
-  max-height: calc(100vh - 200px);
-  overflow-y: auto;
+  overflow-y: hidden;
 }
 
 /* Responsive : Masquer sidebar sur tablette et mobile */
@@ -67,24 +65,38 @@
     display: none;
   }
 
+  .app-container {
+    padding-top: 90px; /* Header tablette + marge */
+  }
+
   .content-layout {
     padding: 0 15px;
   }
 
   .banner-container {
-    padding: 0 15px;
+    padding: 0 0px;
+  }
+
+  .banner-header-container {
+    padding-top: 0; /* Géré par app-container */
   }
 }
 
 @media (max-width: 768px) {
+  .app-container {
+    padding-top: calc(env(safe-area-inset-top) + 70px); /* Safe area (~47px) + header height (~60px) + petite marge */
+  }
+
   .banner-header-container {
-    padding-top: 90px; /* Header plus petit sur mobile (70px) + marge (20px) */
+    padding-top: 0; /* Géré par app-container */
     margin-bottom: 15px;
   }
 
   .banner-footer-container {
     margin-top: 20px;
     margin-bottom: 15px;
+    padding-left: 10px;
+    padding-right: 10px;
   }
 
   .content-layout {
@@ -92,7 +104,10 @@
   }
 
   .banner-container {
-    padding: 0 10px;
+    padding: 0 0px;
+    max-width: 100%; /* Empêcher débordement */
+    overflow-x: hidden; /* Cacher le débordement horizontal */
+    overflow-y: hidden;
   }
 }
 

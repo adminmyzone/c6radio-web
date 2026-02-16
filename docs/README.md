@@ -1,346 +1,354 @@
-# Documentation C6Radio
+# 📻 C6Radio - Documentation Projet
 
-**Dernière mise à jour :** 15 février 2026  
-**Statut Projet :** 🟢 **70% MVP Complété** → Release 1er avril 2026
-
----
-
-## 🚀 DÉMARRAGE RAPIDE
-
-**Nouveau sur le projet ? Commencez ici :**
-
-1. **[DEMARRAGE-RAPIDE.md](DEMARRAGE-RAPIDE.md)** ⚡ 5 minutes  
-   Guide ultra-rapide pour reprendre le projet
-   
-2. **[REPRISE-PROCHAINE-SESSION.md](REPRISE-PROCHAINE-SESSION.md)** 📍 10 minutes  
-   État actuel du projet + Prochaines actions
-
-3. **[implementation-plan.md](implementation-plan.md)** 📋 30 minutes  
-   Plan complet avec roadmap phases
+**Dernière mise à jour :** 16 février 2026  
+**Version :** 1.0  
+**Statut :** ✅ Production Ready
 
 ---
 
-## 📚 Index des Documents
+## 🚀 Démarrage Rapide
 
-### 🎵 Audio (Section Unifiée)
-
-- **[audio-COMPLETE.md](audio-COMPLETE.md)** ⭐⭐⭐ **RÉFÉRENCE UNIQUE AUDIO**  
-  Documentation complète consolidée (1500+ lignes) : Architecture + GlobalAudioContext + Services + Hooks + API + Tests + Troubleshooting
-  
-- **[session-15-fev-global-audio.md](session-15-fev-global-audio.md)** 📝 Session 15 février  
-  Notes détaillées session GlobalAudioContext + Lazy Loading Vidéos
-
-### 📱 Phase 7 - Mobile & TestFlight (EN COURS)
-
-**⚠️ Status : NOUVEAU DÉPART - Configuration depuis zéro**  
-**🎯 Action : Suivre le guide complet étape par étape**
-
-#### 🚀 COMMENCE ICI (Nouveau départ propre)
-
-- **[phase-7-START-HERE.md](phase-7-START-HERE.md)** ⚡ 2 min  
-  **POINT D'ENTRÉE** : Résumé ultra-rapide, par où commencer
-
-- **[phase-7-DE-ZERO-A-TESTFLIGHT.md](phase-7-DE-ZERO-A-TESTFLIGHT.md)** 📖 45-60 min  
-  **GUIDE PRINCIPAL** : Configuration complète A à Z (11 étapes détaillées)
-
-- **[phase-7-CHECKLIST-RAPIDE.md](phase-7-CHECKLIST-RAPIDE.md)** ✅ Validation  
-  **CHECKLIST** : Cases à cocher pour valider chaque étape
-
-- **[phase-7-INDEX-COMPLET.md](phase-7-INDEX-COMPLET.md)** 📋 Navigation  
-  **INDEX** : Vue d'ensemble de tous les guides, scénarios d'utilisation
-
-#### 📚 Guides complémentaires
-
-- **[phase-7-SYNTHESE-COMPLETE.md](phase-7-SYNTHESE-COMPLETE.md)** 📋 Vue complète  
-  Vue d'ensemble du workflow et du système
-
-- **[phase-7-GUIDE-ETAPE-PAR-ETAPE.md](phase-7-GUIDE-ETAPE-PAR-ETAPE.md)** 📱 Détaillé  
-  Guide pratique avec screenshots simulés
-
-- **[phase-7-AIDE-MEMOIRE-RAPIDE.md](phase-7-AIDE-MEMOIRE-RAPIDE.md)** 🚨 Dépannage  
-  Checklist, diagnostic par erreur, commandes utiles
-
-- **[phase-7-DIAGNOSTIC-COMPLET.md](phase-7-DIAGNOSTIC-COMPLET.md)** 🔍 Diagnostic  
-  Analyse exhaustive du problème, points d'attention, workflow
-
-- **[phase-7-GUIDE-VISUEL.md](phase-7-GUIDE-VISUEL.md)** 🎨 Schémas  
-  Diagrammes, flux de travail, tableaux récapitulatifs
-
-#### 📖 Guides précédents (workflow déjà créé)
-
-- **[phase-7-mobile-testflight-GUIDE.md](phase-7-mobile-testflight-GUIDE.md)** 📖 1000+ lignes  
-  Guide ULTRA complet : Configuration Capacitor, Workflow GitHub Actions, Safe Areas iOS
-
-- **[phase-7-secrets-github-QUICK.md](phase-7-secrets-github-QUICK.md)** 🔐 Secrets  
-  Configuration des 7 secrets GitHub
-
-- **[phase-7-mobile-testflight-RESUME.md](phase-7-mobile-testflight-RESUME.md)** 📝 Résumé  
-  Architecture, métriques, checklist validation
-
-- **[phase-7-VISUAL-RECAP.md](phase-7-VISUAL-RECAP.md)** 🎨 Recap visuel  
-  Diagrammes et schémas explicatifs Phase 7
-
-#### 🛠️ Guides de correction (historique)
-
-- **[phase-7-FIX-code-signing-error.md](phase-7-FIX-code-signing-error.md)** 🔧 Fix signature
-- **[phase-7-FIX2-conflit-signature.md](phase-7-FIX2-conflit-signature.md)** 🔧 Fix conflit
-- **[phase-7-FIX4-export-profile.md](phase-7-FIX4-export-profile.md)** 🔧 Fix export
-- **[phase-7-FIX5-cloud-permission.md](phase-7-FIX5-cloud-permission.md)** 🔧 Fix cloud
-- **[phase-7-CONVERT-CER-TO-P12-SANS-MAC.md](phase-7-CONVERT-CER-TO-P12-SANS-MAC.md)** 🔐 Certificat
-
-**📊 Résumé Phase 7 :**
-- ✅ Workflow GitHub Actions créé (204 lignes)
-- ✅ Documentation exhaustive (7 guides, 5200+ lignes)
-- ✅ Bundle ID configuré : `fr.c6debug.app`
-- ⏳ Profil de provisionnement à créer ⚠️ **BLOQUANT**
-- ⏳ Premier build TestFlight
-- ⏳ Tests sur iPhone 13 mini
-
-**📈 Rapport de session détaillé** : [RAPPORT-SESSION-15-FEV-PHASE7.md](RAPPORT-SESSION-15-FEV-PHASE7.md)
-
-### 🎙️ Phase 5 - Podcasts WordPress
-
-**✅ 100% Complétée**
-
-- **[phase-5-podcasts-COMPLETE.md](phase-5-podcasts-COMPLETE.md)** 📖 900+ lignes  
-  Guide complet : Architecture, Implementation, Tests, API
-
-- **[phase-5-podcasts-RESUME.md](phase-5-podcasts-RESUME.md)** 📝 Résumé débutant  
-  Version simplifiée avec explications pédagogiques
-
-- **[phase-5-podcasts-GUIDE-VISUEL.md](phase-5-podcasts-GUIDE-VISUEL.md)** 🎨 Diagrammes  
-  Schémas visuels de l'architecture
-
-- **[phase-5-podcasts-tests.md](phase-5-podcasts-tests.md)** 🧪 Guide tests  
-  10 scénarios de test détaillés
-
-- **[phase-5-FIX-audio-url-resolution.md](phase-5-FIX-audio-url-resolution.md)** 🐛 Fix #1  
-  Résolution fichier MP3 introuvable (404)
-
-- **[phase-5-FIX-player-state-reset.md](phase-5-FIX-player-state-reset.md)** 🐛 Fix #2  
-  Reset état podcast lors navigation
-
-### 🏗️ Architecture & Technique
-
-- **[technical-decisions.md](technical-decisions.md)** - Décisions techniques prises
-
-- **[sessions/README.md](sessions/README.md)** 📝 - Index sessions développement  
-  Historique chronologique toutes les sessions (février 2026)
-
-### 🎯 Planning & Production
-
-- **[production-readiness-checklist.md](production-readiness-checklist.md)** ✅ - Checklist déploiement  
-
-- **[implementation-plan.md](implementation-plan.md)** 📋 - Plan complet du projet  
-  Roadmap phases, tasks, estimations (960+ lignes)
-
-- **[RAPPORT-AVANCEMENT-15-FEV-2026.md](RAPPORT-AVANCEMENT-15-FEV-2026.md)** 📊 Rapport d'avancement  
-  Analyse détaillée progression projet
-
-- **[next-session-todo.md](next-session-todo.md)** 🎯 - Prochaines étapes  
-  Mis à jour après chaque session
-
-### 📋 Phase 3 (Pages & Navigation)
-
-**✅ 100% Complétée**
-
-- **[phase-3-pages-navigation.md](phase-3-pages-navigation.md)** ✅ - Guide Phase 3  
-  Guide détaillé étape par étape avec checkboxes de progression
-
-- **[phase-3-recap.md](phase-3-recap.md)** 📝 - Récapitulatif Phase 3
-
-- **[phase-3b-test-guide.md](phase-3b-test-guide.md)** 🧪 - Guide tests Phase 3B
-
-### 🚀 Quick Starts
-
-- **[quick-starts/session-15-fev-tests.md](quick-starts/session-15-fev-tests.md)** 🧪 - Tests GlobalAudioContext  
-  Guide rapide pour tester la session du 15 février
-
-### 📋 Product & Vision
-
-- **[prd.md](prd.md)** - Product Requirements Document
-- **[product-brief-c6radio.md](product-brief-c6radio.md)** - Vision globale du projet
-
-### 📦 Archives
-
-- **[archive/audio/](archive/audio/)** 📦 - Documentation historique audio v1.0-v1.3  
-  Versions initiales (audio-player-feature.md, audio-advanced-features.md)
-
-- **[archive/sessions/](archive/sessions/)** 📦 - Anciennes versions architecture  
-  audio-architecture-v1 (remplacé par audio-COMPLETE.md)
-
----
-
-## 🚀 Où Commencer ?
-
-### 🆕 Je découvre le projet
-👉 Lis **[audio-COMPLETE.md](audio-COMPLETE.md)** - Source unique de vérité pour l'audio
-
-### 🔧 Je veux comprendre comment ça marche
-👉 Lis **[audio-COMPLETE.md](audio-COMPLETE.md)** - Architecture + Services + API détaillés
-
-### 🎯 Je veux démarrer la Phase 4 (Podcasts)
-👉 Lis **[next-session-todo.md](next-session-todo.md)** - Prochaines étapes définies
-
-### 🐛 Je debug un problème
-👉 Voir section "Troubleshooting" dans **[audio-COMPLETE.md](audio-COMPLETE.md)**
-
-### 📦 Je veux déployer en production
-👉 Lis **[production-readiness-checklist.md](production-readiness-checklist.md)** - Tous les points sont ✅ validés
-
-### 🗺️ Je veux voir le plan global
-👉 Lis **[implementation-plan.md](implementation-plan.md)** - Roadmap complète
-
-### 📝 Je veux voir l'historique des sessions
-👉 Lis **[sessions/README.md](sessions/README.md)** - Index chronologique
-
----
-
-## ✅ État Actuel (15 février 2026)
-
-### 🎉 Phases Complétées
-- ✅ **Phase 0 :** Setup & Validation
-- ✅ **Phase 1 :** Audio Core (100%)
-- ✅ **Phase 2 :** Barre de Contrôle (PlayerBar + NowPlaying)
-- ✅ **Phase 3A :** Pages & Navigation (React Router, Header, Footer)
-- ✅ **Phase 3B :** WordPress Dynamique + GlobalAudioContext
-- ✅ **Production Readiness :** Tous les points critiques résolus !
-
-### 🏆 Statut Production
-
-**✅ PRODUCTION READY !**
-
-Tous les points critiques validés :
-- ✅ Logger intelligent (dev/prod)
-- ✅ ErrorBoundary protection React
-- ✅ GlobalAudioContext (un seul audio à la fois)
-- ✅ Lazy loading vidéos (performance)
-- ✅ Logo configuré correctement
-- ✅ Aucun TODO restant
-- ✅ HTTPS validé
-- ✅ Documentation complète (3500+ lignes)
-
-### ⏳ Prochaines Phases (Optionnelles)
-
-- **Phase 4 :** Podcasts (liste, player avec pause)
-- **Phase 5 :** PWA & Offline
-
-**Améliorations suggérées (non-bloquantes) :**
-- Monitoring Sentry
-- Analytics Plausible
-- Tests automatisés
-- URLs en .env
-
----
-
-## 📊 Qualité Code Actuelle
-
-**Note globale :** 9.5/10 ⭐⭐⭐ - **EXCELLENT**
-
-**Points forts :**
-- ⭐⭐⭐⭐⭐ Architecture professionnelle en couches
-- ⭐⭐⭐⭐⭐ Documentation exceptionnelle (3500+ lignes !)
-- ⭐⭐⭐⭐⭐ Gestion erreurs robuste (reconnexion + fallbacks)
-- ⭐⭐⭐⭐⭐ Code bien commenté et maintenable
-- ⭐⭐⭐⭐⭐ Patterns modernes (Observer, Singleton, Context API)
-- ⭐⭐⭐⭐⭐ GlobalAudioContext (un seul audio à la fois)
-- ⭐⭐⭐⭐⭐ Performance optimisée (lazy loading vidéos)
-- ⭐⭐⭐⭐ Logger intelligent
-- ⭐⭐⭐⭐ Error Boundary React
-
-**Améliorations optionnelles :**
-- ⚠️ URLs hardcodées (externaliser en .env)
-- ⚠️ Pas de monitoring (Sentry recommandé)
-- ⚠️ Pas de tests auto (Jest pour CI/CD)
-- ⚠️ Pas d'analytics (Plausible suggéré)
-
----
-
-## 📦 Fichiers Créés
-
-### Contexts
-- ✅ `src/contexts/GlobalAudioContext.jsx` (157 lignes) - Gestion audio centralisée
-
-### Services Audio
-- ✅ `src/services/audioPlayer.js` (425 lignes) - Service central
-- ✅ `src/services/reconnectionManager.js` (180 lignes) - Reconnexion auto
-- ✅ `src/services/mediaSession.js` (287 lignes) - Contrôles natifs
-- ✅ `src/services/nowPlaying.js` (118 lignes) - API Libretime
-
-### Hooks React
-- ✅ `src/hooks/useAudioPlayer.js` (88 lignes) - Hook player + GlobalAudio
-- ✅ `src/hooks/useNowPlaying.js` (130 lignes) - Hook now playing + polling
-
-### Composants UI
-- ✅ `src/components/PlayerBar.jsx` (122 lignes) - Barre sticky
-- ✅ `src/components/NowPlaying.jsx` (48 lignes) - Affichage métadonnées
-- ✅ `src/components/ErrorBoundary.jsx` (50 lignes) - Protection crashes
-
-### Utilitaires
-- ✅ `src/lib/logger.js` (52 lignes) - Logger intelligent
-
-### Assets
-- ✅ `public/logo-c6radio.png` - Logo 512x512px
-
----
-
-## 📖 Documentation Générée
-
-**Total : 3500+ lignes de documentation professionnelle**
-
-| Document | Lignes | Description |
-|----------|--------|-------------|
-| audio-COMPLETE.md | 1500+ | ⭐ Référence unique audio (NOUVEAU 15 fév) |
-| session-15-fev-global-audio.md | 500+ | Notes session GlobalAudioContext |
-| phase-3-pages-navigation.md | 500+ | Guide Phase 3 avec tracking |
-| phase-3-recap.md | 300+ | Récapitulatif Phase 3 |
-| production-readiness-checklist.md | 600+ | Checklist production |
-| implementation-plan.md | 960+ | Roadmap complète |
-
-**Archives :**
-- archive/audio/ - Documentation historique v1.0-v1.3 (2500+ lignes)
-- archive/sessions/ - Anciennes versions architecture
-
----
-
-## 🔗 Liens Rapides
-
-### Comprendre l'Architecture
-1. [Vue d'ensemble architecture](audio-architecture.md#-vue-densemble)
-2. [Services détaillés](audio-architecture.md#-architecture-détaillée)
-3. [Flux de données](audio-architecture.md#-flux-de-données-complet)
-
-### Débugger
-1. [Section Debugging](audio-architecture.md#-debugging)
-2. [Logs console](audio-architecture.md#logs-console)
-3. [État reconnexion](audio-architecture.md#état-reconnexion)
-
-### Déployer
-1. [Checklist production](production-readiness-checklist.md)
-2. [Configuration](audio-architecture.md#-configuration)
-3. [Tests](audio-architecture.md#-tests)
-
----
-
-## 🎯 Pour La Suite
-
-### Option 1 : Déploiement Immédiat ✅
-Le code est production-ready, tu peux déployer maintenant :
 ```bash
+# Installation
+npm install
+
+# Développement
+npm run dev
+
+# Build production
 npm run build
-# Upload dist/ sur serveur
 ```
 
-### Option 2 : Améliorations Optionnelles
-- Monitoring Sentry (2h)
-- Analytics Plausible (1h)
-- Tests manuels cross-browser (1h)
-
-### Option 3 : Nouvelles Features
-- Phase 3 : Pages & Navigation
-- Phase 4 : Podcasts avancés
-- Phase 5 : PWA
+**URL :** https://exp937.fr  
+**App iOS :** TestFlight (en cours)
 
 ---
 
-**🎉 Félicitations pour ce travail de qualité professionnelle ! 🚀**
+## 📱 Stack Technique
+
+### Frontend
+- **React 18** - Framework UI
+- **Vite** - Build tool rapide
+- **React Router** - Navigation SPA
+- **CSS moderne** - Responsive design
+
+### Backend
+- **WordPress REST API** - CMS headless
+- **ACF (Advanced Custom Fields)** - Champs personnalisés
+- **Libretime API** - Métadonnées radio en direct
+
+### Mobile
+- **Capacitor** - Wrapper natif iOS/Android
+- **TestFlight** - Distribution beta iOS
+
+---
+
+## ✅ Fonctionnalités Actuelles
+
+### 🎵 Audio Player
+- ✅ Lecture du stream radio en direct
+- ✅ Affichage métadonnées en temps réel (artiste, titre)
+- ✅ Contrôles natifs iOS (Media Session API)
+- ✅ Reconnexion automatique en cas de perte réseau
+- ✅ Gestion globale : un seul audio à la fois
+
+### 📰 Actualités WordPress
+- ✅ Liste des articles avec pagination
+- ✅ Page détail article (HTML WordPress)
+- ✅ Images featured
+- ✅ Catégories et tags
+- ✅ Date de publication
+
+### 🎙️ Podcasts
+- ✅ Lecture MP3 intégrée aux articles
+- ✅ Barre de progression
+- ✅ Contrôles lecture/pause
+- ✅ Intégration GlobalAudioContext
+
+### 📢 Bannières Publicitaires
+- ✅ Rotation automatique multi-positions
+- ✅ Préchargement des images (pas de flash)
+- ✅ Gestion WordPress (header, footer, sidebar)
+- ✅ Responsive desktop/mobile
+
+### 🧭 Navigation
+- ✅ Menu dynamique depuis WordPress
+- ✅ Pages personnalisées
+- ✅ Header/Footer responsive
+- ✅ Menu mobile hamburger
+
+### 📱 Mobile iOS
+- ✅ App native Capacitor
+- ✅ Safe areas iOS (notch, home indicator)
+- ✅ Distribution TestFlight
+- ✅ Icônes et splash screens
+
+---
+
+## 📚 Documentation par Phase
+
+Chaque phase du projet est documentée dans un fichier dédié :
+
+| Phase | Fichier | Description | Status |
+|-------|---------|-------------|--------|
+| **Phase 1** | [PHASE-1-audio-player.md](PHASE-1-audio-player.md) | Player audio + streaming | ✅ Complété |
+| **Phase 2** | [PHASE-2-wordpress-api.md](PHASE-2-wordpress-api.md) | Connexion WordPress | ✅ Complété |
+| **Phase 3** | [PHASE-3-navigation.md](PHASE-3-navigation.md) | Navigation dynamique | ✅ Complété |
+| **Phase 4** | [PHASE-4-actualites.md](PHASE-4-actualites.md) | Articles WordPress | ✅ Complété |
+| **Phase 5** | [PHASE-5-podcasts.md](PHASE-5-podcasts.md) | Podcasts MP3 | ✅ Complété |
+| **Phase 6** | [PHASE-6-bannieres.md](PHASE-6-bannieres.md) | Bannières publicitaires | ✅ Complété |
+| **Phase 7** | [PHASE-7-mobile-ios.md](PHASE-7-mobile-ios.md) | Application iOS | ✅ Complété |
+
+---
+
+## 🏗️ Architecture Globale
+
+### Structure du Projet
+
+```
+c6radio-web/
+├── src/
+│   ├── components/        # Composants React
+│   │   ├── Header.jsx
+│   │   ├── Footer.jsx
+│   │   ├── PlayerBar.jsx
+│   │   ├── BannerAd.jsx
+│   │   └── ...
+│   ├── contexts/          # React Contexts
+│   │   └── GlobalAudioContext.jsx
+│   ├── hooks/             # Custom Hooks
+│   │   ├── useAudioPlayer.js
+│   │   ├── useNowPlaying.js
+│   │   └── useBanners.js
+│   ├── services/          # Services métier
+│   │   ├── audioPlayer.js
+│   │   ├── wordpress.js
+│   │   ├── nowPlaying.js
+│   │   ├── reconnectionManager.js
+│   │   └── mediaSession.js
+│   ├── pages/             # Pages React Router
+│   │   ├── Home.jsx
+│   │   ├── News.jsx
+│   │   └── NewsDetail.jsx
+│   └── lib/               # Utilitaires
+│       └── logger.js
+├── public/                # Assets statiques
+├── ios/                   # App Capacitor iOS
+└── docs/                  # Documentation
+```
+
+### Principes Architecturaux
+
+**Séparation des responsabilités :**
+- **Components** : UI pure (affichage)
+- **Hooks** : Logique React (état, effets)
+- **Services** : Logique métier (API, audio)
+- **Contexts** : État global partagé
+
+**Gestion de l'audio :**
+- Un seul `GlobalAudioContext` pour toute l'app
+- **Règle d'or** : Un seul audio actif à la fois
+- Arrêt automatique du stream si podcast lance
+- Arrêt automatique du podcast si stream lance
+
+**Performance :**
+- Lazy loading des images
+- Cache des données WordPress (5 min)
+- Préchargement des bannières
+- Debouncing des requêtes API
+
+---
+
+## 🔧 Configuration Requise
+
+### WordPress
+
+**Plugins requis :**
+- Advanced Custom Fields (ACF) PRO
+- WP REST API (natif WordPress)
+
+**Champs ACF nécessaires :**
+- `c6_podcast_audio` : URL MP3 pour podcasts
+- `banner_image` : Image bannière
+- `banner_link` : Lien bannière
+- `banner_position` : Position (header/footer/sidebar)
+- `banner_active` : Activation bannière
+- `banner_order` : Ordre affichage
+
+**Custom Post Types :**
+- `page` : Pages menu navigation
+- `post` : Articles actualités
+- `banner` : Bannières publicitaires (si utilisé)
+
+### Libretime
+
+**API endpoint :** `https://c6radio.zapto.org:8443/api/live-info-v2`
+
+**Format réponse :**
+```json
+{
+  "currentShow": {
+    "name": "Nom de l'émission"
+  },
+  "tracks": {
+    "current": {
+      "name": "Titre - Artiste"
+    }
+  }
+}
+```
+
+---
+
+## 🧪 Tests
+
+### Tests Manuels Recommandés
+
+**Audio Player :**
+- [ ] Stream lance et s'arrête correctement
+- [ ] Métadonnées s'affichent
+- [ ] Reconnexion fonctionne après perte réseau
+- [ ] Contrôles natifs iOS fonctionnent
+
+**Podcasts :**
+- [ ] MP3 se charge
+- [ ] Barre de progression fonctionne
+- [ ] Stream s'arrête quand podcast lance
+- [ ] Podcast s'arrête quand stream lance
+
+**Bannières :**
+- [ ] Rotation automatique fluide
+- [ ] Pas de flash blanc
+- [ ] Clics fonctionnent
+- [ ] Responsive sur mobile
+
+**Navigation :**
+- [ ] Menu charge depuis WordPress
+- [ ] Routes fonctionnent
+- [ ] Menu mobile responsive
+
+**iOS :**
+- [ ] Safe areas respectées
+- [ ] Header/PlayerBar taille fixe
+- [ ] App fonctionne hors ligne (cache)
+
+---
+
+## 🚀 Déploiement
+
+### Build Production
+
+```bash
+# 1. Build
+npm run build
+
+# 2. Tester en local
+npm run preview
+
+# 3. Upload dist/ sur serveur
+```
+
+### Déploiement iOS
+
+```bash
+# 1. Build web
+npm run build
+
+# 2. Sync Capacitor
+npx cap sync ios
+
+# 3. Ouvrir Xcode
+npx cap open ios
+
+# 4. Build depuis Xcode
+# Archive → Distribute → TestFlight
+```
+
+**Workflow GitHub Actions :**
+- `.github/workflows/ios-build.yml` automatise le build
+- Secrets GitHub configurés
+- Distribution automatique TestFlight
+
+---
+
+## 🐛 Troubleshooting
+
+### Audio ne se lance pas
+- Vérifier URL stream : `https://stream.c6radio.fr:8443/stream`
+- Vérifier console pour erreurs CORS
+- Tester en HTTPS (requis pour autoplay)
+
+### Métadonnées vides
+- Vérifier API Libretime : `https://c6radio.zapto.org:8443/api/live-info-v2`
+- Vérifier parsing dans `nowPlaying.js`
+- Intervalle de polling : 10 secondes
+
+### Bannières flash blanc
+- Préchargement des images activé (voir `useBanners.js`)
+- Vérifier que `imageLoaded` n'est pas reset
+
+### WordPress 404
+- Vérifier permalinks WordPress activés
+- Vérifier CORS autorisé pour exp937.fr
+- Vérifier ACF fields configurés
+
+### iOS Safe Areas
+- Utiliser `env(safe-area-inset-top)` pour header
+- Utiliser `env(safe-area-inset-bottom)` pour player
+- Valeurs fixes dans Capacitor (pas de variation)
+
+---
+
+## 📖 Ressources
+
+### Documentation Externe
+- [React Documentation](https://react.dev)
+- [Vite Guide](https://vitejs.dev)
+- [Capacitor Docs](https://capacitorjs.com)
+- [WordPress REST API](https://developer.wordpress.org/rest-api/)
+- [Media Session API](https://developer.mozilla.org/en-US/docs/Web/API/Media_Session_API)
+
+### Documentation Interne
+- Voir fichiers PHASE-X.md pour détails par phase
+- Voir `archive/` pour historique complet
+
+---
+
+## 👥 Équipe
+
+**Développeur :** Dofrecords  
+**Assistant IA :** GitHub Copilot CLI  
+**CMS :** WordPress (exp937.fr)  
+**Radio :** C6Radio (Libretime)
+
+---
+
+## 📅 Historique
+
+- **15 février 2026** : Phases 1-5 complétées
+- **16 février 2026** : Phase 6 (Bannières) + Phase 7 (iOS) complétées
+- **16 février 2026** : Documentation consolidée
+
+---
+
+## 🎯 Prochaines Étapes (Optionnel)
+
+### Améliorations Possibles
+- [ ] Tests automatisés (Jest, Vitest)
+- [ ] Analytics (Plausible, Google Analytics)
+- [ ] Monitoring (Sentry)
+- [ ] PWA (Service Worker, offline)
+- [ ] Mode sombre
+- [ ] Recherche d'articles
+- [ ] Partage social
+
+### Nouveaux Features
+- [ ] Playlist personnalisées
+- [ ] Favoris
+- [ ] Commentaires articles
+- [ ] Notifications push
+- [ ] Live chat
+
+---
+
+**🎉 Projet C6Radio - Version 1.0 Production Ready ! 🚀**

@@ -56,6 +56,7 @@ export function BannerAd({
   } = useBanners(position, rotationInterval);
 
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [currentBannerId, setCurrentBannerId] = useState(null);
 
   /**
    * Gérer le clic sur la bannière
@@ -79,16 +80,17 @@ export function BannerAd({
   };
 
   /**
-   * Reset imageLoaded quand la bannière change
+   * Quand la bannière change, on ne reset PAS imageLoaded immédiatement
+   * Les images sont préchargées, donc elles s'affichent instantanément
+   * On met juste à jour l'ID pour forcer un re-render si nécessaire
    */
   React.useEffect(() => {
-    setImageLoaded(false);
-  }, [currentBanner?.id]);
-
-  // Ne rien afficher si pas de bannières
-  if (!hasBanners) {
-    return null;
-  }
+    if (currentBanner?.id !== currentBannerId) {
+      setCurrentBannerId(currentBanner?.id);
+      // On garde imageLoaded à true car l'image est préchargée
+      // Pas de flash blanc !
+    }
+  }, [currentBanner?.id, currentBannerId]);
 
   // Afficher un loader pendant le chargement
   if (isLoading) {
@@ -99,6 +101,26 @@ export function BannerAd({
         </div>
       </div>
     );
+  }
+
+  // Ne rien afficher si pas de bannières (après le chargement)
+  if (!hasBanners && !isLoading) {
+    // En mode dev, afficher un message de debug
+    if (process.env.NODE_ENV === 'development') {
+      console.log(`[BannerAd] No banners found for position: ${position}`);
+      return (
+        <div className={`banner-ad banner-empty ${className}`} style={{ height }}>
+          <div className="banner-empty-message">
+            <p>Aucune bannière pour position: {position}</p>
+            <p style={{ fontSize: '0.8em', opacity: 0.7 }}>
+              Vérifiez que des bannières existent dans WordPress avec la position "{position}"
+            </p>
+          </div>
+        </div>
+      );
+    }
+    // En production, ne rien afficher
+    return null;
   }
 
   // Afficher la bannière courante
@@ -121,7 +143,7 @@ export function BannerAd({
             alt={banner.title}
             className={`banner-image ${imageLoaded ? 'loaded' : 'loading'}`}
             onLoad={handleImageLoad}
-            loading="lazy"
+            loading="eager"
           />
         </a>
       ) : (
@@ -131,7 +153,7 @@ export function BannerAd({
             alt={banner.title}
             className={`banner-image ${imageLoaded ? 'loaded' : 'loading'}`}
             onLoad={handleImageLoad}
-            loading="lazy"
+            loading="eager"
           />
         </div>
       )}

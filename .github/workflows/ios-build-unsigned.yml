@@ -67,9 +67,8 @@ jobs:
           sed -i '' 's|.package(name: "CapacitorPushNotifications", path: "../../../node_modules/@capacitor/push-notifications")|.package(name: "CapacitorPushNotifications", path: "../../../node_modules/@capacitor/push-notifications"),\
                 .package(url: "https://github.com/firebase/firebase-ios-sdk.git", from: "10.0.0")|' ios/App/CapApp-SPM/Package.swift
           
-          # Ajouter FirebaseCore et FirebaseMessaging aux targets
+          # Ajouter FirebaseMessaging aux targets (inclut automatiquement FirebaseCore)
           sed -i '' 's|.product(name: "CapacitorPushNotifications", package: "CapacitorPushNotifications")|.product(name: "CapacitorPushNotifications", package: "CapacitorPushNotifications"),\
-                .product(name: "FirebaseCore", package: "firebase-ios-sdk"),\
                 .product(name: "FirebaseMessaging", package: "firebase-ios-sdk")|' ios/App/CapApp-SPM/Package.swift
           
           # Afficher le résultat

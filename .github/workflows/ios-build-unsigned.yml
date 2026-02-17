@@ -64,7 +64,18 @@ jobs:
         working-directory: ios/App
 
       # ============================================
-      # ÉTAPE 7 : Configuration pour build non signé
+      # ÉTAPE 7 : Résoudre les dépendances Swift Package Manager (Firebase)
+      # ============================================
+      - name: Résolution des dépendances SPM
+        run: |
+          xcodebuild \
+            -project ios/App/App.xcodeproj \
+            -scheme App \
+            -resolvePackageDependencies
+        working-directory: .
+
+      # ============================================
+      # ÉTAPE 8 : Configuration pour build non signé
       # On désactive la signature de code
       # ============================================
       - name: Configuration build non signé
@@ -77,7 +88,7 @@ jobs:
           sed -i '' 's/CODE_SIGN_IDENTITY = "Apple Distribution";/CODE_SIGN_IDENTITY = "";/' ios/App/App.xcodeproj/project.pbxproj
 
       # ============================================
-      # ÉTAPE 8 : Build Xcode en mode Debug (pas de signature requise)
+      # ÉTAPE 9 : Build Xcode en mode Debug (pas de signature requise)
       # ============================================
       - name: Build Xcode (Debug, sans signature)
         run: |
@@ -93,7 +104,7 @@ jobs:
             archive
 
       # ============================================
-      # ÉTAPE 9 : Créer l'IPA à partir de l'archive
+      # ÉTAPE 10 : Créer l'IPA à partir de l'archive
       # ============================================
       - name: Créer l'IPA
         run: |
@@ -114,7 +125,7 @@ jobs:
           ls -lh C6Radio-unsigned.ipa
 
       # ============================================
-      # ÉTAPE 10 : Upload de l'IPA comme artifact
+      # ÉTAPE 11 : Upload de l'IPA comme artifact
       # ============================================
       - name: Upload IPA comme artifact
         uses: actions/upload-artifact@v4
@@ -124,7 +135,7 @@ jobs:
           retention-days: 30
 
       # ============================================
-      # ÉTAPE 11 : Afficher les instructions
+      # ÉTAPE 12 : Afficher les instructions
       # ============================================
       - name: Instructions d'installation
         run: |

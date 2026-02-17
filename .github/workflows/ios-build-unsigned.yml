@@ -55,11 +55,32 @@ jobs:
         run: npx cap sync ios
       
       # ============================================
-      # ÉTAPE 5.5 : Ouvrir le projet une fois pour forcer la résolution SPM
+      # ÉTAPE 5.5 : Ajouter Firebase au Package.swift
+      # (cap sync régénère Package.swift, on doit ré-ajouter Firebase)
+      # ============================================
+      - name: Ajouter Firebase aux dépendances SPM
+        run: |
+          # Backup du Package.swift original
+          cp ios/App/CapApp-SPM/Package.swift ios/App/CapApp-SPM/Package.swift.backup
+          
+          # Ajouter Firebase à la liste des dépendances
+          sed -i '' 's|.package(name: "CapacitorPushNotifications", path: "../../../node_modules/@capacitor/push-notifications")|.package(name: "CapacitorPushNotifications", path: "../../../node_modules/@capacitor/push-notifications"),\
+                .package(url: "https://github.com/firebase/firebase-ios-sdk.git", from: "10.0.0")|' ios/App/CapApp-SPM/Package.swift
+          
+          # Ajouter FirebaseCore et FirebaseMessaging aux targets
+          sed -i '' 's|.product(name: "CapacitorPushNotifications", package: "CapacitorPushNotifications")|.product(name: "CapacitorPushNotifications", package: "CapacitorPushNotifications"),\
+                .product(name: "FirebaseCore", package: "firebase-ios-sdk"),\
+                .product(name: "FirebaseMessaging", package: "firebase-ios-sdk")|' ios/App/CapApp-SPM/Package.swift
+          
+          # Afficher le résultat
+          echo "📦 Package.swift modifié:"
+          cat ios/App/CapApp-SPM/Package.swift
+      
+      # ============================================
+      # ÉTAPE 5.6 : Résolution des packages SPM
       # ============================================
       - name: Résolution automatique des packages SPM
         run: |
-          # Ouvrir et fermer le projet force Xcode à résoudre les packages
           xcodebuild -resolvePackageDependencies \
             -project ios/App/App.xcodeproj \
             -scheme App

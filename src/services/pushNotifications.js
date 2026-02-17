@@ -130,6 +130,12 @@ const registerWebPush = async () => {
       return;
     }
 
+    // Enregistrer le Service Worker
+    if ('serviceWorker' in navigator) {
+      const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
+      console.log('✅ Service Worker enregistré:', registration);
+    }
+
     // Obtenir le token FCM
     const token = await getToken(messaging, { vapidKey });
     console.log('🌐 Token FCM web:', token);
@@ -142,8 +148,20 @@ const registerWebPush = async () => {
       console.log('🔔 Message reçu (web):', payload);
       showInAppNotification(payload);
     });
+
+    // Écouter les messages du Service Worker pour navigation
+    navigator.serviceWorker.addEventListener('message', (event) => {
+      if (event.data && event.data.type === 'NAVIGATE_TO_ARTICLE') {
+        window.dispatchEvent(new CustomEvent('navigate-to-article', { 
+          detail: { slug: event.data.slug } 
+        }));
+      }
+    });
   } catch (error) {
     console.error('❌ Erreur enregistrement push web:', error);
+    if (error.code === 'messaging/permission-blocked') {
+      console.warn('🚫 Permissions notifications bloquées par l\'utilisateur');
+    }
   }
 };
 

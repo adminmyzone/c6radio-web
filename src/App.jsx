@@ -1,9 +1,11 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import './App.css';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import PlayerBar from './components/PlayerBar';
 import BannerAd from './components/BannerAd';
+import { initPushNotifications } from './services/pushNotifications';
 
 /**
  * Composant App - Layout principal de l'application
@@ -25,8 +27,44 @@ import BannerAd from './components/BannerAd';
  * - Bannière header : visible sur toutes les pages
  * - Bannière footer : visible sur toutes les pages
  * - Bannière sidebar : visible uniquement sur desktop (> 1024px)
+ * 
+ * PHASE 7 : Notifications PUSH
+ * - Initialisation au démarrage de l'app
+ * - Navigation automatique au clic sur notification
  */
 function App() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Initialiser les notifications PUSH au démarrage
+    const initNotifications = async () => {
+      try {
+        // Attendre 2 secondes après le chargement pour ne pas bloquer l'UI
+        setTimeout(async () => {
+          await initPushNotifications();
+        }, 2000);
+      } catch (error) {
+        console.error('Erreur initialisation notifications:', error);
+      }
+    };
+
+    initNotifications();
+
+    // Écouter les événements de navigation depuis les notifications
+    const handleNavigateToArticle = (event) => {
+      const { slug } = event.detail;
+      if (slug) {
+        navigate(`/news/${slug}`);
+      }
+    };
+
+    window.addEventListener('navigate-to-article', handleNavigateToArticle);
+
+    return () => {
+      window.removeEventListener('navigate-to-article', handleNavigateToArticle);
+    };
+  }, [navigate]);
+
   return (
     <>
       {/* Header toujours visible en haut */}

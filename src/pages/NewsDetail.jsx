@@ -8,12 +8,15 @@
  * ROUTE DYNAMIQUE :
  * URL : /news/:slug (ex: /news/concert-ce-weekend)
  * Le paramètre "slug" est extrait de l'URL avec useParams()
+ * 
+ * PHASE 9 : Ajout du partage social
  */
 
 import { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { fetchPostBySlug } from '../services/wordpress.js';
 import PodcastPlayer from '../components/PodcastPlayer.jsx';
+import SocialShare from '../components/SocialShare.jsx';
 import logger from '../lib/logger.js';
 import './NewsDetail.css';
 
@@ -153,6 +156,12 @@ export default function NewsDetail() {
         <div
           className="news-detail-content"
           dangerouslySetInnerHTML={{ __html: post.content }}
+        />
+
+        {/* PHASE 9 - PARTAGE SOCIAL : Boutons de partage */}
+        <SocialShare
+          url={window.location.href}
+          title={post.title}
         />
 
         {/* Bouton retour bas de page */}

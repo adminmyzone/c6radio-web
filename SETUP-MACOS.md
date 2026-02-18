@@ -6,7 +6,7 @@ CocoaPods nécessite Ruby >= 3.0, mais macOS inclut Ruby 2.6 par défaut.
 
 ---
 
-## 🚀 Étape 1 : Installer Ruby 3.3 (OBLIGATOIRE)
+## 🚀 Étape 1 : Installer Ruby 3.3 + CocoaPods
 
 ```bash
 cd ~/WebstormProjects/c6radio-web
@@ -17,18 +17,22 @@ Ce script va :
 1. ✅ Installer Homebrew (si nécessaire)
 2. ✅ Installer Ruby 3.3
 3. ✅ Configurer le PATH dans ~/.zshrc
-4. ✅ Installer CocoaPods
+4. ✅ Installer CocoaPods avec Ruby 3.3
 5. ⏳ **Durée : 5-10 minutes**
 
-Après l'installation :
+**Après le script, FERME et ROUVRE le Terminal** pour activer Ruby 3.3.
+
+Vérifie :
 ```bash
-source ~/.zshrc
 ruby -v  # Doit afficher "ruby 3.3.x"
+pod --version  # Doit afficher une version de CocoaPods
 ```
 
 ---
 
 ## 🚀 Étape 2 : Setup du projet
+
+**Dans un NOUVEAU terminal** (pour avoir Ruby 3.3 actif) :
 
 ```bash
 cd ~/WebstormProjects/c6radio-web
@@ -36,53 +40,25 @@ cd ~/WebstormProjects/c6radio-web
 # 1. Installer les dépendances Node.js
 npm install
 
-# 2. Build l'application (OU utiliser le script raccourci)
+# 2. Build l'application
 npm run build:ios
-# Équivalent à: npm run build && npx cap sync ios
 
 # 3. Installer Firebase via CocoaPods
 ./setup-ios-pods.sh
 
-# 4. Ouvrir Xcode avec le WORKSPACE
+# 4. Ouvrir Xcode
 open ios/App/App.xcworkspace
 ```
 
 ---
 
-## ⚡ Version ultra-rapide (après avoir installé Ruby 3.3)
+## ⚡ Version ultra-rapide (après Ruby 3.3 installé)
+
+**Nouveau terminal obligatoire !**
 
 ```bash
 npm install && npm run build:ios && ./setup-ios-pods.sh && open ios/App/App.xcworkspace
 ```
-
----
-
-## 📝 Que fait chaque commande ?
-
-### `./setup-ios-helper.sh` (PREMIÈRE FOIS UNIQUEMENT)
-- Installe Homebrew
-- Installe Ruby 3.3
-- Configure le PATH
-- Installe CocoaPods
-- ⏳ **5-10 minutes**
-
-### `npm install`
-- Installe React, Vite, Capacitor, Firebase, etc.
-- Crée `node_modules/`
-
-### `npm run build:ios`
-- Compile React → `dist/`
-- Copie `dist/` → `ios/App/App/public/`
-- Met à jour la config Capacitor
-
-### `./setup-ios-pods.sh`
-- Télécharge Firebase Core + Messaging
-- Crée `App.xcworkspace`
-- ⏳ **2-5 minutes**
-
-### `open ios/App/App.xcworkspace`
-- ⚠️ **WORKSPACE obligatoire** (pas .xcodeproj)
-- Contient App + Pods Firebase
 
 ---
 
@@ -94,25 +70,22 @@ npm install && npm run build:ios && ./setup-ios-pods.sh && open ios/App/App.xcwo
 
 ---
 
-## ✅ Vérifications rapides
+## ✅ Vérifications
 
 ```bash
-# Vérifier Ruby
-ruby -v  # Doit être >= 3.0
+# Vérifier Ruby (DOIT être 3.3.x)
+ruby -v
+
+# Vérifier que gem pointe vers Homebrew
+which gem  # Doit contenir "/opt/homebrew/opt/ruby"
 
 # Vérifier CocoaPods
 pod --version
 
-# Vérifier que dist/ existe
-ls dist/index.html
-
-# Vérifier que public/ est copié
-ls ios/App/App/public/index.html
-
-# Vérifier que Firebase est installé
+# Vérifier Firebase installé
 ls ios/App/Pods/FirebaseCore
 
-# Vérifier que le workspace existe
+# Vérifier workspace
 ls ios/App/App.xcworkspace
 ```
 
@@ -120,11 +93,34 @@ ls ios/App/App.xcworkspace
 
 ## 🐛 Dépannage
 
-### Erreur "ffi requires Ruby >= 3.0"
+### Erreur "you don't have write permissions for /Library/Ruby/Gems/2.6.0"
+➡️ Ruby 3.3 n'est pas actif. Solutions :
+
+**Option 1 : Fermer/rouvrir le Terminal**
 ```bash
-./setup-ios-helper.sh
+# Quitter Terminal complètement
+# Rouvrir Terminal
+ruby -v  # Doit être 3.3.x
+```
+
+**Option 2 : Sourcer le profil manuellement**
+```bash
 source ~/.zshrc
-ruby -v  # Doit afficher 3.3.x
+ruby -v
+```
+
+**Option 3 : Utiliser le Ruby Homebrew directement**
+```bash
+/opt/homebrew/opt/ruby@3.3/bin/ruby -v
+/opt/homebrew/opt/ruby@3.3/bin/gem install cocoapods
+```
+
+### Ruby 3.3 installé mais `ruby -v` montre 2.6
+```bash
+# Ajouter manuellement au PATH
+echo 'export PATH="/opt/homebrew/opt/ruby@3.3/bin:$PATH"' >> ~/.zshrc
+source ~/.zshrc
+ruby -v
 ```
 
 ### Homebrew pas installé
@@ -132,11 +128,22 @@ ruby -v  # Doit afficher 3.3.x
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
-### Ruby 3.3 installé mais pas actif
+---
+
+## 📋 Résumé : 2 terminaux différents
+
+### Terminal 1 : Setup Ruby
 ```bash
-source ~/.zshrc
-# OU
-source ~/.bash_profile
+cd ~/WebstormProjects/c6radio-web
+./setup-ios-helper.sh
+# Puis FERMER ce terminal
 ```
 
-**Tout bon ? Let's build ! 🚀**
+### Terminal 2 : Build iOS (NOUVEAU terminal)
+```bash
+cd ~/WebstormProjects/c6radio-web
+ruby -v  # Vérifier = 3.3.x
+npm install && npm run build:ios && ./setup-ios-pods.sh && open ios/App/App.xcworkspace
+```
+
+**Prêt pour le build ! 🚀**

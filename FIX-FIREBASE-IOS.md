@@ -1,126 +1,191 @@
-# 🔥 Fix Firebase iOS - Erreur "unable to find module FirebaseCore"
+# 🔥 Fix Firebase iOS - Solution CocoaPods
 
-## ✅ Changements effectués
+## ❌ Problème
+Swift Package Manager (SPM) ne trouve pas le package Firebase depuis GitHub.
 
-### 1. Package.swift mis à jour
-- ✅ Firebase iOS SDK version: **11.0.0** (au lieu de 10.0.0)
-- ✅ Ajout de **FirebaseCore** dans les dépendances
-- ✅ **FirebaseMessaging** également présent
+## ✅ Solution : Utiliser CocoaPods
 
-### 2. Script de nettoyage créé
-Fichier: `fix-ios-firebase.sh`
+CocoaPods est plus stable et fiable pour Firebase sur iOS.
 
-## 🚀 Instructions sur macOS
+---
 
-### Option 1: Script automatique
+## 🚀 Installation (sur macOS)
+
+### Étape 1 : Exécuter le script
 ```bash
 cd ~/WebstormProjects/c6radio-web
-./fix-ios-firebase.sh
+./setup-ios-pods.sh
 ```
 
-### Option 2: Commandes manuelles
+Ce script va :
+1. ✅ Installer CocoaPods si nécessaire
+2. ✅ Télécharger Firebase/Core et Firebase/Messaging
+3. ✅ Créer `App.xcworkspace` avec les pods
+
+**⏳ Durée : 2-5 minutes** (téléchargement Firebase ~100 MB)
+
+---
+
+### Étape 2 : Ouvrir dans Xcode
+
+**⚠️ TRÈS IMPORTANT :**
 ```bash
-cd ~/WebstormProjects/c6radio-web
-
-# Nettoyer TOUS les caches
-rm -rf ~/Library/Developer/Xcode/DerivedData/*
-rm -rf ios/App/.build
-rm -rf ios/App/CapApp-SPM/.build
-rm -rf ios/App/App.xcworkspace/xcshareddata/swiftpm
-find ios/App -name "Package.resolved" -delete
-
-# Fermer Xcode COMPLÈTEMENT (Cmd+Q)
-
-# Rouvrir
+# ✅ CORRECT - Ouvrir le WORKSPACE
 open ios/App/App.xcworkspace
+
+# ❌ INCORRECT - Ne PAS ouvrir le projet
+# open ios/App/App.xcodeproj  ← NON !
 ```
 
-### Dans Xcode (IMPORTANT - faire dans l'ordre!)
-1. **Attendre** que Xcode finisse de charger le projet
-2. **File** → **Packages** → **Reset Package Caches**
-3. **File** → **Packages** → **Update to Latest Package Versions**
-4. **Attendre** 2-5 minutes que Xcode télécharge Firebase (~150 MB)
-5. Vérifier dans **Project Navigator** (gauche) → **Package Dependencies** → tu dois voir:
-   - capacitor-swift-pm
-   - CapacitorPushNotifications
-   - **firebase-ios-sdk** ⬅️ IMPORTANT
-6. **Product** → **Clean Build Folder** (⇧⌘K)
-7. **Product** → **Build** (⌘B)
+**Pourquoi ?** Le `.xcworkspace` contient le projet + les pods Firebase.
 
-## 🔍 Diagnostic
+---
 
-### Si "firebase-ios-sdk" n'apparaît pas dans Package Dependencies
-1. **File** → **Packages** → **Resolve Package Versions**
-2. Attendre la résolution complète
-3. Si échec, vérifier la console Xcode pour les erreurs réseau
+### Étape 3 : Build dans Xcode
 
-### Si erreur "Could not resolve package dependencies"
-1. Vérifier connexion internet (Firebase SDK = ~150 MB)
-2. **File** → **Packages** → **Reset Package Caches** (encore)
-3. Redémarrer Xcode complètement
+1. **Product** → **Clean Build Folder** (⇧⌘K)
+2. **Product** → **Build** (⌘B)
 
-### Si build échoue avec "Command SwiftCompile failed"
-1. Regarder l'erreur exacte dans le Report Navigator (⌘9)
-2. Si c'est toujours FirebaseCore: vérifier que le package est bien résolu
-3. Essayer **Product** → **Clean Build Folder** + rebuild
+Le build devrait maintenant **réussir** ! ✅
 
-## 📝 Vérification finale
+---
 
-Le build doit réussir ET tu dois voir dans les logs:
+## 🔍 Vérification
+
+### Dans Xcode Project Navigator (barre latérale gauche)
+
+Tu dois voir 2 projets :
 ```
-✅ Build succeeded
+📁 App (ton projet)
+📁 Pods (dépendances Firebase)
+  └── 📦 Firebase
+      ├── FirebaseCore
+      ├── FirebaseMessaging
+      └── ...
 ```
 
-Pas d'erreur "unable to find module FirebaseCore" ou "FirebaseMessaging"
+### Dans AppDelegate.swift
 
-## 🐛 Si ça ne marche toujours pas
-
-### Dernière tentative: Supprimer et re-ajouter le package
-1. Dans Xcode, **Project Navigator** → clic sur le projet "App"
-2. Onglet **Package Dependencies**
-3. Clic sur "firebase-ios-sdk" → bouton **"-"** (supprimer)
-4. Bouton **"+"** → **Add Package Dependency**
-5. URL: `https://github.com/firebase/firebase-ios-sdk.git`
-6. Dependency Rule: **Up to Next Major Version** → 11.0.0
-7. **Add Package**
-8. Cocher **FirebaseCore** et **FirebaseMessaging**
-9. **Add Package**
-
-### Alternative: Vérifier manuellement Package.swift
-```bash
-cd ~/WebstormProjects/c6radio-web
-cat ios/App/CapApp-SPM/Package.swift
-```
-
-Tu dois voir:
+Les imports doivent fonctionner sans erreur :
 ```swift
-dependencies: [
-    // ...
-    .package(url: "https://github.com/firebase/firebase-ios-sdk.git", from: "11.0.0")
-],
-targets: [
-    .target(
-        name: "CapApp-SPM",
-        dependencies: [
-            // ...
-            .product(name: "FirebaseCore", package: "firebase-ios-sdk"),
-            .product(name: "FirebaseMessaging", package: "firebase-ios-sdk")
-        ]
-    )
-]
+import FirebaseCore      // ✅ OK
+import FirebaseMessaging // ✅ OK
 ```
 
-## 💡 Note importante
+---
 
-⚠️ **NE PAS** exécuter `npx cap sync ios` après ce fix !
-Ça va régénérer Package.swift et supprimer Firebase.
+## 🐛 Dépannage
 
-Si tu dois faire `cap sync`, tu devras réappliquer les changements Firebase.
+### Erreur "CocoaPods not installed"
+```bash
+sudo gem install cocoapods
+```
 
-## ✅ Success indicators
+### Erreur pendant `pod install`
+```bash
+cd ~/WebstormProjects/c6radio-web/ios/App
+pod repo update
+pod install
+```
 
-Quand tout fonctionne, tu verras:
-1. ✅ Xcode Project Navigator → Package Dependencies → **firebase-ios-sdk** visible
-2. ✅ Build réussit sans erreur
-3. ✅ AppDelegate.swift compile sans erreur sur les imports
-4. ✅ L'app peut lancer (peut crash après mais c'est un autre problème)
+### Build échoue avec "framework not found"
+1. Vérifier que tu as ouvert **App.xcworkspace** (pas .xcodeproj)
+2. **Product** → **Clean Build Folder**
+3. Rebuild
+
+### "Could not find module FirebaseCore"
+1. Vérifier que le Podfile contient :
+   ```ruby
+   pod 'Firebase/Core'
+   pod 'Firebase/Messaging'
+   ```
+2. Re-exécuter :
+   ```bash
+   cd ~/WebstormProjects/c6radio-web/ios/App
+   pod install
+   ```
+
+---
+
+## 📝 Fichiers créés
+
+### `ios/App/Podfile`
+Définit les dépendances Firebase + Capacitor
+
+### `ios/App/Podfile.lock`
+Versions exactes installées (sera créé après `pod install`)
+
+### `ios/App/Pods/`
+Dossier contenant les frameworks Firebase (sera créé après `pod install`)
+
+### `ios/App/App.xcworkspace`
+Workspace Xcode incluant le projet + les pods (sera créé après `pod install`)
+
+---
+
+## ⚙️ Modifications apportées
+
+### 1. Package.swift nettoyé
+Suppression de Firebase/SPM (qui ne fonctionnait pas)
+→ Garde uniquement Capacitor + PushNotifications
+
+### 2. Podfile créé
+Ajout de Firebase via CocoaPods
+
+### 3. AppDelegate.swift inchangé
+Les imports Firebase fonctionneront avec les pods
+
+---
+
+## 🎯 Résumé rapide
+
+```bash
+# Sur macOS Terminal
+cd ~/WebstormProjects/c6radio-web
+./setup-ios-pods.sh
+
+# Attendre installation (2-5 min)
+
+# Fermer Xcode si ouvert (Cmd+Q)
+
+# Ouvrir le WORKSPACE
+open ios/App/App.xcworkspace
+
+# Dans Xcode
+# Product → Clean Build Folder (⇧⌘K)
+# Product → Build (⌘B)
+```
+
+**✅ Le build devrait réussir !**
+
+---
+
+## 💡 Notes importantes
+
+### Après `npx cap sync ios`
+CocoaPods est compatible avec Capacitor. Pas besoin de réinstaller les pods après chaque sync.
+
+### Mise à jour de Firebase
+```bash
+cd ~/WebstormProjects/c6radio-web/ios/App
+pod update Firebase
+```
+
+### Alternative : Installation manuelle de CocoaPods
+Si `sudo gem install cocoapods` échoue :
+```bash
+brew install cocoapods
+```
+
+---
+
+## ✅ Indicateurs de succès
+
+1. ✅ `pod install` termine sans erreur
+2. ✅ Fichier `App.xcworkspace` créé
+3. ✅ Dossier `Pods/` existe avec Firebase dedans
+4. ✅ Xcode montre "Pods" dans Project Navigator
+5. ✅ Build réussit sans erreur "module not found"
+6. ✅ L'app se lance (peut crash après mais c'est un autre problème)
+
+**Prêt pour le build ! 🚀**

@@ -66,19 +66,38 @@ function destroyAudio() {
     audioElement.currentTime = 0;
     audioElement.src = ''; // Vide la source = clear buffer
     audioElement.load(); // Force le nettoyage
+    
+    // Si l'élément est dans le DOM, le retirer
+    if (audioElement.parentNode) {
+      audioElement.parentNode.removeChild(audioElement);
+    }
+    
     audioElement = null;
   }
 }
 
 /**
  * Crée un nouvel objet Audio avec l'URL donnée
+ * Pour Android/iOS : Crée un élément <audio> dans le DOM pour les media controls
  * @param {string} url - URL du stream ou podcast
  */
 function createAudio(url) {
   // Toujours détruire l'ancien avant de créer le nouveau
   destroyAudio();
   
-  audioElement = new Audio(url);
+  // Sur plateformes natives, créer un élément <audio> dans le DOM
+  // Ceci est nécessaire pour que les media controls natifs fonctionnent
+  if (typeof document !== 'undefined') {
+    audioElement = document.createElement('audio');
+    audioElement.src = url;
+    audioElement.preload = 'auto';
+    // L'audio est masqué mais reste dans le DOM
+    audioElement.style.display = 'none';
+    document.body.appendChild(audioElement);
+  } else {
+    // Fallback (ne devrait jamais arriver dans Capacitor)
+    audioElement = new Audio(url);
+  }
   
   // Événements natifs du HTML5 Audio
   audioElement.addEventListener('playing', () => {

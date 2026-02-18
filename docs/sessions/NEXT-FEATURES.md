@@ -8,6 +8,8 @@
 
 - [x] Tri des articles : par catégories, par date de publication...
 - [x] Recherche dans les articles : barre de recherche textuelle
+- [x] Partage social dans les articles : lien préconfigurés pour Facebook, Instagram, WhatsApp
+- [ ] Refactorisation CSS : partie 1
 
 ## Session 18-02-2026 : 
 

@@ -13,7 +13,7 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/ionic-team/capacitor-swift-pm.git", exact: "8.1.0"),
         .package(name: "CapacitorPushNotifications", path: "../../../node_modules/@capacitor/push-notifications"),
-        .package(url: "https://github.com/firebase/firebase-ios-sdk.git", from: "10.0.0")
+        .package(url: "https://github.com/firebase/firebase-ios-sdk.git", from: "11.0.0")
     ],
     targets: [
         .target(

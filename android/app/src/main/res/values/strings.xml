@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">C6Radio</string>
+    <string name="title_activity_main">C6Radio</string>
+    <string name="package_name">com.c6media.c6media</string>
+    <string name="custom_url_scheme">com.c6media.c6media</string>
+</resources>

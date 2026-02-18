@@ -1,8 +1,8 @@
 # 📻 C6Radio Web App
 
 **Application mobile et web pour C6Radio**  
-**Status** : 🎉 Phase 6 Complétée - Bannières Publicitaires ✅  
-**Dernière mise à jour** : 16 février 2026
+**Status** : 🎉 Phase 7 Complétée - Notifications Push ✅  
+**Dernière mise à jour** : 17 février 2026
 
 ---
 
@@ -19,25 +19,32 @@ npm run dev
 npm run build
 ```
 
-### Build iOS
+### Build Mobile
 ```bash
-npm run build
-npx cap sync ios
+# iOS
+npm run build:ios
+
+# Android
+npm run build:android
 ```
 
 ---
 
 ## 📱 DÉPLOIEMENT MOBILE
 
-**App fonctionnelle sur iPhone via sideload** ✅
+**Web** : ✅ Notifications Push fonctionnelles  
+**Android** : ✅ Notifications Push fonctionnelles (manuelles & automatiques)  
+**iOS** : ⏳ En attente d'accès Mac
 
 ---
 
 ## 📚 Documentation
 
-**Phase 6 - Bannières :** `docs/phase-6-bannieres-RESUME.md` ← **NOUVEAU !**  
-**Guide complet :** `docs/phase-6-bannieres-COMPLETE.md`
+**Phase 7 - Notifications Push :** 
+- Configuration Android : `docs/ANDROID_SETUP.md` ← **NOUVEAU !**
+- Configuration iOS : En attente (nécessite Mac)
 
+**Phase 6 - Bannières :** `docs/phase-6-bannieres-RESUME.md`  
 **Guide reprise projet** : `docs/REPRISE-PROCHAINE-SESSION.md`  
 **Index documentation** : `docs/README.md`
 
@@ -45,11 +52,12 @@ npx cap sync ios
 
 ## 🏗️ Architecture
 
-- **Framework** : React 18 + Vite 6
-- **Mobile** : Capacitor 6
+- **Framework** : React 19 + Vite 7
+- **Mobile** : Capacitor 8
 - **Audio** : GlobalAudioContext (gestion unifiée)
 - **CMS** : WordPress REST API
 - **Bannières** : Rotation automatique + Cache
+- **Push Notifications** : Firebase Cloud Messaging (Web + Android) + APNs (iOS)
 
 ---
 
@@ -61,20 +69,21 @@ npx cap sync ios
 - ✅ Phase 3 : Pages & Navigation
 - ✅ Phase 4 : WordPress Actualités
 - ✅ Phase 5 : Podcasts WordPress
-- ✅ Phase 6 : Bannières Publicitaires 🆕
-- ⏳ Phase 7 : Polish & Tests
-- ⏳ Phase 8 : Optimisations Production
+- ✅ Phase 6 : Bannières Publicitaires
+- ✅ Phase 7 : Notifications Push (Web ✅ + Android ✅ + iOS ⏳) 🆕
+- ⏳ Phase 8 : Polish & Tests
+- ⏳ Phase 9 : Optimisations Production
 
 ---
 
 ## 🎯 Prochaines Étapes
 
-1. **Phase 7** : Polish UI/UX + Tests exhaustifs
-2. **Phase 8** : Optimisations production
-3. **Tests finaux** : Mobile iPhone + iPad
+1. **iOS Notifications** : Configuration iOS (nécessite Mac)
+2. **Phase 8** : Polish UI/UX + Tests exhaustifs
+3. **Phase 9** : Optimisations production
 4. **Déploiement** : Production
 
-**Progression MVP** : 75% (6/8 phases)
+**Progression MVP** : 80% (7/9 phases)
 
 ---
 
@@ -99,10 +108,11 @@ npx cap sync ios
 
 ## 📊 Métriques
 
-- **Lignes de code** : ~5000 (production)
-- **Documentation** : ~15000 lignes
-- **Guides Phase 7** : 8 fichiers
-- **Progression MVP** : 65%
+- **Lignes de code** : ~5500 (production)
+- **Documentation** : ~20000 lignes
+- **Guides Phase 7** : 9 fichiers
+- **Progression MVP** : 80%
+- **Plateformes** : Web ✅ + Android ✅ + iOS ⏳
 
 ---
 

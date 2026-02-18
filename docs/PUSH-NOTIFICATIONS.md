@@ -414,27 +414,145 @@ Build iOS avec :
 
 | Plateforme | Token Registration | Receive Notif | Deep Linking | Status |
 |------------|-------------------|---------------|--------------|--------|
-| **Web (Chrome/Firefox)** | ✅ | ✅ | ✅ | **Production** |
-| **iOS** | ✅ | ❌ (crash) | ⚠️ Non testé | **Bloqué (besoin Mac)** |
-| **Android** | ⚠️ Non testé | ⚠️ Non testé | ⚠️ Non testé | **En attente** |
-| **WordPress Plugin** | ✅ | - | - | **Production** |
-| **Notifications auto** | ✅ | ✅ | ✅ | **Production** |
-| **Notifications manuelles** | ✅ | ✅ | ✅ | **Production** |
-| **Protection anti-doublon** | ✅ | - | - | **Production** |
+| **Web (Chrome/Firefox/Edge)** | ✅ | ✅ | ✅ | **✅ PRODUCTION** |
+| **iOS** | ✅ | ❌ (crash) | ⚠️ Non testé | **⚠️ Bloqué (besoin Mac)** |
+| **Android** | ⚠️ Non testé | ⚠️ Non testé | ⚠️ Non testé | **⚠️ En attente** |
+| **WordPress Plugin** | ✅ | - | - | **✅ PRODUCTION v2.1.0** |
+| **Notifications auto** | ✅ | ✅ | ✅ | **✅ PRODUCTION** |
+| **Notifications manuelles** | ✅ | ✅ | ✅ | **✅ PRODUCTION** |
+| **Protection anti-doublon** | ✅ | - | - | **✅ PRODUCTION** |
+
+### ✅ Validé en production (17 février 2026)
+- **Localhost** : Testé et fonctionnel
+- **Production** (https://exp937.fr) : Testé et fonctionnel
+- **Multi-utilisateurs** : Testé sur plusieurs PC/navigateurs
+- **Notifications foreground** : ✅ Reçues et affichées
+- **Notifications background** : ✅ Reçues même app fermée
+- **Deep linking** : ✅ Redirection vers article au clic
+- **Envoi automatique** : ✅ Fonctionne à la publication d'article
+- **Envoi manuel** : ✅ Interface WordPress opérationnelle
+- **Anti-doublon** : ✅ Protection 60s validée
 
 ---
 
 ## 🏆 Résumé
 
-Le système de notifications push est **100% fonctionnel sur Web** ! 🎉
+Le système de notifications push est **100% fonctionnel en PRODUCTION WEB** ! 🎉
 
-- ✅ Envoi manuel : OK
-- ✅ Envoi automatique : OK
-- ✅ Deep linking : OK
-- ✅ Interface WordPress : OK
-- ✅ Protection anti-doublon : OK
+### ✅ Ce qui fonctionne (validé le 17/02/2026)
+- ✅ **Envoi manuel** : Interface WordPress opérationnelle
+- ✅ **Envoi automatique** : Notification à chaque article publié
+- ✅ **Deep linking** : Redirection vers l'article au clic
+- ✅ **Protection anti-doublon** : Transient 60s empêche les doublons
+- ✅ **Interface WordPress** : Dashboard, historique, statistiques
+- ✅ **Multi-utilisateurs** : Testé sur plusieurs navigateurs/PC
+- ✅ **Background notifications** : Fonctionne même app fermée
+- ✅ **Production** : Déployé et testé sur https://exp937.fr
 
-iOS nécessite un Mac pour finaliser la configuration et débugger le crash.
-Android n'a pas encore été testé.
+### ⏳ En attente
+- ⚠️ **iOS** : Code configuré, build OK, mais crash au lancement (besoin Mac pour debug)
+- ⚠️ **Android** : Configuration à faire, pas d'appareil de test disponible
+
+### 🎯 Objectifs atteints
+1. ✅ Notifications automatiques ET manuelles (les deux fonctionnent !)
+2. ✅ Backend WordPress centralisé avec interface intuitive
+3. ✅ Deep linking vers les articles
+4. ✅ Gestion complète des tokens et historique
+5. ✅ Production-ready pour le web
+
+**Prêt pour la production Web !** 🚀
+
+---
+
+## 📅 Timeline du développement (17 février 2026)
+
+### Phase 1 : Configuration initiale (matin)
+- ✅ Création du projet Firebase (c6radio-push)
+- ✅ Configuration des 3 apps (Web, iOS, Android)
+- ✅ Activation Cloud Messaging API v1
+- ✅ Création Service Account + téléchargement JSON
+- ✅ Configuration VAPID key pour web
+
+### Phase 2 : Frontend React
+- ✅ Installation dépendances (firebase, @capacitor/push-notifications)
+- ✅ Création `/src/config/firebase.config.js`
+- ✅ Création `/src/services/pushNotifications.js`
+- ✅ Création `/public/firebase-messaging-sw.js`
+- ✅ Intégration dans `/src/App.jsx`
+
+### Phase 3 : Backend WordPress
+- ✅ Développement plugin v1.0 (FCM Legacy API)
+- ❌ Découverte : Legacy API deprecated !
+- ✅ Migration vers FCM API v1 (OAuth 2.0)
+- ✅ Création classe `FCM_Sender` avec JWT generation
+- ✅ Création classe `Token_Manager` pour BDD
+- ✅ Création classe `Admin_UI` pour interface
+- ✅ Création tables MySQL automatiques
+- ✅ REST API endpoints (`/register-token`, `/unregister-token`)
+
+### Phase 4 : Debugging (après-midi)
+- 🐛 Erreur "Invalid value at 'message.data'" → **RÉSOLU** : Conversion objets en strings
+- 🐛 Erreur HTTP 500 enregistrement tokens → **RÉSOLU** : Tables non créées + error logging
+- 🐛 Notifications en double → **RÉSOLU** : Transient 60s anti-doublon
+- 🐛 Service Worker introuvable en prod → **RÉSOLU** : Fichier non uploadé
+
+### Phase 5 : iOS (tentatives)
+- ✅ Configuration AppDelegate.swift
+- ✅ Ajout Firebase iOS SDK via SPM
+- ✅ Modification Info.plist + entitlements
+- ✅ Workflow CI/CD avec réinjection Firebase
+- ✅ Build réussit en CI/CD
+- ❌ App crash au lancement (besoin Mac pour debug)
+
+### Phase 6 : Tests et validation (soir)
+- ✅ Tests localhost : Notifications reçues ✅
+- ✅ Tests production (exp937.fr) : Notifications reçues ✅
+- ✅ Tests multi-utilisateurs : Plusieurs PC ✅
+- ✅ Tests envoi automatique : Publication article ✅
+- ✅ Tests envoi manuel : Interface WordPress ✅
+- ✅ Tests deep linking : Redirection article ✅
+
+### Phase 7 : Documentation
+- ✅ Création `/docs/PUSH-NOTIFICATIONS.md` (guide complet)
+- ✅ Checkpoint session
+- ✅ Message de commit
+- ✅ Plugin production v2.1.0
+
+---
+
+## 🎓 Leçons apprises
+
+1. **FCM Legacy API deprecated** : Toujours vérifier la doc officielle, l'API v1 avec OAuth 2.0 est plus complexe mais obligatoire depuis 2024
+2. **Service Workers scope** : Le SW doit être à la racine du domaine pour avoir accès à toutes les routes
+3. **WordPress transients** : Parfait pour anti-doublon temporaire (60s), évite les race conditions
+4. **React StrictMode** : Double les useEffect en dev, attention aux side effects (enregistrement multiple)
+5. **Capacitor SPM** : `cap sync` régénère Package.swift, nécessite automatisation CI/CD pour réinjecter Firebase
+6. **FCM data field** : Toutes les valeurs doivent être des strings, les objets/tableaux doivent être JSON stringifiés
+7. **MIME types** : Les serveurs web peuvent retourner 'text/html' pour un JS manquant, vérifier toujours l'upload complet
+
+---
+
+## 💡 Améliorations possibles (futures)
+
+### Court terme
+- [ ] Tester et valider Android
+- [ ] Débugger crash iOS (requiert Mac)
+- [ ] Ajouter option "tester la notification" dans WordPress (envoyer à soi-même)
+- [ ] Permettre personnalisation du titre automatique ("Nouvel article" → customizable)
+
+### Moyen terme
+- [ ] Segmentation : Envoyer uniquement à iOS, Android ou Web
+- [ ] Topics Firebase : Abonnements thématiques (Actualités, Podcasts, Lives)
+- [ ] Statistiques : Taux d'ouverture, engagement par notification
+- [ ] Planification : Programmer envoi à date/heure précise
+- [ ] Prévisualisation : Voir à quoi ressemble la notification avant d'envoyer
+
+### Long terme
+- [ ] Rich notifications : Boutons d'action, images inline, sons personnalisés
+- [ ] A/B Testing : Tester plusieurs variantes de titre/message
+- [ ] Backend custom : Node.js/Python avec queue système (Redis) pour meilleures performances
+- [ ] Analytics avancés : Dashboard temps réel, heatmaps de clics
+- [ ] Préférences utilisateur : Gérer abonnements depuis l'app
+- [ ] Push silencieuses : Mettre à jour données sans notifier l'utilisateur
 
 **Prêt pour la production Web !** 🚀

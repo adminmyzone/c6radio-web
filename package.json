@@ -7,12 +7,15 @@
     "dev": "vite",
     "build": "vite build",
     "build:ios": "vite build && npx cap sync ios",
+    "build:android": "vite build && npx cap sync android",
     "lint": "eslint .",
     "preview": "vite preview",
     "cap:sync": "npx cap sync",
-    "cap:open:ios": "npx cap open ios"
+    "cap:open:ios": "npx cap open ios",
+    "cap:open:android": "npx cap open android"
   },
   "dependencies": {
+    "@capacitor/android": "^8.1.0",
     "@capacitor/cli": "^8.1.0",
     "@capacitor/core": "^8.1.0",
     "@capacitor/ios": "^8.1.0",

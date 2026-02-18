@@ -6,9 +6,9 @@
 .social-share {
   margin: 2rem 0;
   padding: 1.5rem;
-  background: #f8f9fa;
+  background: var(--color-bg-secondary);
   border-radius: 8px;
-  border: 1px solid #e9ecef;
+  border: 1px solid var(--color-border);
 }
 
 /* ============================================
@@ -18,7 +18,7 @@
 .social-share__title {
   font-size: 1.125rem;
   font-weight: 600;
-  color: #495057;
+  color: var(--color-text-primary);
   margin: 0 0 1rem 0;
   text-align: center;
 }
@@ -49,8 +49,8 @@
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s ease;
-  background: white;
-  color: #495057;
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
 }
 
 .social-share__button:hover {
@@ -77,52 +77,52 @@
 
 /* Facebook - Bleu */
 .social-share__button--facebook {
-  border-color: #1877f2;
+  border-color: var(--color-facebook);
 }
 
 .social-share__button--facebook:hover {
-  background: #1877f2;
-  color: white;
+  background: var(--color-facebook);
+  color: #ffffff;
 }
 
 /* Twitter - Bleu ciel */
 .social-share__button--twitter {
-  border-color: #1da1f2;
+  border-color: var(--color-twitter);
 }
 
 .social-share__button--twitter:hover {
-  background: #1da1f2;
-  color: white;
+  background: var(--color-twitter);
+  color: #ffffff;
 }
 
 /* WhatsApp - Vert */
 .social-share__button--whatsapp {
-  border-color: #25d366;
+  border-color: var(--color-whatsapp);
 }
 
 .social-share__button--whatsapp:hover {
-  background: #25d366;
-  color: white;
+  background: var(--color-whatsapp);
+  color: #ffffff;
 }
 
 /* LinkedIn - Bleu professionnel */
 .social-share__button--linkedin {
-  border-color: #0a66c2;
+  border-color: var(--color-linkedin);
 }
 
 .social-share__button--linkedin:hover {
-  background: #0a66c2;
-  color: white;
+  background: var(--color-linkedin);
+  color: #ffffff;
 }
 
 /* Copier le lien - Gris */
 .social-share__button--copy {
-  border-color: #6c757d;
+  border-color: var(--color-gray-600);
 }
 
 .social-share__button--copy:hover {
-  background: #6c757d;
-  color: white;
+  background: var(--color-gray-600);
+  color: #ffffff;
 }
 
 /* État "Copié !" */
@@ -173,7 +173,7 @@
 @media (prefers-color-scheme: dark) {
   .social-share {
     background: #212529;
-    border-color: #495057;
+    border-color: var(--color-text-primary);
   }
 
   .social-share__title {

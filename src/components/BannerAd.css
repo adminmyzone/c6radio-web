@@ -36,7 +36,7 @@
   height: 100%;
   max-height: auto;
   object-fit: contain;
-  background: #000;
+  background: #1a1a1a;
   transition: opacity 0.6s ease-in-out; /* Transition plus longue et douce pour rotation fluide */
   display: block;
   opacity: 1; /* Toujours visible par défaut (images préchargées) */

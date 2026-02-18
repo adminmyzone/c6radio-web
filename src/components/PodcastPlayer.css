@@ -15,12 +15,12 @@
  */
 
 .podcast-player {
-  background: #ffffff;
-  border: 2px solid #e0e0e0;
+  background: var(--color-bg-secondary);
+  border: 2px solid #444;
   border-radius: 12px;
   padding: 20px;
   margin: 24px 0;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 /* En-tête du lecteur */
@@ -38,7 +38,7 @@
 .podcast-player__title {
   font-size: 18px;
   font-weight: 600;
-  color: #333;
+  color: var(--color-text-primary);
   margin: 0;
 }
 

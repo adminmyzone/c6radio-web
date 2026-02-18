@@ -407,6 +407,7 @@ export async function fetchPageBySlug(slug) {
  * @param {number} options.per_page - Nombre d'articles par page (défaut: 10)
  * @param {number} options.page - Numéro de page pour pagination (défaut: 1)
  * @param {string} options.categories - IDs catégories séparés par virgule (ex: "5,12")
+ * @param {string} options.categories_exclude - IDs catégories à exclure (ex: "32")
  * @param {string} options.search - Terme de recherche
  * @param {boolean} options._embed - Inclure médias et catégories (défaut: true)
  * @returns {Promise<Array>} Liste des articles
@@ -420,6 +421,7 @@ export async function fetchPosts(options = {}) {
       per_page = 10,
       page = 1,
       categories = null,
+      categories_exclude = null,
       search = null,
       _embed = true,  // Important : inclut images et catégories
     } = options;
@@ -436,6 +438,11 @@ export async function fetchPosts(options = {}) {
     // Ajouter filtres optionnels
     if (categories) {
       params.append('categories', categories);
+    }
+
+    // Ajouter exclusion de catégories (ex: bannières)
+    if (categories_exclude) {
+      params.append('categories_exclude', categories_exclude);
     }
 
     if (search) {

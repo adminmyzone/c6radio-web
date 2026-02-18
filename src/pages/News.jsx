@@ -34,6 +34,13 @@ export default function News() {
   const [selectedCategory, setSelectedCategory] = useState(null);
 
   /**
+   * EXCLUSION CATÉGORIE "BANNIERES"
+   * Cette catégorie (ID 32) sert uniquement pour les bannières publicitaires
+   * et ne doit jamais apparaître dans les actualités
+   */
+  const BANNERS_CATEGORY_ID = '32';
+
+  /**
    * Liste des catégories WordPress
    */
   const [categories, setCategories] = useState([]);
@@ -42,10 +49,12 @@ export default function News() {
   /**
    * Hook pour récupérer les articles avec filtres
    * IMPORTANT : Le hook refetch automatiquement quand les filtres changent !
+   * EXCLUSION BANNIÈRES : On exclut TOUJOURS la catégorie ID 32 des résultats
    */
   const { posts, loading, error } = useWordPressPosts({
     search: searchTerm || undefined,      // Undefined si vide (ignore le filtre)
     categories: selectedCategory || undefined,
+    categories_exclude: BANNERS_CATEGORY_ID, // Toujours exclure les bannières (ID 32)
     per_page: 20,                         // Augmenté à 20 pour avoir plus de résultats
   });
 
@@ -65,13 +74,14 @@ export default function News() {
 
         const cats = await fetchCategories();
         
-        // IMPORTANT : Filtrer la catégorie "bannieres" (elle sert uniquement pour les pubs)
-        // On cherche par slug "bannieres" ou nom contenant "bannière"
+        // IMPORTANT : Filtrer la catégorie "bannieres" (ID 32) du dropdown
+        // Elle sert uniquement pour les bannières publicitaires
         const filteredCats = cats.filter(cat => {
-          const isBanner = cat.slug === 'bannieres' || 
+          const isBanner = cat.id === 32 || 
+                          cat.slug === 'bannieres' || 
                           cat.name.toLowerCase().includes('bannière') ||
                           cat.name.toLowerCase().includes('banniere');
-          return !isBanner; // Exclure les bannières
+          return !isBanner; // Exclure les bannières du dropdown
         });
         
         setCategories(filteredCats);

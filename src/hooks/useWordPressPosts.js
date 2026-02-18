@@ -100,6 +100,7 @@ function setCachedPosts(posts) {
  * @param {Object} filters - Options de filtrage
  * @param {number} filters.per_page - Nombre d'articles (défaut: 10)
  * @param {string} filters.categories - IDs catégories (ex: "5,12")
+ * @param {string} filters.categories_exclude - IDs catégories à exclure (ex: "32")
  * @param {string} filters.search - Terme de recherche
  * @param {boolean} enableCache - Activer le cache localStorage (défaut: true)
  *
@@ -131,8 +132,11 @@ export function useWordPressPosts(filters = {}, enableCache = true) {
     // Parser les filtres depuis la clé JSON
     const currentFilters = JSON.parse(filtersKey);
 
-    // Si déjà chargé, ne pas recharger
-    if (hasLoadedRef.current && !currentFilters.search && !currentFilters.categories) {
+    // Si déjà chargé, ne pas recharger SAUF si on a des filtres actifs
+    if (hasLoadedRef.current && 
+        !currentFilters.search && 
+        !currentFilters.categories && 
+        !currentFilters.categories_exclude) {
       return;
     }
 
@@ -142,7 +146,9 @@ export function useWordPressPosts(filters = {}, enableCache = true) {
       setError(null);
 
       // 1. Vérifier le cache (seulement si aucun filtre et cache activé)
-      const hasFilters = currentFilters.categories || currentFilters.search;
+      const hasFilters = currentFilters.categories || 
+                        currentFilters.search || 
+                        currentFilters.categories_exclude;
       if (enableCache && !hasFilters) {
         const cached = getCachedPosts();
         if (cached) {

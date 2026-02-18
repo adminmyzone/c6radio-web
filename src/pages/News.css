@@ -172,6 +172,29 @@
 }
 
 /* ===================================
+   COMPTEUR DE RÉSULTATS
+   =================================== */
+
+.news-results-count {
+  margin-bottom: 1.5rem;
+  padding: 0.75rem 1rem;
+  background-color: #e7f3ff;
+  border-left: 4px solid #007bff;
+  border-radius: 4px;
+}
+
+.news-results-count p {
+  margin: 0;
+  color: #004085;
+  font-size: 0.95rem;
+}
+
+.news-results-count strong {
+  color: #007bff;
+  font-weight: 700;
+}
+
+/* ===================================
    DARK MODE (optionnel)
    =================================== */
 
@@ -186,6 +209,19 @@
   .news-empty__message,
   .news-empty__help {
     color: #cccccc;
+  }
+  
+  .news-results-count {
+    background-color: #1a3a52;
+    border-left-color: #4a90e2;
+  }
+  
+  .news-results-count p {
+    color: #b3d9ff;
+  }
+  
+  .news-results-count strong {
+    color: #4a90e2;
   }
 }
 

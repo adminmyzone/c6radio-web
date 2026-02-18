@@ -1,0 +1,165 @@
+/**
+ * Styles pour NewsFilters
+ * Design simple et responsive
+ */
+
+.news-filters {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  flex-wrap: wrap; /* Responsive : passe à la ligne sur mobile */
+}
+
+/* ============================================
+   BARRE DE RECHERCHE
+   ============================================ */
+
+.news-filters__search {
+  flex: 1;
+  min-width: 250px; /* Largeur minimum */
+}
+
+.search-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  left: 12px;
+  font-size: 1.2rem;
+  color: #6c757d;
+  pointer-events: none; /* Pas cliquable */
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.75rem 2.5rem 0.75rem 2.5rem; /* Espace pour icônes */
+  font-size: 1rem;
+  border: 2px solid #dee2e6;
+  border-radius: 6px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.search-input::placeholder {
+  color: #adb5bd;
+}
+
+.search-clear {
+  position: absolute;
+  right: 8px;
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  color: #6c757d;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.search-clear:hover {
+  background-color: #e9ecef;
+  color: #495057;
+}
+
+/* ============================================
+   FILTRE CATÉGORIE
+   ============================================ */
+
+.news-filters__category {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 200px;
+}
+
+.category-label {
+  font-weight: 600;
+  color: #495057;
+  white-space: nowrap; /* Pas de retour ligne */
+}
+
+.category-select {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: 2px solid #dee2e6;
+  border-radius: 6px;
+  background-color: white;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.category-select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.category-select:hover {
+  border-color: #adb5bd;
+}
+
+/* ============================================
+   RESPONSIVE MOBILE
+   ============================================ */
+
+@media (max-width: 768px) {
+  .news-filters {
+    flex-direction: column; /* Empile verticalement */
+    gap: 1rem;
+  }
+
+  .news-filters__search,
+  .news-filters__category {
+    width: 100%;
+    min-width: unset;
+  }
+
+  .news-filters__category {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .category-select {
+    width: 100%;
+  }
+}
+
+/* ============================================
+   MODE SOMBRE (OPTIONNEL - À ACTIVER PLUS TARD)
+   ============================================ */
+
+/* Décommenter quand mode sombre implémenté
+@media (prefers-color-scheme: dark) {
+  .news-filters {
+    background: #212529;
+  }
+
+  .search-input,
+  .category-select {
+    background-color: #343a40;
+    border-color: #495057;
+    color: white;
+  }
+
+  .search-input::placeholder {
+    color: #6c757d;
+  }
+
+  .category-label {
+    color: #dee2e6;
+  }
+}
+*/

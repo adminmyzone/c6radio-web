@@ -21,10 +21,6 @@ target 'App' do
   
   capacitor_pods
   
-  # Firebase pods
-  pod 'Firebase/Core'
-  pod 'Firebase/Messaging'
-  
   # Add any other Capacitor pods here
 end
 

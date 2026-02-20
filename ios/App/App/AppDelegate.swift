@@ -1,7 +1,5 @@
 import UIKit
 import Capacitor
-import FirebaseCore
-import FirebaseMessaging
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -9,31 +7,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Initialiser Firebase
-        FirebaseApp.configure()
-        
-        // IMPORTANT: définir le delegate AVANT toute demande d'enregistrement
-        // Sans cela, Firebase ne peut pas convertir le token APNS en token FCM
-        Messaging.messaging().delegate = self
-        
-        // Configurer les notifications
+        // Configure UNUserNotificationCenter delegate pour afficher les notifs au premier plan
         if #available(iOS 10.0, *) {
             UNUserNotificationCenter.current().delegate = self
         }
-        
-        // Enregistrer pour les notifications distantes (requis par Capacitor PushNotifications)
-        application.registerForRemoteNotifications()
-        
         return true
-    }
-    
-    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        // Transmettre le token APNS à Firebase pour obtenir le token FCM
-        Messaging.messaging().apnsToken = deviceToken
-    }
-    
-    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-        print("Failed to register for remote notifications: \(error)")
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -88,21 +66,3 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     }
 }
 
-// MARK: - MessagingDelegate
-// Indispensable : reçoit le token FCM quand Firebase le génère ou le renouvelle
-extension AppDelegate: MessagingDelegate {
-    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
-        print("🔑 Token FCM iOS reçu: \(fcmToken ?? "nil")")
-        
-        guard let token = fcmToken else { return }
-        
-        // Notifier Capacitor / la WebView que le token est disponible
-        // @capacitor/push-notifications écoute cette notification pour exposer le token via l'event 'registration'
-        let dataDict: [String: String] = ["token": token]
-        NotificationCenter.default.post(
-            name: Notification.Name("FCMToken"),
-            object: nil,
-            userInfo: dataDict
-        )
-    }
-}

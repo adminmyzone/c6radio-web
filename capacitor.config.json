@@ -6,8 +6,5 @@
     "url": "https://exp937.fr",
     "cleartext": true
   },
-  "ios": {
-    "contentInset": "always",
-    "backgroundColor": "#ffffff"
-  }
+  "bundledWebRuntime": false
 }

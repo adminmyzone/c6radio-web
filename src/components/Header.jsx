@@ -104,6 +104,18 @@ function Header() {
               </NavLink>
             </li>
 
+            {/* Lien Élections (section contextuelle) */}
+            <li>
+              <NavLink
+                to="/elections"
+                className={({ isActive }) => isActive ? 'nav-link active nav-link-elections' : 'nav-link nav-link-elections'}
+                onClick={closeMobileMenu}
+              >
+                <span className="nav-icon" aria-hidden="true">🗳️</span>
+                Élections
+              </NavLink>
+            </li>
+
             {/* Pages WordPress dynamiques */}
             {loadingPages ? (
               // Afficher un message pendant le chargement

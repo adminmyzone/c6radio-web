@@ -699,3 +699,125 @@ export async function fetchCategories() {
  * Avec _embed=true, WordPress inclut les données complètes dans _embedded.
  * Évite de faire des requêtes supplémentaires pour chaque image !
  */
+
+/**
+ * SECTIONS CONTEXTUELLES - Fetch pages d'un contexte spécifique
+ * 
+ * EXPLICATION :
+ * Récupère les pages WordPress qui appartiennent à une section contextuelle
+ * (Élections, Événements, etc.) via le champ ACF context_section.
+ * 
+ * USAGE :
+ * const communes = await fetchContextualPages('elections');
+ * → Retourne toutes les pages avec acf.context_section = "elections"
+ * 
+ * @param {string} context - Le contexte à filtrer (ex: "elections", "evenements")
+ * @returns {Promise<Array>} Liste des pages contextuelles
+ */
+export async function fetchContextualPages(context) {
+  try {
+    logger.log(`[WordPress API] Fetching contextual pages for: ${context}`);
+
+    // Paramètres de la requête
+    const params = new URLSearchParams({
+      per_page: 100,              // Max pages (assez pour toutes les communes)
+      orderby: 'title',           // Tri alphabétique par titre
+      order: 'asc',               // Ordre croissant (A → Z)
+      status: 'publish',          // Seulement pages publiées
+      _fields: 'id,slug,title,acf', // Optimisation : seulement champs nécessaires
+    });
+
+    // Fetch avec timeout
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), API_TIMEOUT);
+
+    const response = await fetch(`${WP_ENDPOINTS.pages}?${params}`, {
+      signal: controller.signal,
+    });
+
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      throw new Error(`WordPress API error: ${response.status}`);
+    }
+
+    const pages = await response.json();
+    logger.log(`[WordPress API] Found ${pages.length} total pages`);
+
+    // Filtrer : garder seulement les pages avec context_section = context
+    const contextualPages = pages
+      .filter(page => page.acf?.context_section === context)
+      .map(page => ({
+        id: page.id,
+        slug: page.slug,
+        title: decodeHTML(page.title.rendered),
+        context: page.acf.context_section,
+      }));
+
+    logger.log(`[WordPress API] Filtered to ${contextualPages.length} pages for context "${context}"`);
+    
+    return contextualPages;
+
+  } catch (error) {
+    logger.error(`[WordPress API] Error fetching contextual pages for "${context}":`, error);
+    
+    // En cas d'erreur, retourner tableau vide
+    return [];
+  }
+}
+
+/**
+ * SECTIONS CONTEXTUELLES - Fetch articles d'un contexte spécifique
+ * 
+ * EXPLICATION :
+ * Récupère les articles WordPress filtrés par préfixe de catégorie.
+ * Utilisé pour les sections contextuelles (Élections, Événements, etc.)
+ * 
+ * USAGE :
+ * // Tous les articles de Le Haillan (catégorie "elections-le-haillan")
+ * const articles = await fetchPostsByContext('elections', 'le-haillan');
+ * 
+ * // Recherche dans les articles de Le Haillan
+ * const results = await fetchPostsByContext('elections', 'le-haillan', { search: 'vote' });
+ * 
+ * @param {string} context - Le contexte (ex: "elections", "evenements")
+ * @param {string} subcategory - La sous-catégorie (ex: "le-haillan", "merignac")
+ * @param {Object} options - Options supplémentaires (search, per_page, page)
+ * @returns {Promise<Array>} Articles formatés (même format que fetchPosts)
+ */
+export async function fetchPostsByContext(context, subcategory, options = {}) {
+  try {
+    logger.log(`[WordPress API] Fetching posts for context: ${context}/${subcategory}`, options);
+
+    // Construire le slug de catégorie : context-subcategory (ex: "elections-le-haillan")
+    const categorySlug = `${context}-${subcategory}`;
+
+    // D'abord, trouver l'ID de la catégorie via son slug
+    const categories = await fetchCategories();
+    const category = categories.find(cat => cat.slug === categorySlug);
+
+    if (!category) {
+      logger.warn(`[WordPress API] Category "${categorySlug}" not found`);
+      return [];
+    }
+
+    logger.log(`[WordPress API] Found category "${categorySlug}" with ID ${category.id}`);
+
+    // Fetch les posts avec cette catégorie
+    // Utilise fetchPosts() existante pour réutiliser la logique
+    const posts = await fetchPosts({
+      categories: category.id,
+      categories_exclude: '32', // Toujours exclure bannières
+      per_page: options.per_page || 20,
+      page: options.page || 1,
+      search: options.search || null,
+      _embed: true,
+    });
+
+    return posts;
+
+  } catch (error) {
+    logger.error(`[WordPress API] Error fetching posts for "${context}/${subcategory}":`, error);
+    return [];
+  }
+}

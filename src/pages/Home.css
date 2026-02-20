@@ -47,13 +47,13 @@
 .content-section h2 {
   font-size: 2rem;
   margin-bottom: 1rem;
-  color: #333; /* Gris foncé */
+  /*color: #333;  Gris foncé */
 }
 
 .content-section p {
   font-size: 1.125rem; /* Taille de texte confortable */
   line-height: 1.8; /* Espacement entre les lignes pour lisibilité */
-  color: #555; /* Gris moyen */
+  /*color: #555;  Gris moyen */
 }
 
 

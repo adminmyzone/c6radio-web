@@ -1,0 +1,207 @@
+/**
+ * Styles pour ContextualPage
+ * Page d'affichage articles d'une sous-section contextuelle
+ */
+
+/* ===================================
+   CONTENEUR PRINCIPAL
+   =================================== */
+
+.contextual-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  padding-bottom: 0px; /* Espace pour PlayerBar */
+}
+
+/* ===================================
+   EN-TÊTE
+   =================================== */
+
+.contextual-page-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.contextual-menu-toggle {
+  background-color: var(--contextual-primary, #0d6efd);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  font-size: 1.5rem;
+  line-height: 1;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  flex-shrink: 0;
+}
+
+.contextual-menu-toggle:hover {
+  background-color: var(--contextual-primary-hover, #0a58ca);
+}
+
+.contextual-menu-toggle:active {
+  transform: scale(0.95);
+}
+
+.hamburger-icon {
+  display: block;
+  font-family: Arial, sans-serif;
+}
+
+.contextual-page-title {
+  flex: 1;
+}
+
+.contextual-page-title h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 0.5rem 0;
+}
+
+.contextual-page-breadcrumb {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #6c757d;
+}
+
+.breadcrumb-context {
+  font-weight: 500;
+}
+
+.breadcrumb-current {
+  font-weight: 600;
+  color: #212529;
+}
+
+/* ===================================
+   FILTRES
+   =================================== */
+
+.contextual-page-filters {
+  margin-bottom: 2rem;
+}
+
+/* ===================================
+   CONTENU PRINCIPAL
+   =================================== */
+
+.contextual-page-content {
+  min-height: 400px;
+}
+
+/* ===================================
+   GRILLE DES ARTICLES
+   =================================== */
+
+.contextual-page-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+/* ===================================
+   ÉTATS : LOADING, ERROR, EMPTY
+   =================================== */
+
+.contextual-page-loading,
+.contextual-page-error,
+.contextual-page-empty {
+  text-align: center;
+  padding: 3rem 1rem;
+}
+
+.contextual-page-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.contextual-page-loading p {
+  font-size: 1.125rem;
+  color: #666;
+}
+
+.contextual-page-error {
+  background-color: #fff5f5;
+  border: 1px solid #feb2b2;
+  border-radius: 8px;
+  padding: 2rem;
+}
+
+.contextual-page-error p {
+  margin: 0.5rem 0;
+  color: #c53030;
+}
+
+.contextual-page-empty {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 3rem 1rem;
+}
+
+.contextual-page-empty p {
+  margin: 0.5rem 0;
+  color: #6c757d;
+  font-size: 1rem;
+}
+
+.contextual-page-empty p:first-child {
+  font-weight: 600;
+  font-size: 1.125rem;
+  color: #495057;
+}
+
+/* ===================================
+   RESPONSIVE
+   =================================== */
+
+/* Tablettes */
+@media (min-width: 768px) {
+  .contextual-page-title h1 {
+    font-size: 2.5rem;
+  }
+  
+  .contextual-page-breadcrumb {
+    font-size: 1rem;
+  }
+}
+
+/* Desktops */
+@media (min-width: 1024px) {
+  .contextual-page {
+    padding: 3rem 1.5rem;
+    padding-bottom: 0px;
+  }
+  
+  .contextual-page-header {
+    margin-bottom: 2.5rem;
+  }
+  
+  .contextual-page-grid {
+    gap: 2.5rem;
+  }
+}
+
+/* ===================================
+   ACCESSIBILITÉ
+   =================================== */
+
+/* Focus visible pour navigation clavier */
+.contextual-menu-toggle:focus-visible {
+  outline: 2px solid #0d6efd;
+  outline-offset: 2px;
+}
+
+/* Réduire mouvement si préférence utilisateur */
+@media (prefers-reduced-motion: reduce) {
+  .contextual-menu-toggle {
+    transition-duration: 0.01ms !important;
+  }
+}

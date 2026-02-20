@@ -29,6 +29,8 @@ import About from "./pages/About.jsx";
 import Contact from "./pages/Contact.jsx";
 import News from "./pages/News.jsx";
 import NewsDetail from "./pages/NewsDetail.jsx";
+import ContextualHome from "./pages/ContextualHome.jsx";
+import ContextualPage from "./pages/ContextualPage.jsx";
 
 /**
  * Configuration du router
@@ -65,6 +67,28 @@ export const router = createBrowserRouter([
       {
         path: 'news/:slug', // Route dynamique pour détail actualité
         element: <NewsDetail />,
+      },
+      /**
+       * PHASE ELECTIONS - ROUTES CONTEXTUELLES
+       * ----------------------------------------
+       * Routes pour les sections contextuelles (Élections, Événements, etc.)
+       * Ordre important : AVANT la route catch-all (:slug)
+       */
+      {
+        path: 'elections',  // Page d'accueil section élections
+        element: <ContextualHome context="elections" />,
+      },
+      {
+        path: 'elections/:subcategory', // Page d'une commune spécifique
+        element: <ContextualPage context="elections" />,
+      },
+      {
+        path: 'evenements', // Page d'accueil section événements
+        element: <ContextualHome context="evenements" />,
+      },
+      {
+        path: 'evenements/:subcategory', // Page d'un événement spécifique
+        element: <ContextualPage context="evenements" />,
       },
       {
         path: ':slug',      // Route CATCH-ALL : capture toutes les URLs restantes

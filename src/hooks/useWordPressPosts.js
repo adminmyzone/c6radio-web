@@ -224,6 +224,7 @@ export function useWordPressPosts(filters = {}, enableCache = true) {
    */
   const refetch = useCallback(() => {
     logger.log('[useWordPressPosts] Manual refetch triggered');
+    hasLoadedRef.current = false; // Reset pour forcer rechargement
     loadPosts();
   }, [loadPosts]);
 

@@ -34,29 +34,45 @@ export default function News() {
   const [selectedCategory, setSelectedCategory] = useState(null);
 
   /**
-   * EXCLUSION CATÉGORIE "BANNIERES"
-   * Cette catégorie (ID 32) sert uniquement pour les bannières publicitaires
-   * et ne doit jamais apparaître dans les actualités
+   * EXCLUSION CATÉGORIES
+   * - Bannières (ID 32) : bannières publicitaires
+   * - Catégories contextuelles : élections, événements, quartiers
    */
   const BANNERS_CATEGORY_ID = '32';
 
   /**
-   * Liste des catégories WordPress
+   * Liste des catégories WordPress (pour le dropdown)
    */
   const [categories, setCategories] = useState([]);
   const [categoriesLoading, setCategoriesLoading] = useState(true);
 
   /**
+   * IDs des catégories contextuelles à exclure (calculés dynamiquement)
+   */
+  const [excludedCategoryIds, setExcludedCategoryIds] = useState(BANNERS_CATEGORY_ID);
+
+  /**
    * Hook pour récupérer les articles avec filtres
    * IMPORTANT : Le hook refetch automatiquement quand les filtres changent !
-   * EXCLUSION BANNIÈRES : On exclut TOUJOURS la catégorie ID 32 des résultats
+   * EXCLUSION : Bannières + catégories contextuelles
    */
-  const { posts, loading, error } = useWordPressPosts({
+  const { posts, loading, error, refetch } = useWordPressPosts({
     search: searchTerm || undefined,      // Undefined si vide (ignore le filtre)
     categories: selectedCategory || undefined,
-    categories_exclude: BANNERS_CATEGORY_ID, // Toujours exclure les bannières (ID 32)
+    categories_exclude: excludedCategoryIds, // Bannières + catégories contextuelles
     per_page: 20,                         // Augmenté à 20 pour avoir plus de résultats
   });
+
+  /**
+   * Refetch articles quand les IDs exclus changent
+   * (Pour forcer rechargement après calcul catégories)
+   */
+  useEffect(() => {
+    if (excludedCategoryIds !== BANNERS_CATEGORY_ID && !categoriesLoading) {
+      logger.log(`[News] Categories exclusion updated, refetching posts with IDs: ${excludedCategoryIds}`);
+      refetch();
+    }
+  }, [excludedCategoryIds, categoriesLoading, refetch]);
 
   // ====================================
   // CHARGEMENT DES CATÉGORIES
@@ -74,23 +90,47 @@ export default function News() {
 
         const cats = await fetchCategories();
         
-        // IMPORTANT : Filtrer la catégorie "bannieres" (ID 32) du dropdown
-        // Elle sert uniquement pour les bannières publicitaires
-        const filteredCats = cats.filter(cat => {
+        // IMPORTANT : Filtrer les catégories à exclure
+        // 1. Catégorie "bannieres" (ID 32) - bannières publicitaires
+        // 2. Catégories contextuelles (élections, événements) - sections dédiées
+        const CONTEXTUAL_PREFIXES = ['election-', 'elections-', 'event-', 'evenement-', 'evenements-', 'quartier-', 'quartiers-', 'sport-', 'sports-'];
+        
+        // Séparer les catégories normales et contextuelles
+        const normalCats = [];
+        const contextualCatIds = [32]; // Commencer avec bannières (ID 32)
+        
+        cats.forEach(cat => {
+          // Vérifier si bannière
           const isBanner = cat.id === 32 || 
                           cat.slug === 'bannieres' || 
                           cat.name.toLowerCase().includes('bannière') ||
                           cat.name.toLowerCase().includes('banniere');
-          return !isBanner; // Exclure les bannières du dropdown
+          
+          // Vérifier si catégorie contextuelle (avec préfixes)
+          const isContextual = CONTEXTUAL_PREFIXES.some(prefix => cat.slug.startsWith(prefix));
+          
+          if (isBanner || isContextual) {
+            // Ajouter à la liste d'exclusion
+            contextualCatIds.push(cat.id);
+          } else {
+            // Garder pour le dropdown
+            normalCats.push(cat);
+          }
         });
         
-        setCategories(filteredCats);
+        setCategories(normalCats);
+        
+        // Construire la chaîne d'IDs à exclure (ex: "32,45,46,47")
+        const excludeIds = [...new Set(contextualCatIds)].join(',');
+        setExcludedCategoryIds(excludeIds);
 
-        logger.log(`[News] Loaded ${filteredCats.length} categories (excluded banners)`);
+        logger.log(`[News] Loaded ${normalCats.length} categories (excluded ${contextualCatIds.length} contextual)`);
+        logger.log(`[News] Excluded category IDs: ${excludeIds}`);
       } catch (err) {
         logger.error('[News] Error loading categories:', err);
         // En cas d'erreur, garder tableau vide (= pas de filtre catégorie)
         setCategories([]);
+        setExcludedCategoryIds(BANNERS_CATEGORY_ID); // Au minimum exclure bannières
       } finally {
         setCategoriesLoading(false);
       }

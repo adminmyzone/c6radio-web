@@ -12,19 +12,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Initialiser Firebase
         FirebaseApp.configure()
         
+        // IMPORTANT: définir le delegate AVANT toute demande d'enregistrement
+        // Sans cela, Firebase ne peut pas convertir le token APNS en token FCM
+        Messaging.messaging().delegate = self
+        
         // Configurer les notifications
         if #available(iOS 10.0, *) {
             UNUserNotificationCenter.current().delegate = self
         }
         
-        // Enregistrer pour les notifications distantes
-        application.registerForRemoteNotifications()
-        
         return true
     }
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        // Envoyer le token à Firebase Messaging
+        // Transmettre le token APNS à Firebase pour obtenir le token FCM
         Messaging.messaging().apnsToken = deviceToken
     }
     
@@ -81,5 +82,24 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     // Notification cliquée
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         completionHandler()
+    }
+}
+
+// MARK: - MessagingDelegate
+// Indispensable : reçoit le token FCM quand Firebase le génère ou le renouvelle
+extension AppDelegate: MessagingDelegate {
+    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
+        print("🔑 Token FCM iOS reçu: \(fcmToken ?? "nil")")
+        
+        guard let token = fcmToken else { return }
+        
+        // Notifier Capacitor / la WebView que le token est disponible
+        // @capacitor/push-notifications écoute cette notification pour exposer le token via l'event 'registration'
+        let dataDict: [String: String] = ["token": token]
+        NotificationCenter.default.post(
+            name: Notification.Name("FCMToken"),
+            object: nil,
+            userInfo: dataDict
+        )
     }
 }

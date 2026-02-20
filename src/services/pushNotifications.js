@@ -85,10 +85,12 @@ const registerTokenWithBackend = async (token, platform) => {
  */
 const registerNativePush = async () => {
   try {
-    // Enregistrement pour recevoir les notifications
-    await PushNotifications.register();
+    // Nettoyer les anciens listeners pour éviter les doublons (ex: re-init app)
+    await PushNotifications.removeAllListeners();
 
-    // Écoute de la réception du token
+    // IMPORTANT: ajouter les listeners AVANT d'appeler register()
+
+    // Écoute de la réception du token FCM
     PushNotifications.addListener('registration', async (token) => {
       console.log('📱 Token push reçu:', token.value);
       const platform = Capacitor.getPlatform(); // 'ios' ou 'android'
@@ -113,6 +115,9 @@ const registerNativePush = async () => {
       console.log('👆 Notification cliquée:', action);
       handleNotificationClick(action.notification);
     });
+
+    // Démarrer l'enregistrement APRÈS avoir mis en place les listeners
+    await PushNotifications.register();
   } catch (error) {
     console.error('❌ Erreur initialisation push natif:', error);
   }

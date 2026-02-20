@@ -1,7 +1,5 @@
 import UIKit
 import Capacitor
-import FirebaseCore
-import FirebaseMessaging
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -9,24 +7,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Initialiser Firebase (requis pour convertir le token APNs en token FCM)
-        FirebaseApp.configure()
-        
-        // Définir le delegate Firebase AVANT registerForRemoteNotifications
-        Messaging.messaging().delegate = self
-        
-        // Configure UNUserNotificationCenter delegate pour afficher les notifs au premier plan
         if #available(iOS 10.0, *) {
             UNUserNotificationCenter.current().delegate = self
         }
         return true
     }
-    
-    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        // Passer le token APNs à Firebase pour obtenir le token FCM
-        Messaging.messaging().apnsToken = deviceToken
-    }
-    
+
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         print("❌ Échec enregistrement notifications distantes: \(error)")
     }
@@ -80,14 +66,5 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     // Notification cliquée
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         completionHandler()
-    }
-}
-
-// MARK: - MessagingDelegate
-// Firebase appelle ce callback avec le vrai token FCM (pas APNs)
-// qui sera envoyé à WordPress via Capacitor 'registration' event
-extension AppDelegate: MessagingDelegate {
-    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
-        print("🔑 Token FCM iOS: \(fcmToken ?? "nil")")
     }
 }

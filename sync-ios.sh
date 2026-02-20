@@ -4,7 +4,10 @@
 
 set -e
 
-echo "🔄 Cap sync iOS..."
+echo "� Installation des dépendances npm..."
+npm install
+
+echo "�🔄 Cap sync iOS..."
 npx cap sync ios
 
 PACKAGE_SWIFT="ios/App/CapApp-SPM/Package.swift"

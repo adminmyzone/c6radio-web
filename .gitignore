@@ -12,3 +12,21 @@ capacitor-cordova-ios-plugins
 App/App/capacitor.config.json
 App/App/config.xml
 node_modules
+
+# ===================================
+# SECRETS - NE JAMAIS COMMITTER
+# ===================================
+# Clés privées Firebase Admin SDK (server-side, accès total Firebase)
+docs/secrets/
+*.json.secret
+*adminsdk*.json
+*service_account*.json
+*firebase-adminsdk*.json
+
+# Variables d'environnement locales
+.env
+.env.local
+.env.*.local
+
+# Build output (régénérable)
+dist/

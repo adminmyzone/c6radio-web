@@ -7,8 +7,7 @@
 import * as reconnectionManager from './reconnectionManager.js';
 import * as mediaSession from './mediaSession.js';
 import logger from '../lib/logger.js';
-
-const STREAM_URL = 'https://radio.c6media.fr:8443/main';
+import { STREAM_URL } from '../config/constants.js';
 
 // ============================================
 // VARIABLES GLOBALES (partagées dans tout le module)

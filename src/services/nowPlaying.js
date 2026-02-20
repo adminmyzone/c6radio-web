@@ -4,8 +4,8 @@
 // ============================================
 
 import logger from "../lib/logger";
+import { NOW_PLAYING_URL } from '../config/constants.js';
 
-const NOW_PLAYING_URL = 'https://radio.c6media.fr/api/live-info';
 const FETCH_TIMEOUT = 5000; // 5 secondes max
 
 // ============================================

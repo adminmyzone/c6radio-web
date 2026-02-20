@@ -56,6 +56,12 @@ export const WP_ENDPOINTS = {
   categories: `${WP_API_BASE_URL}/categories`,
 };
 
+/**
+ * Endpoint du plugin WordPress C6Radio (notifications push, tokens)
+ * Format : /wp-json/c6radio/v1/...
+ */
+export const WP_PLUGIN_URL = WP_API_BASE_URL.replace('/wp/v2', '/c6radio/v1');
+
 // ===================================
 // URLS STREAMING AUDIO
 // ===================================

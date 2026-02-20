@@ -27,8 +27,8 @@ messaging.onBackgroundMessage((payload) => {
   const notificationTitle = payload.notification?.title || 'C6Radio';
   const notificationOptions = {
     body: payload.notification?.body || '',
-    icon: payload.notification?.image || '/icon-192.png',
-    badge: '/icon-192.png',
+    icon: payload.notification?.image || '/logo-c6radio.png',
+    badge: '/logo-c6radio.png',
     data: payload.data,
     tag: 'c6radio-notification',
     requireInteraction: false,

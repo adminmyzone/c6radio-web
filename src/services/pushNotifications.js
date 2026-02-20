@@ -8,8 +8,8 @@ import { PushNotifications } from '@capacitor/push-notifications';
 import { initializeApp } from 'firebase/app';
 import { getMessaging, getToken, onMessage } from 'firebase/messaging';
 import { firebaseConfig, vapidKey } from '../config/firebase.config.js';
+import { WP_PLUGIN_URL } from '../config/constants.js';
 
-const WORDPRESS_API_URL = 'https://exp937.fr/wp/wp-json/c6radio/v1';
 const isNativePlatform = Capacitor.isNativePlatform();
 
 let firebaseApp = null;
@@ -58,7 +58,7 @@ export const requestPermission = async () => {
  */
 const registerTokenWithBackend = async (token, platform) => {
   try {
-    const response = await fetch(`${WORDPRESS_API_URL}/register-token`, {
+    const response = await fetch(`${WP_PLUGIN_URL}/register-token`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -252,7 +252,7 @@ export const unregisterPushNotifications = async () => {
     if (!token) return;
 
     // Supprimer du backend
-    await fetch(`${WORDPRESS_API_URL}/unregister-token`, {
+    await fetch(`${WP_PLUGIN_URL}/unregister-token`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ token }),

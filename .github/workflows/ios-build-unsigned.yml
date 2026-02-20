@@ -1,0 +1,192 @@
+name: iOS Build IPA (Non signé)
+
+# Workflow simple pour générer un IPA non signé
+# À installer avec Sideloadly, AltStore, ou tout outil de sideload
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-unsigned-ipa:
+    runs-on: macos-latest
+
+    env:
+      APP_NAME: C6Radio
+
+    steps:
+      # ============================================
+      # ÉTAPE 1 : Récupération du code source
+      # ============================================
+      - name: Checkout du code
+        uses: actions/checkout@v4
+
+      # ============================================
+      # ÉTAPE 2 : Configuration Node.js
+      # ============================================
+      - name: Configuration Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      # ============================================
+      # ÉTAPE 3 : Installation des dépendances
+      # ============================================
+      - name: Installation des dépendances npm
+        run: npm ci
+
+      # ============================================
+      # ÉTAPE 4 : Build Vite (génère le dossier dist/)
+      # ============================================
+      - name: Build React + Vite
+        run: npm run build
+        env:
+          VITE_STREAM_URL: https://radio.c6media.fr:8443/main
+          VITE_NOW_PLAYING_URL: https://radio.c6media.fr/api/live-info
+          VITE_WP_API_BASE_URL: https://exp937.fr/wp/wp-json/wp/v2
+
+      # ============================================
+      # ÉTAPE 5 : Synchronisation Capacitor iOS
+      # ============================================
+      - name: Synchronisation Capacitor iOS
+        run: npx cap sync ios
+      
+      # ============================================
+      # ÉTAPE 5.5 : Ajouter Firebase au Package.swift
+      # (cap sync régénère Package.swift, on doit ré-ajouter Firebase)
+      # ============================================
+      - name: Ajouter Firebase aux dépendances SPM
+        run: |
+          # Backup du Package.swift original
+          cp ios/App/CapApp-SPM/Package.swift ios/App/CapApp-SPM/Package.swift.backup
+          
+          # Ajouter Firebase à la liste des dépendances
+          sed -i '' 's|.package(name: "CapacitorPushNotifications", path: "../../../node_modules/@capacitor/push-notifications")|.package(name: "CapacitorPushNotifications", path: "../../../node_modules/@capacitor/push-notifications"),\
+                .package(url: "https://github.com/firebase/firebase-ios-sdk.git", from: "10.0.0")|' ios/App/CapApp-SPM/Package.swift
+          
+          # Ajouter FirebaseMessaging aux targets (inclut automatiquement FirebaseCore)
+          sed -i '' 's|.product(name: "CapacitorPushNotifications", package: "CapacitorPushNotifications")|.product(name: "CapacitorPushNotifications", package: "CapacitorPushNotifications"),\
+                .product(name: "FirebaseMessaging", package: "firebase-ios-sdk")|' ios/App/CapApp-SPM/Package.swift
+          
+          # Afficher le résultat
+          echo "📦 Package.swift modifié:"
+          cat ios/App/CapApp-SPM/Package.swift
+      
+      # ============================================
+      # ÉTAPE 5.6 : Résolution des packages SPM
+      # ============================================
+      - name: Résolution automatique des packages SPM
+        run: |
+          xcodebuild -resolvePackageDependencies \
+            -project ios/App/App.xcodeproj \
+            -scheme App
+
+      # ============================================
+      # ÉTAPE 6 : Incrémentation du build number
+      # ============================================
+      - name: Incrémentation du build number
+        run: |
+          BUILD_NUMBER=${{ github.run_number }}
+          xcrun agvtool new-version -all $BUILD_NUMBER
+        working-directory: ios/App
+
+      # ============================================
+      # ÉTAPE 7 : Configuration pour build non signé
+      # On désactive la signature de code
+      # ============================================
+      - name: Configuration build non signé
+        run: |
+          # Désactive la signature de code
+          sed -i '' 's/CODE_SIGN_STYLE = Manual;/CODE_SIGN_STYLE = Manual;\
+          CODE_SIGN_IDENTITY = "";/' ios/App/App.xcodeproj/project.pbxproj
+          
+          # Active la génération d'archive sans signature
+          sed -i '' 's/CODE_SIGN_IDENTITY = "Apple Distribution";/CODE_SIGN_IDENTITY = "";/' ios/App/App.xcodeproj/project.pbxproj
+
+      # ============================================
+      # ÉTAPE 8 : Build Xcode en mode Debug (pas de signature requise)
+      # ============================================
+      - name: Build Xcode (Debug, sans signature)
+        run: |
+          xcodebuild \
+            -project ios/App/App.xcodeproj \
+            -scheme App \
+            -configuration Debug \
+            -sdk iphoneos \
+            -archivePath build/App.xcarchive \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            archive
+
+      # ============================================
+      # ÉTAPE 9 : Créer l'IPA à partir de l'archive
+      # ============================================
+      - name: Créer l'IPA
+        run: |
+          # Créer le dossier Payload
+          mkdir -p build/Payload
+          
+          # Copier l'app dans Payload
+          cp -R build/App.xcarchive/Products/Applications/App.app build/Payload/
+          
+          # Créer le fichier IPA (c'est juste un zip du dossier Payload)
+          cd build
+          zip -r C6Radio-unsigned.ipa Payload
+          
+          # Nettoyer
+          rm -rf Payload
+          
+          echo "✅ IPA créé : build/C6Radio-unsigned.ipa"
+          ls -lh C6Radio-unsigned.ipa
+
+      # ============================================
+      # ÉTAPE 10 : Upload de l'IPA comme artifact
+      # ============================================
+      - name: Upload IPA comme artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: C6Radio-unsigned-${{ github.run_number }}
+          path: build/C6Radio-unsigned.ipa
+          retention-days: 30
+
+      # ============================================
+      # ÉTAPE 11 : Afficher les instructions
+      # ============================================
+      - name: Instructions d'installation
+        run: |
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "🎉 BUILD RÉUSSI !"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo ""
+          echo "📱 Pour installer sur ton iPhone :"
+          echo ""
+          echo "1. Va sur GitHub Actions (cet onglet)"
+          echo "2. Clique sur ce workflow"
+          echo "3. Descends jusqu'à 'Artifacts'"
+          echo "4. Télécharge : C6Radio-unsigned-${{ github.run_number }}.zip"
+          echo "5. Dézippe le fichier → Tu obtiens C6Radio-unsigned.ipa"
+          echo ""
+          echo "🔧 Avec Sideloadly :"
+          echo "   - Ouvre Sideloadly"
+          echo "   - Connecte ton iPhone en USB"
+          echo "   - Glisse-dépose le fichier .ipa"
+          echo "   - Entre ton Apple ID"
+          echo "   - Installe !"
+          echo ""
+          echo "🔧 Avec AltStore :"
+          echo "   - Ouvre AltStore sur ton iPhone"
+          echo "   - My Apps → +"
+          echo "   - Sélectionne le fichier .ipa"
+          echo ""
+          echo "⚠️  Important :"
+          echo "   - L'app sera valide 7 jours"
+          echo "   - Après 7 jours, réinstalle une nouvelle version"
+          echo "   - Ou utilise un compte Apple Developer (valide 1 an)"
+          echo ""
+          echo "🔢 Build number : ${{ github.run_number }}"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+

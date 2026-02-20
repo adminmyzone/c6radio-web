@@ -1,0 +1,189 @@
+/**
+ * Styles du Footer - Pied de page
+ * 
+ * STRUCTURE CSS :
+ * ---------------
+ * 1. .site-footer = Container principal
+ * 2. .footer-content = Grille à 3 colonnes
+ * 3. .footer-bottom = Barre de copyright
+ */
+
+/* ========================================
+   FOOTER PRINCIPAL
+   ======================================== */
+
+.site-footer {
+  background-color: #2d3748; /* Fond gris foncé */
+  color: #e2e8f0; /* Texte gris clair */
+  padding: 3rem 2rem 1.5rem; /* Espacement intérieur */
+  margin-top: 4rem; /* Espace avant le footer */
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto; /* Centrer le contenu */
+}
+
+/* ========================================
+   CONTENU DU FOOTER (3 colonnes)
+   ======================================== */
+
+.footer-content {
+  display: grid; /* Grille CSS pour les colonnes */
+  grid-template-columns: 2fr 1fr 1fr; /* 3 colonnes : large, moyenne, moyenne */
+  gap: 3rem; /* Espace entre les colonnes */
+  margin-bottom: 2rem;
+}
+
+/* Colonnes individuelles */
+.footer-column {
+  display: flex;
+  flex-direction: column; /* Contenu en colonne */
+}
+
+.footer-column h3 {
+  font-size: 1.5rem;
+  color: #667eea; /* Violet pour le titre principal */
+  margin-bottom: 1rem;
+}
+
+.footer-column h4 {
+  font-size: 1.125rem;
+  color: #a0aec0; /* Gris clair pour les sous-titres */
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+}
+
+.footer-description {
+  line-height: 1.6;
+  color: #cbd5e0; /* Gris moyen */
+  margin: 0;
+}
+
+/* ========================================
+   LIENS DE NAVIGATION
+   ======================================== */
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links li {
+  margin-bottom: 0.5rem;
+}
+
+.footer-links a {
+  color: #cbd5e0; /* Gris clair */
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+  color: #667eea; /* Violet au survol */
+}
+
+/* ========================================
+   RÉSEAUX SOCIAUX
+   ======================================== */
+
+.social-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.social-link {
+  color: #cbd5e0;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.social-link:hover {
+  color: #667eea; /* Violet au survol */
+}
+
+/* ========================================
+   BARRE DE COPYRIGHT (en bas)
+   ======================================== */
+
+.footer-bottom {
+  border-top: 1px solid #4a5568; /* Ligne de séparation */
+  padding-top: 1.5rem;
+  display: flex;
+  justify-content: space-between; /* Espace entre copyright et liens légaux */
+  align-items: center;
+  flex-wrap: wrap; /* Passer à la ligne si nécessaire */
+  gap: 1rem;
+}
+
+.footer-bottom p {
+  margin: 0;
+  color: #a0aec0;
+  font-size: 0.9rem;
+}
+
+/* Liens légaux (mentions légales, etc.) */
+.footer-legal {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.footer-legal a {
+  color: #a0aec0;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.3s ease;
+}
+
+.footer-legal a:hover {
+  color: #667eea;
+}
+
+.separator {
+  color: #4a5568; /* Point de séparation gris foncé */
+}
+
+/* ========================================
+   RESPONSIVE - MOBILE
+   ======================================== */
+
+/* Tablettes */
+@media (max-width: 768px) {
+  .footer-content {
+    grid-template-columns: 1fr 1fr; /* 2 colonnes sur tablette */
+    gap: 2rem;
+  }
+
+  /* Première colonne prend toute la largeur */
+  .footer-column:first-child {
+    grid-column: 1 / -1; /* S'étend sur toutes les colonnes */
+  }
+}
+
+/* Mobiles */
+@media (max-width: 480px) {
+  .site-footer {
+    display: none;
+  }
+
+  .footer-content {
+    grid-template-columns: 1fr; /* 1 seule colonne sur mobile */
+    gap: 2rem;
+  }
+
+  .footer-column:first-child {
+    grid-column: auto; /* Reset */
+  }
+
+  .footer-bottom {
+    flex-direction: column; /* Stack verticalement */
+    text-align: center;
+  }
+
+  .footer-legal {
+    justify-content: center;
+  }
+}

@@ -1,0 +1,290 @@
+/**
+ * Styles PodcastPlayer - Lecteur audio intégré
+ *
+ * EXPLICATION POUR DÉBUTANTS :
+ * ----------------------------
+ * Ces styles créent un petit lecteur audio élégant qui s'intègre
+ * naturellement dans la page détail d'un article.
+ *
+ * DESIGN :
+ * - Carte avec bordure et ombre légère
+ * - Icône podcast 🎙️ pour identification visuelle
+ * - Boutons avec couleurs cohérentes (vert = play, rouge = stop)
+ * - Barre de progression animée
+ * - Responsive mobile/desktop
+ */
+
+.podcast-player {
+  background: var(--color-bg-secondary);
+  border: 2px solid #444;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 24px 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* En-tête du lecteur */
+.podcast-player__header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.podcast-player__icon {
+  font-size: 24px;
+}
+
+.podcast-player__title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+/* Contrôles (bouton + durée) */
+.podcast-player__controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+/* Bouton principal */
+.podcast-player__btn {
+  flex: 1;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* Bouton Play - Vert */
+.podcast-player__btn--play {
+  background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+  color: white;
+}
+
+.podcast-player__btn--play:hover {
+  background: linear-gradient(135deg, #45a049 0%, #3d8b40 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
+}
+
+.podcast-player__btn--play:active {
+  transform: translateY(0);
+}
+
+/* Bouton Stop - Rouge */
+.podcast-player__btn--stop {
+  background: linear-gradient(135deg, #f44336 0%, #e53935 100%);
+  color: white;
+}
+
+.podcast-player__btn--stop:hover {
+  background: linear-gradient(135deg, #e53935 0%, #d32f2f 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(244, 67, 54, 0.3);
+}
+
+.podcast-player__btn--stop:active {
+  transform: translateY(0);
+}
+
+/* Bouton Loading - Gris */
+.podcast-player__btn--loading {
+  background: #9e9e9e;
+  color: white;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Durée */
+.podcast-player__time {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #666;
+  white-space: nowrap;
+  min-width: 100px;
+}
+
+.podcast-player__time-current {
+  color: #333;
+}
+
+.podcast-player__time-separator {
+  color: #999;
+}
+
+.podcast-player__time-total {
+  color: #666;
+}
+
+/* Barre de progression */
+.podcast-player__progress-container {
+  width: 100%;
+  height: 6px;
+  background: #e0e0e0;
+  border-radius: 3px;
+  overflow: hidden;
+  position: relative;
+}
+
+.podcast-player__progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #4caf50 0%, #66bb6a 100%);
+  border-radius: 3px;
+  transition: width 0.3s ease;
+  position: relative;
+}
+
+/* Animation pulse pour la barre de progression */
+.podcast-player__progress-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 20px;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4));
+  animation: progress-shine 2s ease-in-out infinite;
+}
+
+@keyframes progress-shine {
+  0% {
+    transform: translateX(-20px);
+  }
+  50% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-20px);
+  }
+}
+
+/* Message d'erreur */
+.podcast-player__error {
+  margin-top: 12px;
+  padding: 10px;
+  background: #ffebee;
+  border-left: 4px solid #f44336;
+  border-radius: 4px;
+  color: #c62828;
+  font-size: 14px;
+}
+
+/* Message info */
+.podcast-player__info {
+  margin-top: 12px;
+  padding: 10px;
+  background: #e3f2fd;
+  border-left: 4px solid #2196f3;
+  border-radius: 4px;
+  color: #1565c0;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+/* RESPONSIVE MOBILE */
+@media (max-width: 768px) {
+  .podcast-player {
+    padding: 16px;
+    margin: 20px 0;
+  }
+
+  .podcast-player__header {
+    margin-bottom: 12px;
+  }
+
+  .podcast-player__title {
+    font-size: 16px;
+  }
+
+  .podcast-player__controls {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .podcast-player__btn {
+    width: 100%;
+    padding: 14px 24px;
+  }
+
+  .podcast-player__time {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .podcast-player__info,
+  .podcast-player__error {
+    font-size: 12px;
+  }
+}
+
+/* RESPONSIVE TRÈS PETIT ÉCRAN */
+@media (max-width: 480px) {
+  .podcast-player {
+    padding: 12px;
+    border-radius: 8px;
+  }
+
+  .podcast-player__icon {
+    font-size: 20px;
+  }
+
+  .podcast-player__title {
+    font-size: 14px;
+  }
+
+  .podcast-player__btn {
+    font-size: 14px;
+    padding: 12px 20px;
+  }
+
+  .podcast-player__time {
+    font-size: 13px;
+  }
+}
+
+/**
+ * NOTES DESIGN :
+ * --------------
+ *
+ * COULEURS :
+ * - Vert (#4caf50) : Action positive (Play)
+ * - Rouge (#f44336) : Action d'arrêt (Stop)
+ * - Gris (#9e9e9e) : État désactivé (Loading)
+ * - Bleu (#2196f3) : Information
+ *
+ * ACCESSIBILITÉ :
+ * - Contraste suffisant (WCAG AA)
+ * - Zones de clic larges (min 44px hauteur)
+ * - Focus visible sur boutons
+ * - Messages d'état clairs
+ *
+ * ANIMATIONS :
+ * - Transitions douces (0.2s ease)
+ * - Hover feedback (transform + shadow)
+ * - Progress bar animée (shine effect)
+ *
+ * RESPONSIVE :
+ * - Desktop : Bouton et durée côte à côte
+ * - Mobile : Stacked (colonne)
+ * - Très petit : Tailles réduites
+ *
+ * COHÉRENCE :
+ * - Palette similaire à PlayerBar
+ * - Border-radius cohérent avec NewsCard
+ * - Espacements harmonieux
+ */
+

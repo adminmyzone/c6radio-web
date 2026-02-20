@@ -1,0 +1,190 @@
+/* ============================================
+   STYLES AUDIO TEST - CSS PUR
+   Page de test pour valider la logique audio
+   ============================================ */
+
+.audio-test {
+  min-height: 100vh;
+  background-color: #111827; /* gray-900 */
+  color: white;
+  padding: 2rem;
+}
+
+.audio-test h1 {
+  font-size: 2.25rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+}
+
+/* Section état actuel */
+.test-section {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background-color: #1f2937; /* gray-800 */
+  border-radius: 0.5rem;
+}
+
+.test-section.now-playing {
+  border: 2px solid #a855f7; /* purple-500 */
+}
+
+.test-section.live {
+  border: 2px solid #22c55e; /* green-500 */
+}
+
+.test-section.podcast {
+  border: 2px solid #3b82f6; /* blue-500 */
+}
+
+.test-section h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.test-section .description {
+  font-size: 0.875rem;
+  color: rgba(156, 163, 175, 1); /* gray-400 */
+  margin-bottom: 1rem;
+}
+
+.test-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.test-info p {
+  margin: 0;
+}
+
+.test-state {
+  color: #4ade80; /* green-400 */
+}
+
+.test-source {
+  color: #60a5fa; /* blue-400 */
+}
+
+/* Contrôles / Boutons */
+.test-controls {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.test-btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.test-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Boutons Live - Vert */
+.test-btn-live-play {
+  background-color: #22c55e; /* green-600 */
+  color: white;
+}
+
+.test-btn-live-play:hover:not(:disabled) {
+  background-color: #16a34a; /* green-700 */
+}
+
+.test-btn-live-stop {
+  background-color: #dc2626; /* red-600 */
+  color: white;
+}
+
+.test-btn-live-stop:hover {
+  background-color: #b91c1c; /* red-700 */
+}
+
+/* Boutons Podcast - Bleu */
+.test-btn-podcast-play {
+  background-color: #3b82f6; /* blue-600 */
+  color: white;
+}
+
+.test-btn-podcast-play:hover:not(:disabled) {
+  background-color: #2563eb; /* blue-700 */
+}
+
+.test-btn-podcast-pause {
+  background-color: #eab308; /* yellow-600 */
+  color: white;
+}
+
+.test-btn-podcast-pause:hover {
+  background-color: #ca8a04; /* yellow-700 */
+}
+
+.test-btn-podcast-resume {
+  background-color: #eab308; /* yellow-600 */
+  color: white;
+}
+
+.test-btn-podcast-resume:hover {
+  background-color: #ca8a04; /* yellow-700 */
+}
+
+.test-btn-podcast-stop {
+  background-color: #dc2626; /* red-600 */
+  color: white;
+}
+
+.test-btn-podcast-stop:hover {
+  background-color: #b91c1c; /* red-700 */
+}
+
+/* Message de statut */
+.test-status {
+  margin-top: 1rem;
+  font-weight: 600;
+}
+
+.test-status.live-active {
+  color: #4ade80; /* green-400 */
+}
+
+.test-status.podcast-active {
+  color: #60a5fa; /* blue-400 */
+}
+
+/* Instructions */
+.test-instructions {
+  padding: 1rem;
+  background-color: rgba(37, 99, 235, 0.1); /* blue-900/30 */
+  border-radius: 0.5rem;
+}
+
+.test-instructions h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.test-instructions ol {
+  margin: 0;
+  padding-left: 1.5rem;
+  list-style: decimal;
+}
+
+.test-instructions li {
+  margin: 0.5rem 0;
+  color: rgba(209, 213, 219, 1); /* gray-300 */
+}
+
+.test-instructions strong {
+  font-weight: 600;
+  color: white;
+}

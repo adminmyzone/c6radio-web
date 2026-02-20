@@ -1,0 +1,70 @@
+/* Styles pour la page 404 */
+
+.not-found-page {
+  min-height: calc(100vh - 180px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.not-found-container {
+  text-align: center;
+  color: white;
+  max-width: 600px;
+}
+
+.error-code {
+  font-size: 8rem;
+  font-weight: 900;
+  line-height: 1;
+  margin-bottom: 1rem;
+  opacity: 0.9;
+}
+
+.not-found-container h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.not-found-container p {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+  opacity: 0.9;
+  line-height: 1.6;
+}
+
+.home-button {
+  display: inline-block;
+  padding: 1rem 2rem;
+  background-color: white;
+  color: #667eea;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1.125rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.home-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .error-code {
+    font-size: 5rem;
+  }
+
+  .not-found-container h1 {
+    font-size: 2rem;
+  }
+
+  .not-found-container p {
+    font-size: 1rem;
+  }
+}

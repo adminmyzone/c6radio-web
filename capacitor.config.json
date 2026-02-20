@@ -1,0 +1,13 @@
+{
+  "appId": "com.c6media.c6media",
+  "appName": "C6Radio",
+  "webDir": "dist",
+  "server": {
+    "url": "https://exp937.fr",
+    "cleartext": true
+  },
+  "ios": {
+    "contentInset": "always",
+    "backgroundColor": "#ffffff"
+  }
+}

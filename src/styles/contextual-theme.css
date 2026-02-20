@@ -1,0 +1,213 @@
+/**
+ * Variables CSS - Sections Contextuelles
+ * 
+ * Ce fichier définit les couleurs et styles par contexte
+ * pour permettre une personnalisation visuelle facile.
+ * 
+ * USAGE :
+ * Importer ce fichier dans les composants contextuels
+ * et appliquer la classe appropriée sur le conteneur racine
+ */
+
+/* ====================================
+   THÈMES PAR CONTEXTE
+   ==================================== */
+
+/* Élections - Bleu institutionnel */
+.context-elections {
+  --contextual-primary: #0d6efd;
+  --contextual-primary-hover: #0a58ca;
+  --contextual-primary-light: #e7f1ff;
+  --contextual-border: #0d6efd;
+  --contextual-icon: '🗳️';
+}
+
+/* Événements - Violet festif */
+.context-evenements {
+  --contextual-primary: #6f42c1;
+  --contextual-primary-hover: #5a32a3;
+  --contextual-primary-light: #f3e8ff;
+  --contextual-border: #6f42c1;
+  --contextual-icon: '🎉';
+}
+
+/* Quartiers - Vert communautaire */
+.context-quartiers {
+  --contextual-primary: #198754;
+  --contextual-primary-hover: #146c43;
+  --contextual-primary-light: #d1f4e0;
+  --contextual-border: #198754;
+  --contextual-icon: '🏘️';
+}
+
+/* Sports - Orange dynamique */
+.context-sports {
+  --contextual-primary: #fd7e14;
+  --contextual-primary-hover: #e8590c;
+  --contextual-primary-light: #fff3e0;
+  --contextual-border: #fd7e14;
+  --contextual-icon: '⚽';
+}
+
+/* Défaut - Bleu classique */
+.context-default {
+  --contextual-primary: #0d6efd;
+  --contextual-primary-hover: #0a58ca;
+  --contextual-primary-light: #e7f1ff;
+  --contextual-border: #dee2e6;
+  --contextual-icon: '📁';
+}
+
+/* ====================================
+   STYLES COMMUNS THÉMATISÉS
+   ==================================== */
+
+/* Boutons primaires contextuels */
+.contextual-button-primary {
+  background-color: var(--contextual-primary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.contextual-button-primary:hover {
+  background-color: var(--contextual-primary-hover);
+}
+
+.contextual-button-primary:active {
+  transform: scale(0.98);
+}
+
+/* Badges contextuels */
+.contextual-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--contextual-primary-light);
+  color: var(--contextual-primary);
+  padding: 0.375rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+/* Bordures contextuelles */
+.contextual-border-accent {
+  border-left: 4px solid var(--contextual-primary);
+}
+
+/* Cartes contextuelles */
+.contextual-card {
+  border: 2px solid var(--contextual-border);
+  border-radius: 12px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.contextual-card:hover {
+  border-color: var(--contextual-primary);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Liens contextuels */
+.contextual-link {
+  color: var(--contextual-primary);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.contextual-link:hover {
+  color: var(--contextual-primary-hover);
+  text-decoration: underline;
+}
+
+/* ====================================
+   UTILITAIRES
+   ==================================== */
+
+/* Fond coloré léger */
+.contextual-bg-light {
+  background-color: var(--contextual-primary-light);
+}
+
+/* Texte coloré */
+.contextual-text {
+  color: var(--contextual-primary);
+}
+
+/* Icône contextuelle */
+.contextual-icon::before {
+  content: var(--contextual-icon);
+  margin-right: 0.5rem;
+}
+
+/* ====================================
+   ANIMATIONS
+   ==================================== */
+
+/* Pulse pour éléments importants */
+@keyframes contextual-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.contextual-pulse {
+  animation: contextual-pulse 2s ease-in-out infinite;
+}
+
+/* Slide-in depuis le bas */
+@keyframes contextual-slide-up {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.contextual-slide-up {
+  animation: contextual-slide-up 0.4s ease-out;
+}
+
+/* ====================================
+   RESPONSIVE
+   ==================================== */
+
+@media (max-width: 768px) {
+  .contextual-button-primary {
+    padding: 0.625rem 1.25rem;
+    font-size: 0.95rem;
+  }
+}
+
+/* ====================================
+   DARK MODE (si implémenté)
+   ==================================== */
+
+@media (prefers-color-scheme: dark) {
+  .context-elections {
+    --contextual-primary-light: #1a3a5c;
+  }
+  
+  .context-evenements {
+    --contextual-primary-light: #3a2850;
+  }
+  
+  .context-quartiers {
+    --contextual-primary-light: #1a3d2c;
+  }
+  
+  .context-sports {
+    --contextual-primary-light: #4d2e0f;
+  }
+}

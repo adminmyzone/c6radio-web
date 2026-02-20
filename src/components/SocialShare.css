@@ -1,0 +1,188 @@
+/**
+ * Styles pour SocialShare
+ * Design coloré avec icônes et hover effects
+ */
+
+.social-share {
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background: var(--color-bg-secondary);
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+}
+
+/* ============================================
+   TITRE
+   ============================================ */
+
+.social-share__title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0 0 1rem 0;
+  text-align: center;
+}
+
+/* ============================================
+   GRILLE DE BOUTONS
+   ============================================ */
+
+.social-share__buttons {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.75rem;
+}
+
+/* ============================================
+   BOUTONS
+   ============================================ */
+
+.social-share__button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+}
+
+.social-share__button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.social-share__button:active {
+  transform: translateY(0);
+}
+
+.social-share__icon {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.social-share__label {
+  font-size: 0.9rem;
+}
+
+/* ============================================
+   COULEURS PAR PLATEFORME
+   ============================================ */
+
+/* Facebook - Bleu */
+.social-share__button--facebook {
+  border-color: var(--color-facebook);
+}
+
+.social-share__button--facebook:hover {
+  background: var(--color-facebook);
+  color: #ffffff;
+}
+
+/* Twitter - Bleu ciel */
+.social-share__button--twitter {
+  border-color: var(--color-twitter);
+}
+
+.social-share__button--twitter:hover {
+  background: var(--color-twitter);
+  color: #ffffff;
+}
+
+/* WhatsApp - Vert */
+.social-share__button--whatsapp {
+  border-color: var(--color-whatsapp);
+}
+
+.social-share__button--whatsapp:hover {
+  background: var(--color-whatsapp);
+  color: #ffffff;
+}
+
+/* LinkedIn - Bleu professionnel */
+.social-share__button--linkedin {
+  border-color: var(--color-linkedin);
+}
+
+.social-share__button--linkedin:hover {
+  background: var(--color-linkedin);
+  color: #ffffff;
+}
+
+/* Copier le lien - Gris */
+.social-share__button--copy {
+  border-color: var(--color-gray-600);
+}
+
+.social-share__button--copy:hover {
+  background: var(--color-gray-600);
+  color: #ffffff;
+}
+
+/* État "Copié !" */
+.social-share__button--copy:hover .social-share__label::after {
+  content: ' ✓';
+}
+
+/* ============================================
+   RESPONSIVE MOBILE
+   ============================================ */
+
+@media (max-width: 768px) {
+  .social-share {
+    padding: 1rem;
+  }
+
+  .social-share__buttons {
+    grid-template-columns: repeat(2, 1fr); /* 2 colonnes sur mobile */
+    gap: 0.5rem;
+  }
+
+  .social-share__button {
+    padding: 0.65rem 0.75rem;
+    font-size: 0.85rem;
+  }
+
+  .social-share__icon {
+    font-size: 1.25rem;
+  }
+
+  .social-share__label {
+    font-size: 0.85rem;
+  }
+}
+
+/* Très petit mobile : 1 colonne */
+@media (max-width: 480px) {
+  .social-share__buttons {
+    grid-template-columns: 1fr; /* 1 colonne */
+  }
+}
+
+/* ============================================
+   MODE SOMBRE (OPTIONNEL)
+   ============================================ */
+
+/* Décommenter quand mode sombre implémenté
+@media (prefers-color-scheme: dark) {
+  .social-share {
+    background: #212529;
+    border-color: var(--color-text-primary);
+  }
+
+  .social-share__title {
+    color: #dee2e6;
+  }
+
+  .social-share__button {
+    background: #343a40;
+    color: #dee2e6;
+  }
+}
+*/

@@ -1,0 +1,103 @@
+/**
+ * SPLASH SCREEN - STYLES
+ *
+ * EXPLICATION POUR DÉBUTANTS :
+ * ----------------------------
+ * Le splash screen est une couche (overlay) par-dessus toute l'application.
+ * Elle apparaît au lancement, affiche le logo animé, puis disparaît.
+ *
+ * DEUX PHASES :
+ * 1. "visible"  → le logo monte et apparaît (animation d'entrée)
+ * 2. "fading"   → tout l'écran disparaît en fondu (animation de sortie)
+ *
+ * z-index: 9999 = au-dessus de tout (header, player, bannières, etc.)
+ */
+
+/* ============================================================
+   OVERLAY PLEIN ÉCRAN
+   ============================================================ */
+
+.splash-screen {
+  position: fixed;           /* Fixé à l'écran, ne défile pas */
+  inset: 0;                  /* Raccourci pour top/right/bottom/left: 0 */
+  z-index: 9999;             /* Au-dessus de tout */
+  background-color: var(--color-bg-primary, #1a1a1a);  /* Fond sombre */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ============================================================
+   CONTENU CENTRÉ (logo + spinner)
+   ============================================================ */
+
+.splash-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  animation: splash-enter 0.7s ease-out forwards; /* Animation d'entrée */
+}
+
+/* ============================================================
+   LOGO
+   ============================================================ */
+
+.splash-logo {
+  width: 220px;
+  max-width: 65vw;  /* Sur mobile : max 65% de la largeur de l'écran */
+  height: auto;
+  /* Halo lumineux rouge autour du logo */
+  filter: drop-shadow(0 0 30px rgba(230, 57, 70, 0.5));
+}
+
+/* ============================================================
+   SPINNER DE CHARGEMENT (anneau qui tourne)
+   ============================================================ */
+
+.splash-spinner {
+  width: 44px;
+  height: 44px;
+  border: 3px solid rgba(255, 255, 255, 0.1);  /* Anneau gris transparent */
+  border-top-color: var(--color-primary, #e63946); /* Partie rouge qui tourne */
+  border-radius: 50%;
+  animation: splash-spin 0.9s linear infinite;
+}
+
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+
+/* Entrée : le contenu monte de 20px et s'agrandit légèrement */
+@keyframes splash-enter {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Sortie : l'overlay entier disparaît en fondu */
+.splash-fading {
+  animation: splash-exit 0.5s ease-in forwards;
+  /* "forwards" = reste à l'état final de l'animation (opacity: 0) */
+}
+
+@keyframes splash-exit {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* Rotation du spinner */
+@keyframes splash-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

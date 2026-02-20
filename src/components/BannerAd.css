@@ -1,0 +1,315 @@
+/**
+ * Styles BannerAd - Bannières publicitaires
+ *
+ * PHASE 6 - BANNIÈRES PUBLICITAIRES
+ */
+
+/* Container principal */
+.banner-ad {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  min-height: 80px; /* Hauteur minimale pour éviter bannière invisible */
+  overflow: hidden;
+  background: #f5f5f5;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box; /* Important : inclure padding et border dans width */
+}
+
+/* Lien wrapper */
+.banner-link {
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.banner-link:hover .banner-image {
+  transform: scale(1.02);
+}
+
+/* Image de la bannière */
+.banner-image {
+  width: 100%;
+  height: 100%;
+  max-height: auto;
+  object-fit: contain;
+  background: #1a1a1a;
+  transition: opacity 0.6s ease-in-out; /* Transition plus longue et douce pour rotation fluide */
+  display: block;
+  opacity: 1; /* Toujours visible par défaut (images préchargées) */
+}
+
+.banner-image.loading {
+  opacity: 0.3; /* Légèrement transparent au lieu de complètement invisible - évite le flash blanc */
+}
+
+.banner-image.loaded {
+  opacity: 1;
+}
+
+/* État loading */
+.banner-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100px;
+  min-height: 100px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* État vide (dev seulement) */
+.banner-empty {
+  background: #fff3cd;
+  border: 2px dashed #ffc107;
+}
+
+.banner-empty-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  text-align: center;
+  color: #856404;
+}
+
+.banner-empty-message p {
+  margin: 5px 0;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.banner-spinner {
+  width: 30px;
+  height: 30px;
+  border: 3px solid rgba(0, 0, 0, 0.1);
+  border-top-color: var(--primary-color, #ff6b35);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Contrôles de navigation */
+.banner-controls {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  pointer-events: none;
+  padding: 0 10px;
+}
+
+.banner-control {
+  pointer-events: auto;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 24px;
+  font-weight: bold;
+  transition: background 0.2s, transform 0.2s;
+  user-select: none;
+}
+
+.banner-control:hover {
+  background: rgba(0, 0, 0, 0.7);
+  transform: scale(1.1);
+}
+
+.banner-control:active {
+  transform: scale(0.95);
+}
+
+.banner-control:focus {
+  outline: 2px solid white;
+  outline-offset: 2px;
+}
+
+/* Indicateurs (dots) */
+.banner-indicators {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  padding: 5px 10px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 20px;
+  backdrop-filter: blur(5px);
+}
+
+.banner-indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid white;
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+  padding: 0;
+}
+
+.banner-indicator:hover {
+  transform: scale(1.2);
+}
+
+.banner-indicator.active {
+  background: white;
+}
+
+/* Compteur (debug seulement) */
+.banner-counter {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: bold;
+  pointer-events: none;
+}
+
+/* Variations de taille */
+.banner-ad.banner-small {
+  height: 60px;
+}
+
+.banner-ad.banner-medium {
+  height: 120px;
+}
+
+.banner-ad.banner-large {
+  height: 200px;
+}
+
+/* Variantes de position */
+.banner-ad.banner-header {
+  margin-bottom: 20px;
+}
+
+.banner-ad.banner-footer {
+  margin-top: 20px;
+}
+
+.banner-ad.banner-sidebar {
+  margin: 20px 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .banner-ad {
+    border-radius: 4px;
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    min-height: 100px; /* Hauteur minimale plus grande sur mobile */
+  }
+
+  .banner-control {
+    width: 35px;
+    height: 35px;
+    font-size: 20px;
+  }
+
+  .banner-indicators {
+    bottom: 8px;
+    gap: 6px;
+  }
+
+  .banner-indicator {
+    width: 8px;
+    height: 8px;
+  }
+
+  /* Masquer les contrôles sur mobile pour économiser l'espace */
+  .banner-controls {
+    display: none;
+  }
+
+  /* S'assurer que l'image ne déborde pas */
+  .banner-image {
+    max-width: 100%;
+    width: 100%;
+    height: 100%; /* Prendre toute la hauteur du container */
+    min-height: 100px; /* Hauteur minimale augmentée */
+    max-height: 200px; /* Hauteur maximale pour éviter bannières géantes */
+    object-fit: contain;
+  }
+
+  /* Variantes de position mobile */
+  .banner-ad.banner-header {
+    margin-bottom: 10px;
+    max-height: 200px; /* Limiter la hauteur header sur mobile */
+  }
+
+  .banner-ad.banner-footer {
+    margin-top: 10px;
+    min-height: 100px; /* Forcer une hauteur minimale visible */
+  }
+}
+
+/* Animation d'apparition */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.banner-ad {
+  animation: fadeIn 0.5s ease;
+}
+
+/* Accessibilité */
+@media (prefers-reduced-motion: reduce) {
+  .banner-image,
+  .banner-control,
+  .banner-indicator,
+  .banner-ad {
+    transition: none;
+    animation: none;
+  }
+}
+
+/* Focus visible pour accessibilité clavier */
+.banner-link:focus-visible {
+  outline: 3px solid var(--primary-color, #ff6b35);
+  outline-offset: 2px;
+}
+

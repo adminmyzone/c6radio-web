@@ -1,0 +1,306 @@
+/**
+ * Styles pour DynamicPage - Pages WordPress génériques
+ * 
+ * Ces styles s'appliquent à TOUTES les pages chargées depuis WordPress
+ */
+
+/* ========================================
+   CONTAINER PRINCIPAL
+   ======================================== */
+
+.dynamic-page {
+  min-height: calc(100vh - 180px); /* Hauteur minimum */
+  padding: 2rem 1rem 4rem; /* Espacement */
+  background-color: #f9f9f9; /* Fond gris très clair */
+}
+
+.page-container {
+  max-width: 900px; /* Largeur maximum pour lisibilité */
+  margin: 0 auto; /* Centrer */
+  background: #2a2a2a; /* Fond blanc */
+  padding: 3rem; /* Espacement intérieur */
+  border-radius: 12px; /* Coins arrondis */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Ombre légère */
+}
+
+/* ========================================
+   TITRE DE LA PAGE
+   ======================================== */
+
+.page-title {
+  font-size: 2.5rem;
+  /*color: #333;*/
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 3px solid #667eea; /* Bordure violette */
+  font-weight: 700;
+}
+
+/* ========================================
+   CONTENU WORDPRESS
+   ======================================== */
+
+/* 
+ * Styles pour le HTML provenant de WordPress
+ * WordPress génère du HTML standard (p, h2, ul, etc.)
+ * On applique des styles professionnels
+ */
+
+.page-content {
+  font-size: 1.125rem;
+  line-height: 1.8;
+  color: #444;
+}
+
+/* Titres dans le contenu */
+.page-content h2 {
+  font-size: 2rem;
+  color: #333;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.page-content h3 {
+  font-size: 1.5rem;
+  color: #444;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+}
+
+/* Paragraphes */
+.page-content p {
+  margin-bottom: 1.25rem;
+}
+
+/* Listes */
+.page-content ul,
+.page-content ol {
+  margin-bottom: 1.25rem;
+  padding-left: 2rem;
+}
+
+.page-content li {
+  margin-bottom: 0.5rem;
+}
+
+/* Liens */
+.page-content a {
+  color: #667eea; /* Violet */
+  text-decoration: underline;
+  transition: color 0.3s ease;
+}
+
+.page-content a:hover {
+  color: #764ba2; /* Violet plus foncé */
+}
+
+/* Images WordPress */
+.page-content img {
+  max-width: 100%; /* Images responsives */
+  height: auto;
+  border-radius: 8px;
+  margin: 1.5rem 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Vidéos WordPress (uploadées directement) */
+.page-content video {
+  max-width: 100%; /* Vidéos responsives */
+  height: auto; /* Garder le ratio d'aspect */
+  border-radius: 8px;
+  margin: 1.5rem 0;
+  display: block; /* Éviter les espaces blancs */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  /* Lazy loading : fond gris pendant chargement */
+  background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: videoLoading 1.5s ease-in-out infinite;
+  min-height: 200px; /* Hauteur minimum pour éviter le saut de layout */
+}
+
+/* Animation shimmer pour le chargement */
+@keyframes videoLoading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Quand la vidéo est chargée, retirer l'animation */
+.page-content video[data-loaded="true"] {
+  animation: none;
+  background: transparent;
+}
+
+/* Audio WordPress */
+.page-content audio {
+  max-width: 100%; /* Lecteur audio responsive */
+  margin: 1.5rem 0;
+  display: block;
+}
+
+/* iframes (YouTube, Vimeo, etc.) */
+.page-content iframe {
+  max-width: 100%; /* iframes responsives */
+  border-radius: 8px;
+  margin: 1.5rem 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Container responsive pour vidéos embarquées (ratio 16:9) */
+.page-content .wp-block-embed,
+.page-content .wp-block-embed__wrapper {
+  position: relative;
+  padding-bottom: 56.25%; /* Ratio 16:9 (9/16 = 0.5625) */
+  height: 0;
+  overflow: hidden;
+  margin: 1.5rem 0;
+}
+
+.page-content .wp-block-embed iframe,
+.page-content .wp-block-embed__wrapper iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+/* Citations */
+.page-content blockquote {
+  border-left: 4px solid #667eea;
+  padding-left: 1.5rem;
+  margin: 1.5rem 0;
+  font-style: italic;
+  color: #666;
+}
+
+/* Code (si présent) */
+.page-content code {
+  background-color: #f4f4f4;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 0.9em;
+}
+
+.page-content pre {
+  background-color: #f4f4f4;
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+}
+
+/* ========================================
+   ÉTAT DE CHARGEMENT
+   ======================================== */
+
+.page-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  gap: 1rem;
+}
+
+/* Spinner de chargement */
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #667eea; /* Violet */
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.page-loading p {
+  font-size: 1.125rem;
+  color: #666;
+}
+
+/* ========================================
+   MÉTADONNÉES (date de modification)
+   ======================================== */
+
+.page-meta {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e5e5e5;
+}
+
+.page-meta p {
+  font-size: 0.9rem;
+  color: #888;
+  font-style: italic;
+}
+
+/* ========================================
+   RESPONSIVE - MOBILE
+   ======================================== */
+
+@media (max-width: 768px) {
+  .dynamic-page {
+    padding: 1rem 0.5rem 3rem;
+  }
+
+  .page-container {
+    padding: 2rem 1.5rem;
+    border-radius: 0; /* Pas de coins arrondis sur mobile */
+  }
+
+  .page-title {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .page-content {
+    font-size: 1rem;
+  }
+
+  .page-content h2 {
+    font-size: 1.5rem;
+  }
+
+  .page-content h3 {
+    font-size: 1.25rem;
+  }
+}
+
+/* ========================================
+   CLASSES WORDPRESS COURANTES
+   ======================================== */
+
+/* WordPress ajoute souvent ces classes */
+.page-content .wp-block-image {
+  margin: 2rem 0;
+}
+
+.page-content .aligncenter {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.page-content .alignleft {
+  float: left;
+  margin-right: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.page-content .alignright {
+  float: right;
+  margin-left: 1.5rem;
+  margin-bottom: 1rem;
+}

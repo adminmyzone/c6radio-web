@@ -21,6 +21,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             UNUserNotificationCenter.current().delegate = self
         }
         
+        // Enregistrer pour les notifications distantes (requis par Capacitor PushNotifications)
+        application.registerForRemoteNotifications()
+        
         return true
     }
     
